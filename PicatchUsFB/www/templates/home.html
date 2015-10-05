@@ -1,0 +1,40 @@
+<ion-view view-title="Home">
+	<ion-content>
+		<div>
+		    <button class="btn btn-block" ng-click="getInfo()">Get My Infos</button>
+		    <p>My name is : {{user.name}}</p>
+		    <p>My id is : {{user.id}}</p>
+		    <img ng-src="{{'http://graph.facebook.com/' + user.id + '/picture?type=small'}}"/>
+		</div>
+
+		<div>
+			<p>Photos de l'évènement</p>
+		    <div ng-repeat="photo in photos" style="display:inline-block;margin:5px 5px 5px 5px;">
+		        <img ng-src="{{'http://graph.facebook.com/' + photo.id + '/picture'}}"/>
+		    </div>
+		    <hr/>
+		</div>
+
+	    <button class="btn btn-block" ng-click="getEvents()">Get My Events</button>
+	    <ul>
+	        <li ng-repeat="event in events">
+	            <img ng-src="{{'http://graph.facebook.com/' + event.id + '/picture?type=small'}}"/> 
+	            <a href="" ng-click="getEventPhotos({{event.id}})">{{event.name}}</a>
+	        </li>
+	    </ul>
+	    <hr/>
+
+	    <textarea id="Message" placeholder="What's on your mind?" rows="5"></textarea>
+	    <button class="btn btn-block" ng-click="share()">Share</button>
+	    <hr/>
+
+	    <p>Complete Facebook Logout. After logging out, you'll have to login again and provide your Facebook credentials.</p>
+	    <button class="btn btn-block" ng-click="logout()">Logout</button>
+	    <hr/>
+
+	    <button class="btn btn-block" ng-click="readPermissions()">Read Permissions</button>
+
+	    <p>Revoke App Permissions. After revoking permissions, you'll have to grant permissions again when logging in.</p>
+	    <button class="btn btn-block" ng-click="revoke()">Revoke Permissions</button>
+	</ion-content>
+</ion-view>

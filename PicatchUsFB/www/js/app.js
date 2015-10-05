@@ -21,4 +21,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         StatusBar.styleLightContent();
       }
     });
+  })
+
+  .config(function($stateProvider, $urlRouterProvider){
+    $stateProvider
+
+    .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'GeneralController'
+    })
+
+    .state('home', {
+      url: '/home',
+      templateUrl: 'templates/home.html',
+      controller: 'GeneralController'
+    });
+
+    $urlRouterProvider.otherwise('/login');
   });
