@@ -16,12 +16,12 @@
 		</div>
 
 	    <button class="btn btn-block" ng-click="getEvents()">Get My Events</button>
-	    <ul>
-	        <li ng-repeat="event in events">
+	    <ion-list canswipe="listCanSwipe">
+	        <ion-item ng-swipe-left="takePicture({{event.id}})" ng-repeat="event in events">
 	            <img ng-src="{{'http://graph.facebook.com/' + event.id + '/picture?type=small'}}"/> 
 	            <a href="" ng-click="getEventPhotos({{event.id}})">{{event.name}}</a>
-	        </li>
-	    </ul>
+	        </ion-item>
+	    </ion-list>
 	    <hr/>
 
 	    <textarea id="Message" placeholder="What's on your mind?" rows="5"></textarea>

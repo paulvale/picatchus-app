@@ -52,6 +52,34 @@ angular.module('starter.controllers', [])
             errorHandler);
     }
 
+    $scope.takePicture = function(id){
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI
+        });
+
+        function onSuccess(imageURI) {
+            // var image = document.getElementById('myImage');
+            // image.src = "data:image/jpeg;base64," + imageData;
+            var photo = dataURItoBlob(imageURI);
+            ngFB.api({
+                method: 'POST',
+                path: '/id/photos',
+                params: {url:photo}
+            }).then(
+                function() {
+                    alert('the item was posted on Facebook');
+                },
+            onFail);
+        }
+
+        function onFail(message) {
+            alert(message);
+        }
+    }
+
+
+
+
     $scope.share = function() {
         ngFB.api({
             method: 'POST',
