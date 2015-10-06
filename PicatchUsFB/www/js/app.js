@@ -29,13 +29,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
-      controller: 'GeneralController'
+      controller: 'LoginController'
     })
 
     .state('home', {
       url: '/home',
       templateUrl: 'templates/home.html',
-      controller: 'GeneralController'
+      controller: 'HomeController'
     });
 
     $urlRouterProvider.otherwise('/login');
