@@ -3453,9 +3453,8 @@ a.subdued {
   padding: 0; }
 
 .bar-subheader {
-  top: 44px;
   display: block;
-  height: 44px; }
+  height: 4%; }
 
 .bar-subfooter {
   bottom: 44px;

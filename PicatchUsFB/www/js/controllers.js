@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.login = function() {
-        ngFB.login({scope: 'public_profile, user_events, user_photos'}).then(
+        ngFB.login({scope: 'public_profile, user_events, user_photos, publish_actions'}).then(
             function(response) {
                 $location.path('/home');
             },
@@ -20,7 +20,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB) {
+.controller('HomeController', function ($scope, ngFB, $location) {
     $scope.init = function(){
         $scope.getInfo();
         $scope.getEvents();
@@ -37,19 +37,16 @@ angular.module('starter.controllers', [])
     $scope.getEvents = function() {
         ngFB.api({path: '/me/events'}).then(
             function(events) {
+                for(var i=0; i < events.data.length; i++){
+                    events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);
+                }
                 $scope.events = events.data;
             },
             errorHandler);
     }
 
     $scope.getEventPhotos = function(id) {
-        ngFB.api({path: '/' + id +'/photos'}).then(
-            function(photos) {
-              console.log(photos);
-              var p = photos.data;
-              $scope.photos = photos.data;
-            },
-            errorHandler);
+        $location.path('/event/' + id);
     }
 
     $scope.takePicture = function(id){
@@ -58,27 +55,14 @@ angular.module('starter.controllers', [])
         });
 
         function onSuccess(imageURI) {
-            // var image = document.getElementById('myImage');
-            // image.src = "data:image/jpeg;base64," + imageData;
-            var photo = dataURItoBlob(imageURI);
-            ngFB.api({
-                method: 'POST',
-                path: '/id/photos',
-                params: {url:photo}
-            }).then(
-                function() {
-                    alert('the item was posted on Facebook');
-                },
-            onFail);
+            var photo = dataURItoBlob2(imageURI);
+            PostPhotoToEvent(photo, id);
         }
 
         function onFail(message) {
             alert(message);
         }
     }
-
-
-
 
     $scope.share = function() {
         ngFB.api({
@@ -113,6 +97,23 @@ angular.module('starter.controllers', [])
         ngFB.logout().then(
             function() {
                 alert('Logout successful');
+            },
+            errorHandler);
+    }
+    
+    function errorHandler(error) {
+        alert(error.message);
+    }
+})
+
+.controller('EventController', function ($scope, ngFB, $stateParams) {
+
+    $scope.init = function(id){
+        ngFB.api({path: '/' + $stateParams.eventId +'/photos'}).then(
+            function(photos) {
+              var p = photos.data;
+              console.log(photos);
+              $scope.photos = photos.data;
             },
             errorHandler);
     }

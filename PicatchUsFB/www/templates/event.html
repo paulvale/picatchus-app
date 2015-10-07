@@ -1,0 +1,11 @@
+<ion-view view-title="Connexion" id="login" ng-init='init()'>
+	<ion-content >
+		<div class="event_photos">
+			<p>Photos de l'évènement</p>
+		    <div ng-repeat="photo in photos" style="display:inline-block;margin:5px 5px 5px 5px;">
+		        <img ng-src="{{'http://graph.facebook.com/' + photo.id + '/picture?'}}"/>
+		    </div>
+		    <hr/>
+		</div>
+	</ion-content>
+</ion-view>

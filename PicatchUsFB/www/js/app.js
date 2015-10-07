@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngOpenFB', 'ngTouch'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngOpenFB', 'ngTouch', 'ngRoute'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -36,6 +36,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       url: '/home',
       templateUrl: 'templates/home.html',
       controller: 'HomeController'
+    })
+
+    .state('event', {
+      url: '/event/:eventId',
+      templateUrl: 'templates/event.html',
+      controller: 'EventController'
     });
 
     $urlRouterProvider.otherwise('/login');
