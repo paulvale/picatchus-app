@@ -2,8 +2,15 @@ angular.module('starter.controllers', [])
 
 .controller('LoginController', function ($scope, ngFB, $location) {
     // Defaults to sessionStorage for storing the Facebook token
-    ngFB.init({appId: '1028038917241302', tokenStore: window.sessionStorage});
+    ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+
+    $scope.init = function(){
+        console.log(window.localStorage.fbAccessToken);
+        if(window.localStorage.fbAccessToken)
+            $location.path('/home');
+    }
+
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.login = function() {
         ngFB.login({scope: 'public_profile, user_events, user_photos, publish_actions'}).then(
@@ -112,7 +119,6 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/' + $stateParams.eventId +'/photos'}).then(
             function(photos) {
               var p = photos.data;
-              console.log(photos);
               $scope.photos = photos.data;
             },
             errorHandler);
