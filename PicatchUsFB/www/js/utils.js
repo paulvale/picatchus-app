@@ -32,7 +32,11 @@ function PostPhotoToEvent(photo, idEvent){
 	var formData = new FormData();
 	formData.append("photo", photo);
 	var request = new XMLHttpRequest();
-	request.open("POST", "https://graph.facebook.com/" + idEvent + "/photos?access_token=" + window.sessionStorage.fbAccessToken);
+	if(window.localStorage.fbAccessToken)
+		request.open("POST", "https://graph.facebook.com/" + idEvent + "/photos?access_token=" + window.localStorage.fbAccessToken);
+	else
+		request.open("POST", "https://graph.facebook.com/" + idEvent + "/photos?access_token=" + window.sessionStorage.fbAccessToken);
+
 	request.onload = request.onerror = function() {
         console.log( request.responseText );
     };

@@ -60,3 +60,7 @@ div.userProfile img {
 .bar > img {
 	top: 4%;
 }
+
+.event_photos > img {
+	width: 100%;
+}

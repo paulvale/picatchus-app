@@ -2,9 +2,14 @@ angular.module('starter.controllers', [])
 
 .controller('LoginController', function ($scope, ngFB, $location) {
     // Defaults to sessionStorage for storing the Facebook token
-    ngFB.init({appId: '1028038917241302', tokenStore: window.sessionStorage});
+    ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
+    $scope.init = function(){
+        if(window.localStorage.fbAccessToken)
+            $location.path('/home');
+    }
+
     $scope.login = function() {
         ngFB.login({scope: 'public_profile, user_events, user_photos, publish_actions'}).then(
             function(response) {
@@ -20,8 +25,11 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location) {
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory) {
     $scope.init = function(){
+        console.log($ionicHistory);
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
         $scope.getInfo();
         $scope.getEvents();
     }
@@ -116,6 +124,13 @@ angular.module('starter.controllers', [])
               $scope.photos = photos.data;
             },
             errorHandler);
+
+        ngFB.api({path: '/'+ $stateParams.eventId}).then(
+            function(response) {
+              console.log(response);
+              $scope.event = response;
+            },
+            errorHandler);  
     }
     
     function errorHandler(error) {
