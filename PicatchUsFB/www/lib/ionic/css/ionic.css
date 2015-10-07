@@ -2513,8 +2513,7 @@ textarea {
   /* 2 */ }
 
 img {
-  -webkit-user-drag: none;
-}
+  -webkit-user-drag: none; }
 
 /* ==========================================================================
    Tables
