@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        if(window.localStorage.fbAccessToken)
+        if(window.localStorage.fbAccessToken != null)
             $location.path('/home');
     }
 
@@ -25,9 +25,8 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory) {
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer) {
     $scope.init = function(){
-        console.log($ionicHistory);
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         $scope.getInfo();
@@ -63,8 +62,14 @@ angular.module('starter.controllers', [])
         });
 
         function onSuccess(imageURI) {
-            var photo = dataURItoBlob2(imageURI);
-            PostPhotoToEvent(photo, id);
+            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
+              .then(function(result) {
+
+              }, function(err) {
+
+              }, function (progress) {
+                // constant progress updates
+              });
         }
 
         function onFail(message) {
@@ -83,6 +88,7 @@ angular.module('starter.controllers', [])
             },
             errorHandler);
     }
+
     $scope.readPermissions = function() {
         ngFB.api({
             method: 'GET',
@@ -94,6 +100,7 @@ angular.module('starter.controllers', [])
             errorHandler
         );
     }
+
     $scope.revoke = function() {
         ngFB.revokePermissions().then(
             function() {
@@ -101,10 +108,12 @@ angular.module('starter.controllers', [])
             },
             errorHandler);
     }
+
     $scope.logout = function() {
         ngFB.logout().then(
             function() {
-                alert('Logout successful');
+                delete(window.localStorage.fbAccessToken);
+                $location.path('/home');
             },
             errorHandler);
     }
@@ -114,20 +123,19 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams) {
+.controller('EventController', function ($scope, ngFB, $stateParams, $rootScope) {
 
     $scope.init = function(id){
+        console.log($rootScope);
         ngFB.api({path: '/' + $stateParams.eventId +'/photos'}).then(
             function(photos) {
               var p = photos.data;
-              console.log(photos);
               $scope.photos = photos.data;
             },
             errorHandler);
 
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
-              console.log(response);
               $scope.event = response;
             },
             errorHandler);  

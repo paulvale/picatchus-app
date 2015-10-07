@@ -50,17 +50,21 @@ div.userProfile h3 {
 div.userProfile img {
     display: block;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    width: 27%;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
 }
 
 .list {
-    padding-top: 31%;
-}
-
-.bar > img {
-	top: 4%;
+    padding-top: 40%;
 }
 
 .event_photos > img {
 	width: 100%;
+}
+
+.bar-subheader {
+	height: 5%;
 }
