@@ -6,31 +6,36 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        if(window.localStorage.fbAccessToken != null)
-            $location.path('/home');
+        //if(window.localStorage.fbAccessToken != null)
+        //    $location.path('/home');
     }
 
     $scope.login = function() {
-        ngFB.login({scope: 'public_profile, user_events, user_photos, publish_actions'}).then(
+        ngFB.login({scope: 'user_events, user_photos'}).then(
             function(response) {
                 $location.path('/home');
             },
             function(error) {
-                alert('Facebook login failed: ' + error);
+            $cordovaToast.showLongBottom('La connexion a échoué');
         });
     }
     
     function errorHandler(error) {
-        alert(error.message);
+        console.log(JSON.stringify(error.message));
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer) {
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $cordovaToast) {
     $scope.init = function(){
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         $scope.getInfo();
         $scope.getEvents();
+    }
+
+    $scope.refresh = function(){
+        $scope.getEvents();
+        $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.getInfo = function() {
@@ -46,8 +51,17 @@ angular.module('starter.controllers', [])
             function(events) {
                 for(var i=0; i < events.data.length; i++){
                     events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);
+                    $scope.getEventCover(i, events.data[i].id);
                 }
                 $scope.events = events.data;
+            },
+            errorHandler);
+    }
+
+    $scope.getEventCover = function(i, idEvent){
+        ngFB.api({path: '/' + idEvent, params : {fields: 'cover'}}).then(
+            function(cover) {
+                $scope.events[i].cover = cover.cover.source;
             },
             errorHandler);
     }
@@ -57,23 +71,23 @@ angular.module('starter.controllers', [])
     }
 
     $scope.takePicture = function(id){
-        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
             destinationType: Camera.DestinationType.FILE_URI
         });
 
         function onSuccess(imageURI) {
             $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
               .then(function(result) {
-
+                $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
               }, function(err) {
-
+                $cordovaToast.showLongBottom('Oups ! Une erreur est survenue ...');
               }, function (progress) {
                 // constant progress updates
               });
         }
 
         function onFail(message) {
-            alert(message);
+
         }
     }
 
@@ -119,29 +133,48 @@ angular.module('starter.controllers', [])
     }
     
     function errorHandler(error) {
-        alert(error.message);
+        console.log(JSON.stringify(error.message));
     }
 })
 
 .controller('EventController', function ($scope, ngFB, $stateParams, $rootScope) {
 
-    $scope.init = function(id){
-        console.log($rootScope);
-        ngFB.api({path: '/' + $stateParams.eventId +'/photos'}).then(
-            function(photos) {
-              var p = photos.data;
-              $scope.photos = photos.data;
-            },
-            errorHandler);
-
+    $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
               $scope.event = response;
             },
-            errorHandler);  
+            errorHandler);
+
+        $scope.getPhotos($stateParams.eventId);
+    }
+
+    $scope.getPhotos = function(eventId){
+        ngFB.api({path: '/' + eventId +'/photos', params: {fields: 'from'}}).then(
+            function(photos) {
+              var p = photos.data;
+              $scope.photos = photos.data;
+              for(var i = 0; i < $scope.photos.length ; i++){
+                $scope.getPhoto(i, $scope.photos[i].id);
+              }
+            },
+            errorHandler);
+    }
+
+    $scope.getPhoto = function(i, photoId){
+        ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
+            function(photo) {
+                $scope.photos[i].src = photo.images[0].source;
+            },
+            errorHandler);
+    }
+
+    $scope.refresh = function(){
+        $scope.getPhotos($scope.event.id);
+        $scope.$broadcast('scroll.refreshComplete');
     }
     
     function errorHandler(error) {
-        alert(error.message);
+        console.log(JSON.stringify(error.message));
     }
 });

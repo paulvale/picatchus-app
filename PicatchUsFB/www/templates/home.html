@@ -6,6 +6,7 @@
 	  </div>
 	</ion-header-bar>
 	<ion-content>
+		<ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div class="bar bar-subheader bar-calm userProfile">
 		    <img ng-src="{{'http://graph.facebook.com/' + user.id + '/picture?type=large'}}"/>
 		    <h3>{{user.name}}</h3>
@@ -13,7 +14,7 @@
 
 	    <ion-list class="list" canswipe="listCanSwipe" >
 	        <ion-item class="item item-thumbnail-left" ng-swipe-left="takePicture({{event.id}})" ng-click="getEventPhotos({{event.id}})" ng-repeat="event in events">
-	            <img ng-src="{{'http://graph.facebook.com/' + event.id + '/picture?type=small'}}"/> 
+	            <img ng-src="{{event.cover}}"/> 
 	            <h2>{{event.name}}</h2>
 	            <p>{{event.start_time}}</p>
 	        </ion-item>
