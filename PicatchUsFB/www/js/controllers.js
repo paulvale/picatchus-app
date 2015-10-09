@@ -6,8 +6,8 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        //if(window.localStorage.fbAccessToken != null)
-        //    $location.path('/home');
+        if(window.localStorage.getItem("fbAccessToken"))
+            $location.path('/home');
     }
 
     $scope.login = function() {
@@ -126,8 +126,8 @@ angular.module('starter.controllers', [])
     $scope.logout = function() {
         ngFB.logout().then(
             function() {
-                delete(window.localStorage.fbAccessToken);
-                $location.path('/home');
+                window.localStorage.removeItem("fbAccessToken");
+                $location.path('/login');
             },
             errorHandler);
     }
