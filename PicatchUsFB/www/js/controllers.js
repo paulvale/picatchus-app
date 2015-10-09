@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.login = function() {
-        ngFB.login({scope: 'user_events, user_photos'}).then(
+        ngFB.login({scope: 'user_events, user_photos, publish_actions'}).then(
             function(response) {
                 $location.path('/home');
             },
@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.takePicture = function(id){
-        navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
             destinationType: Camera.DestinationType.FILE_URI
         });
 
@@ -80,7 +80,8 @@ angular.module('starter.controllers', [])
               .then(function(result) {
                 $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
               }, function(err) {
-                $cordovaToast.showLongBottom('Oups ! Une erreur est survenue ...');
+                console.log(err);
+                $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
               }, function (progress) {
                 // constant progress updates
               });
