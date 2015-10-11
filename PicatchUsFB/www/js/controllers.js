@@ -50,7 +50,7 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/me/events'}).then(
             function(events) {
                 for(var i=0; i < events.data.length; i++){
-                    events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);
+                    /*events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);*/
                     $scope.getEventCover(i, events.data[i].id);
                 }
                 $scope.events = events.data;

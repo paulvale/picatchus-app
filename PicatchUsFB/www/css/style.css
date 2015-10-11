@@ -140,7 +140,7 @@ div.userProfile img {
     margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
-    width:25%;
+    width:20%;
     border-radius: 150px;
     border-color:white;
     -webkit-border-radius: 150px;
@@ -152,18 +152,37 @@ div.userProfile img {
 }
 
 .itemListEvent {
-    background-color:#4f4e53;
-    color:white;
+    height: 150px;
 }
 
-.itemListEvent h2 , .itemListEvent p{
+.listInfoEvent {
     color:white;
+    height:75px;
+    margin-bottom: 25px;
 }
 
 .photoListEvent {
     border-radius:5px;
     border-color:white;
     border:2px;
+}
+
+.col h2{
+    color:white;
+    text-align: center;
+    font-size:25px;
+    height:30px;
+}
+
+.col-20 {
+    text-align:center;
+    border-radius:5px;
+    border: 1px solid white;
+}
+
+.col-50 {
+    color:white;
+    text-align: center;
 }
 
 
