@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams, $rootScope) {
+.controller('EventController', function ($scope, ngFB, $stateParams, $rootScope,$location) {
 
     $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
@@ -168,6 +168,10 @@ angular.module('starter.controllers', [])
                 $scope.photos[i].src = photo.images[0].source;
             },
             errorHandler);
+    }
+
+    $scope.back = function() {
+        $location.path('/home');
     }
 
     $scope.refresh = function(){

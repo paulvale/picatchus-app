@@ -1,6 +1,10 @@
 body{
     width: auto;
+    background-color:#4f4e53; 
 }
+
+/* LOGIN PAGE */
+
 
 .fbBtn {
     display:block;
@@ -80,10 +84,7 @@ body{
     }
 
 
-
-h1.title {
-	left: 35%;
-}
+/* Home Page */
 
 i.ion-navicon {
     font-size: 2em;
@@ -92,8 +93,40 @@ i.ion-navicon {
 }
 
 i.ion-log-out{
-    font-size: 2em;
+    position:absolute;
+    top:5px;
+    right:0px;
+    font-size: 1.5em;
     padding-right:10px;
+}
+
+.barPica {
+    position:absolute;
+    height:193px;
+}
+
+div.userProfile ,div.headerProfile{
+    position:absolute;
+    width:100%;
+} 
+
+div.headerProfile {
+    top:0px;
+    left:0px;
+    height:44px;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-left:5px;
+    background-color:#4f4e53;
+    border-color:#4f4e53;
+    
+}
+
+div.userProfile {
+    top:44px;
+    left:0px;
+    height:150px;
+    background-color:#424146;
 }
 
 div.userProfile h3 {
@@ -103,23 +136,53 @@ div.userProfile h3 {
 }
 
 div.userProfile img {
-    display: block;
+    display:block;
+    margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
-    width: 27%;
-	border-radius: 150px;
-	-webkit-border-radius: 150px;
-	-moz-border-radius: 150px;
+    width:25%;
+    border-radius: 150px;
+    border-color:white;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
 }
 
 .list {
-    padding-top: 40%;
+    padding-top: 150px;
 }
 
+.itemListEvent {
+    background-color:#4f4e53;
+    color:white;
+}
+
+.itemListEvent h2 , .itemListEvent p{
+    color:white;
+}
+
+.photoListEvent {
+    border-radius:5px;
+    border-color:white;
+    border:2px;
+}
+
+
+.event_photos {
+    padding-top: 150px;
+}
 .event_photos > img {
-	width: 100%;
+    width: 100%;
 }
 
-.bar-subheader {
-	height: 5%;
+
+.barEvent {
+    height:193px;
 }
+
+.barEvent h1{
+    margin-left: auto;
+    margin-right: auto;
+    padding-top:50px;
+}
+
+

@@ -1,11 +1,13 @@
 <ion-view view-title="Event" id="event" ng-init='init()'>
-	<ion-header-bar align-title="left" class="bar-calm">
-	  <h1 class="title">{{event.name}}</h1>
+	<ion-header-bar align-title="left" class="bar-calm barPica">
+		<h1 class="title" ng-click="back()"><i class="ion-chevron-left"></i></h1>
+		<div class="userProfile">
+		    <h3>{{event.name}}</h3>
+		</div>
 	</ion-header-bar>
 	<ion-content>
 	<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div>
-			<p>Photos de l'évènement</p>
 		    <div  class="event_photos" ng-repeat="photo in photos">
 		        <img ng-src="{{photo.src}}"/>
 		    </div>
