@@ -32,6 +32,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       controller: 'LoginController'
     })
 
+    .state('first-use', {
+      url: '/first-use',
+      templateUrl: 'templates/first_use.html',
+      controller: 'FirstUseController'
+    })
+
     .state('home', {
       url: '/home',
       templateUrl: 'templates/home.html',

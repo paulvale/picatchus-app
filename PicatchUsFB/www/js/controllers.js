@@ -6,19 +6,47 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        if(window.localStorage.getItem("fbAccessToken"))
+        if(window.localStorage.getItem("fbAccessToken")){
             $location.path('/home');
+        }
     }
 
     $scope.login = function() {
         ngFB.login({scope: 'user_events, user_photos, publish_actions'}).then(
             function(response) {
-                $location.path('/home');
+                if(window.localStorage.getItem("first_use") == 0){
+                    $location.path('/home');
+                }
+                else
+                    $location.path('/first-use')
             },
             function(error) {
             $cordovaToast.showLongBottom('La connexion a échoué');
         });
     }
+    
+    function errorHandler(error) {
+        console.log(JSON.stringify(error.message));
+    }
+})
+
+.controller('FirstUseController', function ($scope, ngFB, $location) {
+    $scope.init = function(){
+        $scope.source = 'img/onboarding_tap.png';
+        $scope.isnext = true;
+    }
+
+    $scope.next = function(){
+        $scope.isnext = false;
+        $scope.source = 'img/onboarding_swipe_left.png';
+        document.getElementById("btn-next").className = "ion-checkmark-round";
+    }
+
+    $scope.skip = function(){
+        window.localStorage.setItem("first_use", 0);
+        $location.path('/home');
+    }
+
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));
@@ -31,6 +59,11 @@ angular.module('starter.controllers', [])
         $ionicHistory.clearHistory();
         $scope.getInfo();
         $scope.getEvents();
+        $scope.listCanSwipe = true;
+
+        if(window.localStorage.getItem("first_use") == undefined){
+            $scope.first_use();
+        }
     }
 
     $scope.refresh = function(){
@@ -128,6 +161,7 @@ angular.module('starter.controllers', [])
         ngFB.logout().then(
             function() {
                 window.localStorage.removeItem("fbAccessToken");
+                window.localStorage.removeItem("first_use");
                 $location.path('/login');
             },
             errorHandler);
@@ -138,8 +172,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams, $rootScope,$location) {
-
+.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location) {
     $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
@@ -158,6 +191,7 @@ angular.module('starter.controllers', [])
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }
+            console.log($scope.photos);
             },
             errorHandler);
     }
@@ -166,8 +200,66 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
                 $scope.photos[i].src = photo.images[0].source;
+                $scope.photos[i].pos = i;
             },
             errorHandler);
+
+        ngFB.api({path: '/' + photoId + '/likes', params: {summary : 'total_count,can_like,has_liked'}}).then(
+            function(photo) {
+                $scope.photos[i].total_likes = photo.summary.total_count;
+                $scope.photos[i].has_liked = photo.summary.has_liked;
+            },
+            errorHandler);
+    }
+
+    $scope.dislike = function(idPhoto, posPhoto){
+        console.log(event);
+        ngFB.api({
+            method: 'DELETE',
+            path: '/' + idPhoto + '/likes'
+        }).then(
+            function(result) {
+                $scope.photos[posPhoto].total_likes--;
+                $scope.photos[posPhoto].has_liked = false;
+            },
+            errorHandler
+        );
+    }
+
+    $scope.like = function(idPhoto, posPhoto){
+        console.log(event.target);
+        ngFB.api({
+            method: 'POST',
+            path: '/' + idPhoto + '/likes'
+        }).then(
+            function(result) {
+                $scope.photos[posPhoto].total_likes++;
+                $scope.photos[posPhoto].has_liked = true;
+            },
+            errorHandler
+        );        
+    }
+
+    $scope.delete = function(idPhoto) {
+        var confirmPopup = $ionicPopup.confirm({
+     title: 'Suppression',
+     template: 'Es-tu certain de vouloir supprimer cette photo ?'
+       });
+       confirmPopup.then(function(res) {
+         if(res) {
+            ngFB.api({
+            method: 'DELETE',
+            path: '/' + idPhoto
+            }).then(
+                function(result) {
+                    $cordovaToast.showLongBottom('La photo a bien été supprimée');
+                    var img = document.getElementById(idPhoto);
+                    img.parentNode.removeChild(img);
+                },
+                errorHandler
+            );
+         }
+       });
     }
 
     $scope.back = function() {
