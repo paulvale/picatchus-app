@@ -8,6 +8,7 @@
 			<p>Photos de l'évènement</p>
 		    <div  class="event_photos" ng-repeat="photo in photos">
 		        <img ng-src="{{photo.src}}"/>
+		        <p>{{photo.total_likes}}<i class="ion-ios-heart-outline" ng-click="photo.has_liked ? dislike(photo.id, photo.pos) : like(photo.id, photo.pos)"></i></p>
 		    </div>
 		    <hr/>
 		</div>

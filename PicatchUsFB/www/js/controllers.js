@@ -193,6 +193,7 @@ angular.module('starter.controllers', [])
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }
+            console.log($scope.photos);
             },
             errorHandler);
     }
@@ -201,8 +202,44 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
                 $scope.photos[i].src = photo.images[0].source;
+                $scope.photos[i].pos = i;
             },
             errorHandler);
+
+        ngFB.api({path: '/' + photoId + '/likes', params: {summary : 'total_count,can_like,has_liked'}}).then(
+            function(photo) {
+                $scope.photos[i].total_likes = photo.summary.total_count;
+                $scope.photos[i].has_liked = photo.summary.has_liked;
+            },
+            errorHandler);
+    }
+
+    $scope.dislike = function(idPhoto, posPhoto){
+        console.log(event);
+        ngFB.api({
+            method: 'DELETE',
+            path: '/' + idPhoto + '/likes'
+        }).then(
+            function(result) {
+                $scope.photos[posPhoto].total_likes--;
+                $scope.photos[posPhoto].has_liked = false;
+            },
+            errorHandler
+        );
+    }
+
+    $scope.like = function(idPhoto, posPhoto){
+        console.log(event.target);
+        ngFB.api({
+            method: 'POST',
+            path: '/' + idPhoto + '/likes'
+        }).then(
+            function(result) {
+                $scope.photos[posPhoto].total_likes++;
+                $scope.photos[posPhoto].has_liked = true;
+            },
+            errorHandler
+        );        
     }
 
     $scope.refresh = function(){
