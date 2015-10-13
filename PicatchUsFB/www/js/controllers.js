@@ -6,9 +6,9 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        if(window.localStorage.getItem("fbAccessToken")){
+        /*if(window.localStorage.getItem("fbAccessToken")){
             $location.path('/home');
-        }
+        }*/
     }
 
     $scope.login = function() {
@@ -84,19 +84,31 @@ angular.module('starter.controllers', [])
             function(events) {
                 for(var i=0; i < events.data.length; i++){
                     events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);
-                    $scope.getEventCover(i, events.data[i].id);
+                    $scope.getEventInfos(i, events.data[i].id);
                 }
                 $scope.events = events.data;
             },
             errorHandler);
     }
 
-    $scope.getEventCover = function(i, idEvent){
+    $scope.getEventInfos = function(i, idEvent){
         ngFB.api({path: '/' + idEvent, params : {fields: 'cover'}}).then(
             function(cover) {
                 $scope.events[i].cover = cover.cover.source;
             },
             errorHandler);
+
+        ngFB.api({path: '/' + idEvent + '/attending', params : {summary: 'true'}}).then(
+            function(event_attending) {
+                $scope.events[i].total_participants = event_attending.summary.count;
+            },
+            errorHandler);
+
+        ngFB.api({path: '/' + idEvent + '/photos'}).then(
+            function(photos) {
+                $scope.events[i].total_photos = photos.data.length;
+            },
+            errorHandler);      
     }
 
     $scope.getEventPhotos = function(id) {
