@@ -40,7 +40,6 @@ angular.module('starter.controllers', [])
         $scope.isnext = false;
         $scope.source = 'img/onboarding_swipe_left.png';
         document.getElementById("btn-next").className = "ion-checkmark-round";
-        document.getElementById("btn-close").className = "";
     }
 
     $scope.skip = function(){
@@ -173,7 +172,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams, $rootScope) {
+.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast) {
 
     $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
@@ -240,6 +239,28 @@ angular.module('starter.controllers', [])
             },
             errorHandler
         );        
+    }
+
+    $scope.delete = function(idPhoto) {
+        var confirmPopup = $ionicPopup.confirm({
+     title: 'Suppression',
+     template: 'Es-tu certain de vouloir supprimer cette photo ?'
+       });
+       confirmPopup.then(function(res) {
+         if(res) {
+            ngFB.api({
+            method: 'DELETE',
+            path: '/' + idPhoto
+            }).then(
+                function(result) {
+                    $cordovaToast.showLongBottom('La photo a bien été supprimée');
+                    var img = document.getElementById(idPhoto);
+                    img.parentNode.removeChild(img);
+                },
+                errorHandler
+            );
+         }
+       });
     }
 
     $scope.refresh = function(){
