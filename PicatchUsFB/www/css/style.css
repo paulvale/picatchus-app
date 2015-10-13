@@ -94,7 +94,7 @@ i.ion-navicon {
 
 i.ion-log-out{
     position:absolute;
-    top:5px;
+    top:10px;
     right:0px;
     font-size: 1.5em;
     padding-right:10px;
@@ -117,16 +117,15 @@ div.headerProfile {
     font-size: 20px;
     padding-top: 5px;
     padding-left:5px;
-    background-color:#4f4e53;
-    border-color:#4f4e53;
-    
+    background-color:#2980b9;    
 }
 
 div.userProfile {
     top:44px;
     left:0px;
     height:150px;
-    background-color:#424146;
+    background-color:#3498db;
+    border: 5px solid #2980b9;
 }
 
 div.userProfile h3 {
@@ -177,31 +176,80 @@ div.userProfile img {
 .col-20 {
     text-align:center;
     border-radius:5px;
-    border: 1px solid white;
+    border: 3px solid white;
+    background:linear-gradient(                     
+                                  rgba(52, 152, 219, 0.60), 
+                                  rgba(52, 152, 219, 0.60)
+                                )
 }
+
+.col-20 .jour {
+    font-size: 25px;
+    font-weight: bold;
+    color:white;
+}
+
+.col-20 .mois {
+    font-size: 15px;
+    color:white;
+}
+
 
 .col-50 {
     color:white;
     text-align: center;
 }
 
-
-.event_photos {
-    padding-top: 150px;
+/* EVENT DESIGN */
+.ion-chevron-left {
+    padding-top:5px;
+    padding-bottom:5px;
+    font-size:1.5em;
 }
-.event_photos > img {
-    width: 100%;
+div.userEvent ,div.headerEvent{
+    position:absolute;
+    width:100%;
+} 
+
+div.headerEvent {
+    top:0px;
+    left:0px;
+    height:44px;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-left:5px;
+    background-color:#2980b9;
+    border-color:#3498db;
+    
 }
 
-
-.barEvent {
-    height:193px;
+div.userEvent {
+    top:44px;
+    left:0px;
+    height:150px;
+    background-color:#3498db;
 }
 
-.barEvent h1{
+div.userEvent h3 {
+    text-align:center;
+    color:white;
+    margin:0px;
+}
+
+div.userEvent img {
+    display:block;
+    margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
-    padding-top:50px;
+    width:20%;
+    border-radius: 150px;
+    border-color:white;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+}
+
+.event_photos > img {
+    width: 100%;
 }
 
 

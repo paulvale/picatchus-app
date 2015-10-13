@@ -1,10 +1,33 @@
 <ion-view view-title="Event" id="event" ng-init='init()'>
-	<ion-header-bar align-title="left" class="bar-calm barPica">
-		<h1 class="title" ng-click="back()"><i class="ion-chevron-left"></i></h1>
-		<div class="userProfile">
-		    <h3>{{event.name}}</h3>
+	<ion-header-bar class="barPica bar-calm">
+		<div class="headerEvent">
+			<i class="ion-chevron-left" ng-click="back()"></i>
+		</div> 
+		<div class="userEvent">
+			<div class="row listInfoEvent">
+		    	<div class="col col-20">
+		        	<p class="jour">
+		        		{{event.start_time | date:'d'}}
+		        	</p>
+		        	<p class="mois">
+		        		{{event.start_time | date :'MMM'}}
+		        	</p>
+		    	</div>
+		    	<div class="col">
+		        	<h2>{{event.name}}</h2>
+		    	</div>
+		    </div>
+		    <div class="row">
+		    	<div class="col col-50">
+		    		<i class="ion-person-stalker light"> Nb personnes</i>
+		    	</div>
+		    	<div class="col col-50">
+		    		<i class="ion-images light"> Nb images</i>
+		    	</div>
+		    </div>
 		</div>
 	</ion-header-bar>
+
 	<ion-content>
 	<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div>

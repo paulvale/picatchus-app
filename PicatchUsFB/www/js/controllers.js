@@ -188,6 +188,7 @@ angular.module('starter.controllers', [])
             function(photos) {
               var p = photos.data;
               $scope.photos = photos.data;
+              console.log($scope.photos);
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }

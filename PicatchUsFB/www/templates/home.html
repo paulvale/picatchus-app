@@ -17,44 +17,52 @@
 
 	    <ion-list class="list " canswipe="listCanSwipe" >
 	        <ion-item class="item itemListEvent" 
-	        			ng-repeat="event in events"
+	        			ng-repeat="event in events "
 	        			style="background:linear-gradient(	        			
-							      rgba(139, 134, 130, 0.80), 
-							      rgba(139, 134, 130, 0.80) 
+							      rgba(52, 152, 219, 0.45), 
+							      rgba(52, 152, 219, 0.45)
 							    ),
 							    url({{event.cover}}) no-repeat center fixed;
 	        			        -webkit-background-size: cover;"
 	        			ng-swipe-left="takePicture({{event.id}})" 
+	        			ng-click="getEventPhotos({{event.id}})"
 	        			>
 	        			<!-- ng-click="getEventPhotos({{event.id}})"  -->
 	            <!-- <img class="photoListEvent" ng-src="{{event.cover}}" ng-if="event.cover"/>  -->
-	            <div class="row listInfoEvent">
-	            	<div class="col col-20">
-		            	{{event.start_time | date:'d'}}<br>{{event.start_time | date :'MMM'}}
-	            	</div>
-	            	<div class="col">
-		            	<h2>{{event.name}}</h2>
-	            	</div>
-	            </div>
-	            <div class="row">
-	            	<div class="col col-50">
-	            		<i class="ion-person-stalker light"> Nb personnes</i>
-	            	</div>
-	            	<div class="col col-50">
-	            		<i class="ion-images light"> Nb images</i>
-	            	</div>
-	            </div>
+
+		            <div class="row listInfoEvent">
+		            	<div class="col col-20">
+			            	<p class="jour">
+			            		{{event.start_time | date:'d'}}
+			            	</p>
+			            	<p class="mois">
+			            		{{event.start_time | date :'MMM'}}
+			            	</p>
+		            	</div>
+		            	<div class="col">
+			            	<h2>{{event.name}}</h2>
+		            	</div>
+		            </div>
+		            <div class="row">
+		            	<div class="col col-50">
+		            		<i class="ion-person-stalker light"> Nb personnes</i>
+		            	</div>
+		            	<div class="col col-50">
+		            		<i class="ion-images light"> Nb images</i>
+		            	</div>
+		            </div>
+
 	        </ion-item>
 	    </ion-list>
 	    <hr/>
 
-	    <textarea id="Message" placeholder="What's on your mind?" rows="5"></textarea>
-	    <button class="btn btn-block" ng-click="share()">Share</button>
-	    <hr/>
+<!-- 	    <textarea id="Message" placeholder="What's on your mind?" rows="5"></textarea>
+<button class="btn btn-block" ng-click="share()">Share</button>
+<hr/>
 
-	    <button class="btn btn-block" ng-click="readPermissions()">Read Permissions</button>
+<button class="btn btn-block" ng-click="readPermissions()">Read Permissions</button>
 
-	    <p>Revoke App Permissions. After revoking permissions, you'll have to grant permissions again when logging in.</p>
-	    <button class="btn btn-block" ng-click="revoke()">Revoke Permissions</button>
+<p>Revoke App Permissions. After revoking permissions, you'll have to grant permissions again when logging in.</p>
+<button class="btn btn-block" ng-click="revoke()">Revoke Permissions</button> -->
 	</ion-content>
 </ion-view>
