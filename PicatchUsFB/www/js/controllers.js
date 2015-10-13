@@ -6,19 +6,48 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        if(window.localStorage.getItem("fbAccessToken"))
+        if(window.localStorage.getItem("fbAccessToken")){
             $location.path('/home');
+        }
     }
 
     $scope.login = function() {
         ngFB.login({scope: 'user_events, user_photos, publish_actions'}).then(
             function(response) {
-                $location.path('/home');
+                if(window.localStorage.getItem("first_use") == 0){
+                    $location.path('/home');
+                }
+                else
+                    $location.path('/first-use')
             },
             function(error) {
             $cordovaToast.showLongBottom('La connexion a échoué');
         });
     }
+    
+    function errorHandler(error) {
+        console.log(JSON.stringify(error.message));
+    }
+})
+
+.controller('FirstUseController', function ($scope, ngFB, $location) {
+    $scope.init = function(){
+        $scope.source = 'img/onboarding_tap.png';
+        $scope.isnext = true;
+    }
+
+    $scope.next = function(){
+        $scope.isnext = false;
+        $scope.source = 'img/onboarding_swipe_left.png';
+        document.getElementById("btn-next").className = "ion-checkmark-round";
+        document.getElementById("btn-close").className = "";
+    }
+
+    $scope.skip = function(){
+        window.localStorage.setItem("first_use", 0);
+        $location.path('/home');
+    }
+
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));
@@ -31,6 +60,11 @@ angular.module('starter.controllers', [])
         $ionicHistory.clearHistory();
         $scope.getInfo();
         $scope.getEvents();
+        $scope.listCanSwipe = true;
+
+        if(window.localStorage.getItem("first_use") == undefined){
+            $scope.first_use();
+        }
     }
 
     $scope.refresh = function(){
@@ -128,6 +162,7 @@ angular.module('starter.controllers', [])
         ngFB.logout().then(
             function() {
                 window.localStorage.removeItem("fbAccessToken");
+                window.localStorage.removeItem("first_use");
                 $location.path('/login');
             },
             errorHandler);
