@@ -105,11 +105,12 @@ angular.module('starter.controllers', [])
 
     $scope.takePicture = function(id){
         navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
-            destinationType: Camera.DestinationType.FILE_URI
+            destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true
         });
 
         function onSuccess(imageURI) {
-            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
+            var pic = addTextToImage(imageURI);
+            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, pic)
               .then(function(result) {
                 $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
               }, function(err) {
