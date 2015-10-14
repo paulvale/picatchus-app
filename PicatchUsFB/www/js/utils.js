@@ -1,6 +1,5 @@
 function addTextToImage(imagePath) {
-    console.log('add text');
-    // var circle_canvas = document.getElementById("myCanvas");
+    //var circle_canvas = document.getElementById("myCanvas");
     var circle_canvas = document.createElement("CANVAS");
     var context = circle_canvas.getContext("2d");
 
@@ -14,7 +13,7 @@ function addTextToImage(imagePath) {
         context.fillStyle = "#CC00FF";
         context.lineStyle = "#ffff00";
         context.font = "18px sans-serif";
-        context.fillText("Photo prise avec PicatchUs", 10, 10);
+        context.fillText("PicatchUs", 10, 10);
         console.log(context);
     }
 

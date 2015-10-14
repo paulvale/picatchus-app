@@ -7,7 +7,7 @@
 		<div>
 			<p>Photos de l'évènement</p>
 		    <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos">
-		        <img ng-src="{{photo.src}}" on-hold="delete(photo.id)"/>
+		        <img ng-src="{{photo.src}}" on-hold="delete(photo.id, photo.from.id)"/>
 		        <p ng-switch on="photo.has_liked">
 		        	{{photo.total_likes}}
 		        	<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>

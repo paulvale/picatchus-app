@@ -6,9 +6,9 @@ angular.module('starter.controllers', [])
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     $scope.init = function(){
-        /*if(window.localStorage.getItem("fbAccessToken")){
+        if(window.localStorage.getItem("fbAccessToken")){
             $location.path('/home');
-        }*/
+        }
     }
 
     $scope.login = function() {
@@ -75,6 +75,9 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/me'}).then(
             function(user) {
                 $scope.user = user;
+                console.log($scope.user);
+                window.localStorage.setItem('user_name', user.name);
+                window.localStorage.setItem('user_id', user.id);
             },
             errorHandler);
     }
@@ -121,8 +124,7 @@ angular.module('starter.controllers', [])
         });
 
         function onSuccess(imageURI) {
-            var pic = addTextToImage(imageURI);
-            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, pic)
+            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
               .then(function(result) {
                 $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
               }, function(err) {
@@ -254,26 +256,28 @@ angular.module('starter.controllers', [])
         );        
     }
 
-    $scope.delete = function(idPhoto) {
-        var confirmPopup = $ionicPopup.confirm({
-     title: 'Suppression',
-     template: 'Es-tu certain de vouloir supprimer cette photo ?'
-       });
-       confirmPopup.then(function(res) {
-         if(res) {
-            ngFB.api({
-            method: 'DELETE',
-            path: '/' + idPhoto
-            }).then(
-                function(result) {
-                    $cordovaToast.showLongBottom('La photo a bien été supprimée');
-                    var img = document.getElementById(idPhoto);
-                    img.parentNode.removeChild(img);
-                },
-                errorHandler
-            );
-         }
-       });
+    $scope.delete = function(idPhoto, idUserFrom) {
+        if(idUserFrom == window.localStorage.getItem('user_id')){
+            var confirmPopup = $ionicPopup.confirm({
+            title: 'Suppression',
+            template: 'Es-tu certain de vouloir supprimer cette photo ?'
+               });
+               confirmPopup.then(function(res) {
+                 if(res) {
+                    ngFB.api({
+                    method: 'DELETE',
+                    path: '/' + idPhoto
+                    }).then(
+                        function(result) {
+                            $cordovaToast.showLongBottom('La photo a bien été supprimée');
+                            var img = document.getElementById(idPhoto);
+                            img.parentNode.removeChild(img);
+                        },
+                        errorHandler
+                    );
+                 }
+               });
+            }
     }
 
     $scope.refresh = function(){

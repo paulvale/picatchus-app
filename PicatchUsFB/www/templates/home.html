@@ -12,8 +12,6 @@
 		    <h3>{{user.name}}</h3>
 		</div>
 
-<!-- 		<canvas id="myCanvas" width="240" height="500"></canvas>
- -->
 	    <ion-list class="list" canswipe="listCanSwipe" >
 	        <ion-item class="item item-thumbnail-left" ng-swipe-left="takePicture({{event.id}})" ng-click="getEventPhotos({{event.id}})" can-swipe="listCanSwipe" ng-repeat="event in events">
 	            <img ng-src="{{event.cover}}"/> 
