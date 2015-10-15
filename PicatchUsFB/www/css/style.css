@@ -194,7 +194,6 @@ div.userProfile img {
     color:white;
 }
 
-
 .col-50 {
     color:white;
     text-align: center;
@@ -267,5 +266,11 @@ div.userEvent img {
     color:red;
 }
 
+.bar-subheader {
+	height: 5%;
+}
 
-
+#picture{
+    width: 100%;
+    height: auto
+}
