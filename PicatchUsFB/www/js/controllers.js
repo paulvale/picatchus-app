@@ -83,8 +83,8 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/me/events'}).then(
             function(events) {
                 for(var i=0; i < events.data.length; i++){
-                    /*events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);*/
                     $scope.getEventCover(i, events.data[i].id);
+                    $scope.getEventParticipant(i);
                 }
                 $scope.events = events.data;
             },
@@ -192,7 +192,6 @@ angular.module('starter.controllers', [])
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }
-            console.log($scope.photos);
             },
             errorHandler);
     }
@@ -200,7 +199,7 @@ angular.module('starter.controllers', [])
     $scope.getPhoto = function(i, photoId){
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
-                $scope.photos[i].src = photo.images[0].source;
+                $scope.photos[i].src = photo.images[8].source;
                 $scope.photos[i].pos = i;
             },
             errorHandler);

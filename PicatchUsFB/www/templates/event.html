@@ -22,7 +22,7 @@
 		    		<i class="ion-person-stalker light"> Nb personnes</i>
 		    	</div>
 		    	<div class="col col-50">
-		    		<i class="ion-images light"> Nb images</i>
+		    		<i class="ion-images light"> {{photos.length}}</i>
 		    	</div>
 		    </div>
 		</div>
@@ -30,17 +30,33 @@
 
 	<ion-content>
 	<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
-		<div>
-			<p>Photos de l'évènement</p>
-		    <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos">
-		        <img ng-src="{{photo.src}}" on-hold="delete(photo.id)"/>
+		<div class="listPhotos">
+		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
+		    <div collection-repeat="photo in photos" style="padding:2px;" class="col col-33"> 
+	            <div style="position:relative;
+	            			background-image:url({{photo.src}});
+	                        background-repeat:no-repeat; 
+	                        background-position: center center;
+    						background-size: cover;
+	                        width:100%;
+	                        padding-top:100%"
+	                        > 
+	                <div class="likePhotos" ng-switch on="photo.has_liked">
+		        		{{photo.total_likes}}
+		        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>
+		        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>	
+		        	</div>
+	            </div>
+		    </div>
+		        <!-- <img ng-src="{{photo.src}}" on-hold="delete(photo.id)"/>
 		        <p ng-switch on="photo.has_liked">
 		        	{{photo.total_likes}}
 		        	<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>
-		       		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>	
-		        </p>
+		        		       		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>	
+		        </p> -->
 		    </div>
-		    <hr/>
 		</div>
+
+
 	</ion-content>
 </ion-view>

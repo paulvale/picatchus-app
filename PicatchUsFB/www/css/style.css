@@ -146,7 +146,7 @@ div.userProfile img {
     -moz-border-radius: 150px;
 }
 
-.list {
+.list , .listPhotos{
     padding-top: 150px;
 }
 
@@ -248,8 +248,24 @@ div.userEvent img {
     -moz-border-radius: 150px;
 }
 
-.event_photos > img {
-    width: 100%;
+.col-50 img {
+    height:303px;
+    width:303px;
+    position:center;
 }
+
+.col-50 p {
+    color: black;
+}
+
+.likePhotos {
+    position:absolute;
+    right: 3px;
+    bottom: 3px;
+    text-align:right;
+    font-size:20px;
+    color:red;
+}
+
 
 
