@@ -319,13 +319,29 @@ angular.module('starter.controllers', [])
     });
 
     $scope.openModal = function(idPhoto, posPhoto) {
-        $scope.src_modal = $scope.photos[posPhoto].src_modal;
-        $scope.orientation = $scope.photos[posPhoto].orientation;
+        $scope.modal.src_modal = $scope.photos[posPhoto].src_modal;
+        $scope.modal.orientation = $scope.photos[posPhoto].orientation;
+        $scope.modal.likes = $scope.photos[posPhoto].total_likes;
+        $scope.modal.has_liked = $scope.photos[posPhoto].has_liked;
+        $scope.modal.id = idPhoto;
+        $scope.modal.pos = posPhoto;
         $scope.modal.show();
     };
 
     $scope.quitModal = function(){
         $scope.modal.hide();
+    }
+
+    $scope.likeModal = function(idPhoto, posPhoto){
+        $scope.modal.likes++;
+        $scope.modal.has_liked = true;
+        $scope.like(idPhoto, posPhoto);
+    }
+
+    $scope.dislikeModal = function(idPhoto, posPhoto){
+        $scope.modal.likes--;
+        $scope.modal.has_liked = false;
+        $scope.dislike(idPhoto, posPhoto);
     }
 
     $scope.back = function() {

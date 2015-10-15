@@ -285,3 +285,13 @@ div.userEvent img {
 .modal {
     background-color: black;
 }
+
+.modal-likes{
+    position: absolute;
+    right: 6px;
+    bottom: -25px;
+    text-align: right;
+    font-size: 25px;
+    color: red;
+}
+
