@@ -1,0 +1,8 @@
+<ion-modal-view on-swipe-down="quitModal()">
+    <ion-content>
+    <div ng-switch on="orientation">
+      <img id="modal_img" ng-src="{{src_modal}}" ng-switch-when="portrait" style="margin-top:17%"/>
+      <img id="modal_img" ng-src="{{src_modal}}" ng-switch-when="landscape" style="margin-top:55%"/>
+    </div>
+    </ion-content>
+</ion-modal-view>

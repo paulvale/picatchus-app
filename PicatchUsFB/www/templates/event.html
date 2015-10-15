@@ -19,7 +19,7 @@
 		    </div>
 		    <div class="row">
 		    	<div class="col col-50">
-		    		<i class="ion-person-stalker light">Nb personnes</i>
+		    		<i class="ion-person-stalker light">{{event.total_participants}}</i>
 		    	</div>
 		    	<div class="col col-50">
 		    		<i class="ion-images light">{{photos.length}}</i>
@@ -33,7 +33,7 @@
 		<div class="listPhotos">
 		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
 		    <div collection-repeat="photo in photos" style="padding:2px;" class="col col-33"> 
-	            <div on-hold="delete(photo.id,photo.from.id)" style="position:relative;
+	            <div on-hold="delete(photo.id,photo.from.id)" ng-click="openModal(photo.id, photo.pos)" style="position:relative;
 	            			background-image:url({{photo.src}});
 	                        background-repeat:no-repeat; 
 	                        background-position: center center;

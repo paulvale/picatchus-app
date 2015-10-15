@@ -4,8 +4,6 @@ body{
 }
 
 /* LOGIN PAGE */
-
-
 .fbBtn {
     display:block;
     height:34px;
@@ -200,6 +198,7 @@ div.userProfile img {
 }
 
 /* EVENT DESIGN */
+
 .ion-chevron-left {
     padding-top:5px;
     padding-bottom:5px;
@@ -273,4 +272,16 @@ div.userEvent img {
 #picture{
     width: 100%;
     height: auto
+}
+
+/*
+ * PHOTO MODAL PAGE 
+ */
+#modal_img {
+    width: 100%;
+    height: auto;
+}
+
+.modal {
+    background-color: black;
 }

@@ -209,7 +209,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location, $localstorage) {
+.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location, $localstorage, $ionicModal) {
     $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
@@ -237,6 +237,8 @@ angular.module('starter.controllers', [])
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
                 $scope.photos[i].src = photo.images[photo.images.length-1].source;
+                $scope.photos[i].src_modal = photo.images[0].source;
+                $scope.photos[i].orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
                 $scope.photos[i].pos = i;
             },
             errorHandler);
@@ -305,6 +307,25 @@ angular.module('starter.controllers', [])
                  }
                });
             }
+    }
+
+    $ionicModal.fromTemplateUrl('templates/photo_modal.html', function($ionicModal) {
+        $scope.modal = $ionicModal;
+            }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });
+
+    $scope.openModal = function(idPhoto, posPhoto) {
+        $scope.src_modal = $scope.photos[posPhoto].src_modal;
+        $scope.orientation = $scope.photos[posPhoto].orientation;
+        $scope.modal.show();
+    };
+
+    $scope.quitModal = function(){
+        $scope.modal.hide();
     }
 
     $scope.back = function() {
