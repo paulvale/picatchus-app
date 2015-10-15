@@ -206,7 +206,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location) {
+.controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location, $localstorage) {
     $scope.init = function(){
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
@@ -233,7 +233,7 @@ angular.module('starter.controllers', [])
     $scope.getPhoto = function(i, photoId){
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
-                $scope.photos[i].src = photo.images[8].source;
+                $scope.photos[i].src = photo.images[photo.images.length-1].source;
                 $scope.photos[i].pos = i;
             },
             errorHandler);
@@ -273,7 +273,9 @@ angular.module('starter.controllers', [])
     }
 
     $scope.delete = function(idPhoto, idUserFrom) {
-        if(idUserFrom == window.localStorage.getItem('user_id')){
+        console.log($localstorage.getObject('user'));
+        console.log(idUserFrom);
+        if(idUserFrom == $localstorage.getObject('user').id){
             var confirmPopup = $ionicPopup.confirm({
             title: 'Suppression',
             template: 'Es-tu certain de vouloir supprimer cette photo ?'
@@ -286,8 +288,7 @@ angular.module('starter.controllers', [])
                     }).then(
                         function(result) {
                             $cordovaToast.showLongBottom('La photo a bien été supprimée');
-                            var img = document.getElementById(idPhoto);
-                            img.parentNode.removeChild(img);
+                            $scope.refresh();
                         },
                         errorHandler
                     );

@@ -33,14 +33,14 @@
 		<div class="listPhotos">
 		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
 		    <div collection-repeat="photo in photos" style="padding:2px;" class="col col-33"> 
-	            <div style="position:relative;
+	            <div on-hold="delete(photo.id,photo.from.id)" style="position:relative;
 	            			background-image:url({{photo.src}});
 	                        background-repeat:no-repeat; 
 	                        background-position: center center;
     						background-size: cover;
 	                        width:100%;
 	                        padding-top:100%"
-	                        on-hold="delete({{photo.id}})"> 
+	                        > 
 	                <div class="likePhotos" ng-switch on="photo.has_liked">
 		        		{{photo.total_likes}}
 		        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>
