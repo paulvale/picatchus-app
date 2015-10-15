@@ -14,11 +14,12 @@ angular.module('starter.controllers', [])
     $scope.login = function() {
         ngFB.login({scope: 'user_events, user_photos, publish_actions'}).then(
             function(response) {
-                if(window.localStorage.getItem("first_use") == 0){
+                //If this is not the first use, user is redirected on home
+                if(window.localStorage.getItem("first_use") == 0)
                     $location.path('/home');
-                }
+                //Otherwise, onboarding views are displayed
                 else
-                    $location.path('/first-use')
+                    $location.path('/first-use');
             },
             function(error) {
             $cordovaToast.showLongBottom('La connexion a échoué');
@@ -36,6 +37,7 @@ angular.module('starter.controllers', [])
         $scope.isnext = true;
     }
 
+    //On next click, we change onboarding image and logo on top right
     $scope.next = function(){
         $scope.isnext = false;
         $scope.source = 'img/onboarding_swipe_left.png';
@@ -53,51 +55,68 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $cordovaToast) {
-    $scope.init = function(){
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $cordovaToast, $localstorage) {
+    $scope.init = function(){      
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         $scope.getInfo();
         $scope.getEvents();
-        $scope.listCanSwipe = true;
-
-        if(window.localStorage.getItem("first_use") == undefined){
-            $scope.first_use();
-        }
     }
 
     $scope.refresh = function(){
+        $localstorage.remove('events');
         $scope.getEvents();
         $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.getInfo = function() {
-        ngFB.api({path: '/me'}).then(
-            function(user) {
-                $scope.user = user;
-                console.log($scope.user);
-                window.localStorage.setItem('user_name', user.name);
-                window.localStorage.setItem('user_id', user.id);
-            },
-            errorHandler);
+        if($localstorage.getObject('user').name == undefined || $localstorage.getObject('user').id == undefined){
+            ngFB.api({path: '/me'}).then(
+                function(user) {
+                    $scope.user = user;
+                    $localstorage.setObject('user', user);
+                },
+                errorHandler);
+        }else{
+            $scope.user = $localstorage.getObject('user');
+        }
+
     }
 
     $scope.getEvents = function() {
-        ngFB.api({path: '/me/events'}).then(
-            function(events) {
-                for(var i=0; i < events.data.length; i++){
-                    events.data[i].start_time = new Date(events.data[i].start_time).toUTCString().substr(0,22);
-                    $scope.getEventInfos(i, events.data[i].id);
-                }
-                $scope.events = events.data;
-            },
-            errorHandler);
+        if($localstorage.getObject('events')[0] == undefined){
+            ngFB.api({path: '/me/events'}).then(
+                function(events) {
+                    var e = events.data;
+                    $scope.events = e;
+                    for(var i=0; i < e.length; i++){
+                        $scope.events[i].start_time = new Date(e[i].start_time).toUTCString().substr(0,22);
+                        $scope.getEventInfos(i, e[i].id);
+                    }
+                    $localstorage.setObject('events', $scope.events);
+                    //Normalement, l'objet setter dans le localStorage contient la cover, nb_participants
+                    //et nb_photos. Va savoir pourquoi, ces infos là sont bien dans le $scope.events,
+                    //mais ne se mettent pas dans le localStorage, qui sette pourtant le $scope.events ...
+                },
+                errorHandler);
+        }
+        else{
+            $scope.events = $localstorage.getObject('events');
+            //En attendant on refait des appels pour récupere les infos de chaque event stockés dans le 
+            //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
+            //donc nb_events * 4 appels à l'api fb.
+            for(var i=0; i < $scope.events.length; i++){
+                $scope.getEventInfos(i, $scope.events[i].id);
+            }
+        }
     }
 
     $scope.getEventInfos = function(i, idEvent){
         ngFB.api({path: '/' + idEvent, params : {fields: 'cover'}}).then(
-            function(cover) {
-                $scope.events[i].cover = cover.cover.source;
+            function(data) {
+                try{
+                    $scope.events[i].cover = data.cover.source;
+                }catch(e){  }
             },
             errorHandler);
 
@@ -111,7 +130,7 @@ angular.module('starter.controllers', [])
             function(photos) {
                 $scope.events[i].total_photos = photos.data.length;
             },
-            errorHandler);      
+            errorHandler);
     }
 
     $scope.getEventPhotos = function(id) {
@@ -207,7 +226,6 @@ angular.module('starter.controllers', [])
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }
-            console.log($scope.photos);
             },
             errorHandler);
     }
@@ -229,7 +247,6 @@ angular.module('starter.controllers', [])
     }
 
     $scope.dislike = function(idPhoto, posPhoto){
-        console.log(event);
         ngFB.api({
             method: 'DELETE',
             path: '/' + idPhoto + '/likes'
@@ -243,7 +260,6 @@ angular.module('starter.controllers', [])
     }
 
     $scope.like = function(idPhoto, posPhoto){
-        console.log(event.target);
         ngFB.api({
             method: 'POST',
             path: '/' + idPhoto + '/likes'
