@@ -143,6 +143,9 @@ angular.module('starter.controllers', [])
         });
 
         function onSuccess(imageURI) {
+            //var pic = addTextToImage(imageURI);
+            //var path = cordova.file.cacheDirectory;
+
             $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
               .then(function(result) {
                 $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
@@ -247,28 +250,35 @@ angular.module('starter.controllers', [])
     }
 
     $scope.dislike = function(idPhoto, posPhoto){
+        $scope.photos[posPhoto].total_likes--;
+        $scope.photos[posPhoto].has_liked = false;
         ngFB.api({
             method: 'DELETE',
             path: '/' + idPhoto + '/likes'
         }).then(
             function(result) {
-                $scope.photos[posPhoto].total_likes--;
-                $scope.photos[posPhoto].has_liked = false;
+
             },
-            errorHandler
+            function(error) {
+                $scope.photos[posPhoto].total_likes++;
+                $scope.photos[posPhoto].has_liked = true;
+            }
         );
     }
 
     $scope.like = function(idPhoto, posPhoto){
+        $scope.photos[posPhoto].total_likes++;
+        $scope.photos[posPhoto].has_liked = true;
         ngFB.api({
             method: 'POST',
             path: '/' + idPhoto + '/likes'
         }).then(
             function(result) {
-                $scope.photos[posPhoto].total_likes++;
-                $scope.photos[posPhoto].has_liked = true;
             },
-            errorHandler
+            function(error) {
+                $scope.photos[posPhoto].total_likes--;
+                $scope.photos[posPhoto].has_liked = false;
+            }
         );        
     }
 

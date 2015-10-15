@@ -7,15 +7,15 @@ function addTextToImage(imagePath) {
     var img = new Image();
     img.src = imagePath;
     img.onload = function(){
-        console.log('onload');
         context.drawImage(img, 0, 0);
         context.lineWidth = 1;
         context.fillStyle = "#CC00FF";
         context.lineStyle = "#ffff00";
         context.font = "18px sans-serif";
         context.fillText("PicatchUs", 10, 10);
-        console.log(context);
     }
 
-    return circle_canvas.toDataURL();
+    var dataURL = circle_canvas.toDataURL("image/png", 1);
+    var tmp = dataURL.split(',');
+    return atob(tmp[1]);
 }
