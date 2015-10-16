@@ -218,6 +218,13 @@ div.userProfile img {
 
 /* EVENT DESIGN */
 
+.header-info-event {
+    color: white;
+    height: 75px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
 .ion-chevron-left {
     padding-top:5px;
     padding-bottom:5px;
@@ -234,17 +241,13 @@ div.headerEvent {
     height:44px;
     font-size: 20px;
     padding-top: 5px;
-    padding-left:5px;
-    background-color:#2980b9;
-    border-color:#3498db;
-    
+    padding-left:5px;    
 }
 
 div.userEvent {
     top:44px;
     left:0px;
     height:150px;
-    background-color:#3498db;
 }
 
 div.userEvent h3 {
@@ -295,6 +298,18 @@ div.userEvent img {
 #picture{
     width: 100%;
     height: auto
+}
+
+.header-date-event {
+    margin-top: 4%;
+}
+
+.header-date-event > .jour{
+    font-size:32px;
+}
+
+.header-date-event > .mois{
+    font-size:23px;
 }
 
 /*

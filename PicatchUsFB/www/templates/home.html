@@ -1,4 +1,4 @@
-<ion-view view-title="Home" ng-init="init()">
+<ion-view view-title="Home" class="home-bg" ng-init="init()">
 
 	<ion-header-bar class="bar-custom bar-calm bar-header">
 		<div class="userProfile">
@@ -14,11 +14,10 @@
 	</ion-header-bar>
 
 
-	<ion-content class="home-bg">
+	<ion-content>
 		<ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
-	    <ion-list class="list " canswipe="listCanSwipe" >
+	    <ion-list class="list" canswipe="listCanSwipe" >
 	        <ion-item class="item itemListEvent" ng-repeat="event in filteredEvents" ng-swipe-left="takePicture({{event.id}})" ng-click="getEventPhotos({{event.id}})">
-
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
 			            	<p class="jour">
