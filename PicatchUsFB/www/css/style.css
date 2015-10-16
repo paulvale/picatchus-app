@@ -94,19 +94,34 @@ i.ion-log-out{
     position:absolute;
     top:10px;
     right:0px;
-    font-size: 1.5em;
+    font-size: 2em;
     padding-right:10px;
 }
 
-.barPica {
-    position:absolute;
-    height:193px;
+.has-header {
+    top: 33%;
 }
 
 div.userProfile ,div.headerProfile{
     position:absolute;
     width:100%;
 } 
+
+.select-date > input {
+    margin: auto;
+    background-color: transparent;
+    font-size: 2em;
+    color: white;
+    text-align: center;
+}
+
+.select-date > i{
+    font-size: 2.5em;
+}
+
+.select-date {
+    margin-top: 4%;
+}
 
 div.headerProfile {
     top:0px;
@@ -118,12 +133,19 @@ div.headerProfile {
     background-color:#2980b9;    
 }
 
+.bar-custom {
+    background-color: #4183D7 !important;
+}
+
+.home-bg {
+    background: url(../img/bg.jpg) no-repeat center fixed;
+    background-size: cover;
+}
+
 div.userProfile {
-    top:44px;
+    top:0px;
     left:0px;
-    height:150px;
-    background-color:#3498db;
-    border: 5px solid #2980b9;
+    height:100%;
 }
 
 div.userProfile h3 {
@@ -134,22 +156,21 @@ div.userProfile h3 {
 
 div.userProfile img {
     display:block;
-    margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
-    width:20%;
+    margin-top: 4%;
+    width:28%;
     border-radius: 150px;
     border-color:white;
     -webkit-border-radius: 150px;
     -moz-border-radius: 150px;
 }
 
-.list , .listPhotos{
-    padding-top: 150px;
-}
-
 .itemListEvent {
-    height: 150px;
+    height: 80px;
+    background-color: transparent;
+    border-color: rgba(255,255,255,0.1);
+    padding: 8px 5px 5px 5px;
 }
 
 .listInfoEvent {
@@ -165,31 +186,29 @@ div.userProfile img {
 }
 
 .col h2{
-    color:white;
-    text-align: center;
-    font-size:25px;
-    height:30px;
+    color: white;
+    font-size: 1.2em;
+}
+
+.col i {
+    margin-right: 5%;
 }
 
 .col-20 {
-    text-align:center;
-    border-radius:5px;
-    border: 3px solid white;
-    background:linear-gradient(                     
-                                  rgba(52, 152, 219, 0.60), 
-                                  rgba(52, 152, 219, 0.60)
-                                )
+    text-align: center;
+    margin-right: 5%;
 }
 
 .col-20 .jour {
-    font-size: 25px;
+    font-size: 24px;
     font-weight: bold;
-    color:white;
+    color: white;
 }
 
 .col-20 .mois {
     font-size: 15px;
-    color:white;
+    color: white;
+    margin-top: 7%;
 }
 
 .col-50 {
@@ -202,6 +221,13 @@ div.userProfile img {
 }
 
 /* EVENT DESIGN */
+
+.header-info-event {
+    color: white;
+    height: 75px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
 
 .ion-chevron-left {
     padding-top:5px;
@@ -219,17 +245,13 @@ div.headerEvent {
     height:44px;
     font-size: 20px;
     padding-top: 5px;
-    padding-left:5px;
-    background-color:#2980b9;
-    border-color:#3498db;
-    
+    padding-left:5px;    
 }
 
 div.userEvent {
     top:44px;
     left:0px;
     height:150px;
-    background-color:#3498db;
 }
 
 div.userEvent h3 {
@@ -273,9 +295,25 @@ div.userEvent img {
 	height: 5%;
 }
 
+.bar-header {
+    height: 33%;
+}
+
 #picture{
     width: 100%;
     height: auto
+}
+
+.header-date-event {
+    margin-top: 4%;
+}
+
+.header-date-event > .jour{
+    font-size:32px;
+}
+
+.header-date-event > .mois{
+    font-size:23px;
 }
 
 /*

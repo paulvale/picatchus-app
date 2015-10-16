@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['starter.filters'])
 
 .controller('LoginController', function ($scope, ngFB, $location) {
     // Defaults to sessionStorage for storing the Facebook token
@@ -55,16 +55,15 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $cordovaToast, $localstorage) {
-    console.log($localstorage)
-    $scope.init = function(){  
-        console.log("Je suis dans l'init");    
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage) {
+    $scope.init = function(){      
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
-        console.log("1");
+        moment().locale('fr');
+        $scope.date = moment().format('MMMM YYYY');
         $scope.getInfo();
-        console.log("2");
         $scope.getEvents();
+        $scope.filterByDate();
     }
 
     $scope.refresh = function(){
@@ -74,8 +73,6 @@ angular.module('starter.controllers', [])
     }
 
     $scope.getInfo = function() {
-        console.log("Je suis dans le getInfo");
-        console.log($localstorage.getObject('user'));
         if($localstorage.getObject('user').name == undefined || $localstorage.getObject('user').id == undefined){
             ngFB.api({path: '/me'}).then(
                 function(user) {
@@ -85,25 +82,20 @@ angular.module('starter.controllers', [])
                 errorHandler);
         }else{
             $scope.user = $localstorage.getObject('user');
-            console.log("Je suis l'user")
-            console.log($scope.user)
         }
-
     }
 
     $scope.getEvents = function() {
-        console.log($localstorage.getObject('events'));
         if($localstorage.getObject('events')[0] == undefined){
             ngFB.api({path: '/me/events'}).then(
                 function(events) {
                     var e = events.data;
                     $scope.events = e;
                     for(var i=0; i < e.length; i++){
+                        $scope.events[i].start_time = new Date(e[i].start_time);//.toUTCString().substr(0,22);
                         $scope.getEventInfos(i, e[i].id);
                     }
-                    console.log("Je ne connais aucun event");
-                    console.log($scope.events);
-                    $localstorage.setObject('events', angular.copy($scope.events));
+                    $localstorage.setObject('events', $scope.events);
                     //Normalement, l'objet setter dans le localStorage contient la cover, nb_participants
                     //et nb_photos. Va savoir pourquoi, ces infos là sont bien dans le $scope.events,
                     //mais ne se mettent pas dans le localStorage, qui sette pourtant le $scope.events ...
@@ -111,8 +103,6 @@ angular.module('starter.controllers', [])
                 errorHandler);
         }
         else{
-            console.log("Je connais deja des events");
-            console.log($localstorage.getObject('events'));
             $scope.events = $localstorage.getObject('events');
             //En attendant on refait des appels pour récupere les infos de chaque event stockés dans le 
             //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
@@ -143,6 +133,22 @@ angular.module('starter.controllers', [])
                 $scope.events[i].total_photos = photos.data.length;
             },
             errorHandler);
+    }
+
+    $scope.filterByDate = function(){
+        $scope.filteredEvents = $filter('eventsByDate')($scope.events, $scope.date);
+    }
+
+    $scope.addMonth = function(){
+        var date = moment($scope.date).add(1, 'M');
+        $scope.date = date.format('MMMM YYYY');
+        $scope.filterByDate();
+    }
+
+    $scope.substractMonth = function(){
+        var date = moment($scope.date).subtract(1, 'M');
+        $scope.date = date.format('MMMM YYYY');;
+        $scope.filterByDate();
     }
 
     $scope.getEventPhotos = function(id) {
@@ -211,7 +217,6 @@ angular.module('starter.controllers', [])
             function() {
                 window.localStorage.removeItem("fbAccessToken");
                 window.localStorage.removeItem("first_use");
-                console.log($localstorage.events);
                 $location.path('/login');
             },
             errorHandler);
