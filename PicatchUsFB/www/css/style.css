@@ -197,6 +197,10 @@ div.userProfile img {
     text-align: center;
 }
 
+.col-50 i {
+    padding-left: 2px;
+}
+
 /* EVENT DESIGN */
 
 .ion-chevron-left {
