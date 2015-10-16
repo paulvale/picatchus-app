@@ -1,34 +1,23 @@
 <ion-view view-title="Home" ng-init="init()">
 
-	<ion-header-bar class="barPica bar-calm">
-		<div class="headerProfile">
-			Bienvenue,
-    		<i class="ion-log-out" ng-click="logout()"></i>
-		</div> 
+	<ion-header-bar class="bar-custom bar-calm bar-header">
 		<div class="userProfile">
+			<i class="ion-log-out"></i>
 		    <img ng-src="{{'http://graph.facebook.com/' + user.id + '/picture?type=large'}}"/>
 		    <h3>{{user.name}}</h3>
+		    <div class="row select-date">
+		    	<i class="ion-ios-arrow-left" ng-click="substractMonth()"></i>
+				<input type="text" placeholder="yyyy-MM" ng-model="date" ng-change="filterByDate()" disabled required>
+		    	<i class="ion-ios-arrow-right" ng-click="addMonth()"></i>
+		    </div>
 		</div>
 	</ion-header-bar>
 
 
-	<ion-content start-y="150">
+	<ion-content class="home-bg">
 		<ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
-
 	    <ion-list class="list " canswipe="listCanSwipe" >
-	        <ion-item class="item itemListEvent" 
-	        			ng-repeat="event in events "
-	        			style="background:linear-gradient(	        			
-							      rgba(52, 152, 219, 0.45), 
-							      rgba(52, 152, 219, 0.45)
-							    ),
-							    url({{event.cover}}) no-repeat center fixed;
-	        			        -webkit-background-size: cover;"
-	        			ng-swipe-left="takePicture({{event.id}})" 
-	        			ng-click="getEventPhotos({{event.id}})"
-	        			>
-	        			<!-- ng-click="getEventPhotos({{event.id}})"  -->
-	            <!-- <img class="photoListEvent" ng-src="{{event.cover}}" ng-if="event.cover"/>  -->
+	        <ion-item class="item itemListEvent" ng-repeat="event in filteredEvents" ng-swipe-left="takePicture({{event.id}})" ng-click="getEventPhotos({{event.id}})">
 
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
@@ -36,24 +25,17 @@
 			            		{{event.start_time | date:'d'}}
 			            	</p>
 			            	<p class="mois">
-			            		{{event.start_time | date :'MMM'}}
+			            		{{event.start_time | date :'MMMM'}}
 			            	</p>
 		            	</div>
 		            	<div class="col">
 			            	<h2>{{event.name}}</h2>
-		            	</div>
-		            </div>
-		            <div class="row">
-		            	<div class="col col-50">
-		            		<i class="ion-person-stalker light">{{event.total_participants}}</i>
-		            	</div>
-		            	<div class="col col-50">
+			            	<i class="ion-person-stalker light">{{event.total_participants}}</i>
 		            		<i class="ion-images light">{{event.total_photos}}</i>
 		            	</div>
 		            </div>
 	        </ion-item>
 	    </ion-list>
-	    <hr/>
 
 <!-- 	    <textarea id="Message" placeholder="What's on your mind?" rows="5"></textarea>
 <button class="btn btn-block" ng-click="share()">Share</button>

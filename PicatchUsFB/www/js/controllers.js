@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['starter.filters'])
 
 .controller('LoginController', function ($scope, ngFB, $location) {
     // Defaults to sessionStorage for storing the Facebook token
@@ -55,12 +55,15 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $cordovaToast, $localstorage) {
+.controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage) {
     $scope.init = function(){      
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
+        moment().locale('fr');
+        $scope.date = moment().format('MMMM YYYY');
         $scope.getInfo();
         $scope.getEvents();
+        $scope.filterByDate();
     }
 
     $scope.refresh = function(){
@@ -80,7 +83,6 @@ angular.module('starter.controllers', [])
         }else{
             $scope.user = $localstorage.getObject('user');
         }
-
     }
 
     $scope.getEvents = function() {
@@ -90,7 +92,7 @@ angular.module('starter.controllers', [])
                     var e = events.data;
                     $scope.events = e;
                     for(var i=0; i < e.length; i++){
-                        $scope.events[i].start_time = new Date(e[i].start_time).toUTCString().substr(0,22);
+                        $scope.events[i].start_time = new Date(e[i].start_time);//.toUTCString().substr(0,22);
                         $scope.getEventInfos(i, e[i].id);
                     }
                     $localstorage.setObject('events', $scope.events);
@@ -131,6 +133,22 @@ angular.module('starter.controllers', [])
                 $scope.events[i].total_photos = photos.data.length;
             },
             errorHandler);
+    }
+
+    $scope.filterByDate = function(){
+        $scope.filteredEvents = $filter('eventsByDate')($scope.events, $scope.date);
+    }
+
+    $scope.addMonth = function(){
+        var date = moment($scope.date).add(1, 'M');
+        $scope.date = date.format('MMMM YYYY');
+        $scope.filterByDate();
+    }
+
+    $scope.substractMonth = function(){
+        var date = moment($scope.date).subtract(1, 'M');
+        $scope.date = date.format('MMMM YYYY');;
+        $scope.filterByDate();
     }
 
     $scope.getEventPhotos = function(id) {
