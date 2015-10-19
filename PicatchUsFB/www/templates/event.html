@@ -1,22 +1,25 @@
 <ion-view class="home-bg" view-title="Event" id="event" ng-init='init()'>
 	<ion-header-bar class="bar-custom bar-calm">
-		<div class="headerEvent">
-			<i class="ion-chevron-left" ng-click="back()"></i>
+		<div class="row headerEvent">
+			<div class="col-10">
+				<i class="ion-chevron-left" ng-click="back()"></i>
+			</div>
+			<div class="col-80">
+				{{event.start_time | date:'d MMM yyyy'}}
+			</div>
 		</div> 
 		<div class="userEvent">
 			<div class="row header-info-event">
-		    	<div class="col col-20 header-date-event">
-		        	<p class="jour">
-		        		{{event.start_time | date:'d'}}
-		        	</p>
-		        	<p class="mois">
-		        		{{event.start_time | date :'MMM'}}
-		        	</p>
-		    	</div>
 		    	<div class="col">
 		        	<h2>{{event.name}}</h2>
-		    		<i class="ion-person-stalker light">{{event.total_participants}}</i>
-		    		<i class="ion-images light">{{photos.length}}</i>
+		    	</div>
+		    </div>
+		    <div class="row">
+		    	<div class="col col-50">
+		    		{{event.total_participants}}<i class="ion-person-stalker light"></i>
+		    	</div>
+		    	<div class="col col-50">
+		    		{{photos.length}}<i class="ion-images light"></i>
 		    	</div>
 		    </div>
 		</div>

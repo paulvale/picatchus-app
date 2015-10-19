@@ -107,20 +107,29 @@ div.userProfile ,div.headerProfile{
     width:100%;
 } 
 
-.select-date > input {
-    margin: auto;
+
+.currentMonth > input {
     background-color: transparent;
     font-size: 2em;
     color: white;
     text-align: center;
+    margin:0px;
+    width:100%;
 }
 
-.select-date > i{
+.previousMonth {
     font-size: 2.5em;
+    padding-left: 10px;
+}
+
+.nextMonth {
+    font-size:2.5em;
+    text-align:right;
+    padding-right: 10px;
 }
 
 .select-date {
-    margin-top: 4%;
+    margin-top: 0px;
 }
 
 div.headerProfile {
@@ -191,7 +200,7 @@ div.userProfile img {
 }
 
 .col i {
-    margin-right: 5%;
+    margin-left: 5px;
 }
 
 .col-20 {
@@ -229,6 +238,11 @@ div.userProfile img {
     font-size: 1.8em;
 }
 
+.header-info-event .col{
+    text-align:center;
+
+}
+
 .ion-chevron-left {
     padding-top:5px;
     padding-bottom:5px;
@@ -246,6 +260,11 @@ div.headerEvent {
     font-size: 20px;
     padding-top: 5px;
     padding-left:5px;    
+}
+
+.headerEvent .col-80 {
+    font-size: 15px;
+    text-align:center;
 }
 
 div.userEvent {

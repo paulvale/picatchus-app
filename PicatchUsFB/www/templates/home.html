@@ -2,13 +2,19 @@
 
 	<ion-header-bar class="bar-custom bar-calm bar-header">
 		<div class="userProfile">
-			<i class="ion-log-out"></i>
+			<i class="ion-log-out" ng-click="logout()"></i>
 		    <img ng-src="{{'http://graph.facebook.com/' + user.id + '/picture?type=large'}}"/>
 		    <h3>{{user.name}}</h3>
 		    <div class="row select-date">
-		    	<i class="ion-ios-arrow-left" ng-click="substractMonth()"></i>
-				<input type="text" placeholder="yyyy-MM" ng-model="date" ng-change="filterByDate()" disabled required>
-		    	<i class="ion-ios-arrow-right" ng-click="addMonth()"></i>
+		    	<div class="col col-10 previousMonth" ng-click="substractMonth()">
+		    		<i class="ion-ios-arrow-left"></i>
+		    	</div>
+		    	<div class="col col-80 currentMonth">
+					<input type="text" placeholder="yyyy-MM" ng-model="date" ng-change="filterByDate()" disabled required>
+		    	</div>
+		    	<div class="col col-10 nextMonth" ng-click="addMonth()">
+		    		<i class="ion-ios-arrow-right"></i>
+		    	</div>
 		    </div>
 		</div>
 	</ion-header-bar>
@@ -24,13 +30,20 @@
 			            		{{event.start_time | date:'d'}}
 			            	</p>
 			            	<p class="mois">
-			            		{{event.start_time | date :'MMMM'}}
+			            		{{event.start_time | date :'MMM'}}
 			            	</p>
 		            	</div>
 		            	<div class="col">
 			            	<h2>{{event.name}}</h2>
-			            	<i class="ion-person-stalker light">{{event.total_participants}}</i>
-		            		<i class="ion-images light">{{event.total_photos}}</i>
+			            	<div class="row">
+			            		<div class="col col-50">
+			            			{{event.total_participants}}<i class="ion-person-stalker light"></i>
+			            		</div>
+			            		<div class="col col-50">
+		            				{{event.total_photos}}<i class="ion-images light"></i>
+			            		</div>
+			            		
+			            	</div>
 		            	</div>
 		            </div>
 	        </ion-item>
