@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.picatchus.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.picatchus.app" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>PicatchUsFB</name>
   <description>
-        PicatchUs app, the best way to share your photos privately !
+        PicatchUs app, the best way to share your event's photos !
     </description>
   <author email="contact@picatchus.fr" href="http://picatchus.com/">
 	PicatchUs team	
@@ -16,7 +16,7 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="1000"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
