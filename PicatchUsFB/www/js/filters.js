@@ -16,14 +16,4 @@ angular.module('starter.filters', [])
   	});
     return filtered;
   };
-})
-
-.filter('array', function() {
-  return function(items) {
-    var filtered = [];
-    angular.forEach(items, function(item) {
-      filtered.push(item);
-    });
-   return filtered;
-  };
 });
