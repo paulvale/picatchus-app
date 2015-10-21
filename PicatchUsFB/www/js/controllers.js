@@ -259,7 +259,7 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.getPhotos = function(eventId){
-        ngFB.api({path: '/' + eventId +'/photos', params: {fields: 'from'}}).then(
+        ngFB.api({path: '/' + eventId +'/photos', params: {fields: 'from,name'}}).then(
             function(photos) {
               var p = photos.data;
               $scope.photos = photos.data;
@@ -365,6 +365,8 @@ angular.module('starter.controllers', ['starter.filters'])
         $scope.modal.orientation = $scope.photos[posPhoto].orientation;
         $scope.modal.likes = $scope.photos[posPhoto].total_likes;
         $scope.modal.has_liked = $scope.photos[posPhoto].has_liked;
+        $scope.modal.description = $scope.photos[posPhoto].name;
+        console.log("description : " + $scope.photos[posPhoto].name);
         $scope.modal.id = idPhoto;
         $scope.modal.pos = posPhoto;
         $scope.modal.show();
