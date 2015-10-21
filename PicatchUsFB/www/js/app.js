@@ -21,6 +21,8 @@ angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ng
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
       }
+
+      moment.locale('fr');
     });
   })
 

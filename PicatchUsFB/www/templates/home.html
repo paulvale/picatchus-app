@@ -23,10 +23,10 @@
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
 			            	<p class="jour">
-			            		{{event.start_time | date:'d'}}
+			            		{{event.start_time | moment: 'D'}}
 			            	</p>
 			            	<p class="mois">
-			            		{{event.start_time | date :'MMM'}}
+			            		{{event.start_time | moment: 'MMM'}}
 			            	</p>
 		            	</div>
 		            	<div class="col">

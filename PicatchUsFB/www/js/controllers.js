@@ -59,7 +59,6 @@ angular.module('starter.controllers', ['starter.filters'])
     $scope.init = function(){      
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
-        moment().locale('fr');
         $scope.date = moment().format('LLL');
         $scope.select="live";
         $scope.getInfo();
@@ -92,27 +91,33 @@ angular.module('starter.controllers', ['starter.filters'])
                     var e = events.data;
                     $scope.events = e;
                     for(var i=0; i < e.length; i++){
+                        $scope.getEventInfos(i, e[i].id);
+
+                        //On récupère la date de début de l'événement
                         var start_time = moment(e[i].start_time);
+                        console.log('start time = ' + start_time);
                         $scope.events[i].start_time = start_time.format('LLL');
 
+                        //Si la date de fin de l'événement n'est pas nulle, on la retient
                         if(e[i].end_time != null){
                             var end_time = moment(e[i].end_time);
                             $scope.events[i].end_time = end_time.format('LLL');
-                        }
+                        } //Sinon on prend par défaut date de fin = date de début + 48h
                         else{
                             var end_time = start_time.add(48, 'h');
                             $scope.events[i].end_time = end_time.format('LLL');
                         }
+
+                        //On garde la date de fin en mémoire pour comparaison
                         var end_time = moment(new Date($scope.events[i].end_time));
-                        $scope.getEventInfos(i, e[i].id);
 
-
+                        //Si la date de fin de l'événement est avant la date d'aujourd'hui, l'événement est passé
                         if(end_time.isBefore($scope.date)){
                             $scope.events[i].status="passed";
-                        }
+                        } //Sinon si la date de début de l'événement est après la date d'aujourd'hui, l'événement est futur
                         else if(start_time.isAfter($scope.date))
                             $scope.events[i].status="incoming";
-                        else
+                        else //Sinon il est en cours
                             $scope.events[i].status="live";
                     }
                     $localstorage.setObject('events', $scope.events);
