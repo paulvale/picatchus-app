@@ -22,14 +22,23 @@
 		    		{{photos.length}}<i class="ion-images light"></i>
 		    	</div>
 		    </div>
+		    <div class="row">
+		    	<div id="search-box" class="bar item-input-inset">
+		        <div class="item-input-wrapper">
+		          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+		          <input type="search" placeholder="Photos de ..." ng-model="search.from">
+		          <i class="clear-search ion-ios-close-empty" ng-click="clearSearch()"></i>
+		        </div>
+        </div>
+		    </div>
 		</div>
 	</ion-header-bar>
 
-	<ion-content>
+	<ion-content style="overflow:hidden !important;">
 		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div class="listPhotos">
 		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
-		    <div collection-repeat="photo in photos" style="padding:2px;" class="col col-33"> 
+		    <div collection-repeat="photo in photos | filter:search.from" style="padding:2px;" class="col col-33"> 
 	            <div on-hold="delete(photo.id,photo.from.id)" ng-click="openModal(photo.id, photo.pos)" style="position:relative;
 	            			background-image:url({{photo.src}});
 	                        background-repeat:no-repeat; 

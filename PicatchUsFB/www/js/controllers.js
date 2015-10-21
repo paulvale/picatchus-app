@@ -60,10 +60,10 @@ angular.module('starter.controllers', ['starter.filters'])
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         moment().locale('fr');
-        $scope.date = moment().format('MMMM YYYY');
+        $scope.date = moment().format('LLL');
+        $scope.select="live";
         $scope.getInfo();
         $scope.getEvents();
-        $scope.filterByDate();
     }
 
     $scope.refresh = function(){
@@ -92,11 +92,31 @@ angular.module('starter.controllers', ['starter.filters'])
                     var e = events.data;
                     $scope.events = e;
                     for(var i=0; i < e.length; i++){
-                        $scope.events[i].start_time = new Date(e[i].start_time);//.toUTCString().substr(0,22);
+                        var start_time = moment(e[i].start_time);
+                        $scope.events[i].start_time = start_time.format('LLL');
+
+                        if(e[i].end_time != null){
+                            var end_time = moment(e[i].end_time);
+                            $scope.events[i].end_time = end_time.format('LLL');
+                        }
+                        else{
+                            var end_time = start_time.add(48, 'h');
+                            $scope.events[i].end_time = end_time.format('LLL');
+                        }
+                        var end_time = moment(new Date($scope.events[i].end_time));
                         $scope.getEventInfos(i, e[i].id);
+
+
+                        if(end_time.isBefore($scope.date)){
+                            $scope.events[i].status="passed";
+                        }
+                        else if(start_time.isAfter($scope.date))
+                            $scope.events[i].status="incoming";
+                        else
+                            $scope.events[i].status="live";
                     }
                     $localstorage.setObject('events', $scope.events);
-                    //Normalement, l'objet setter dans le localStorage contient la cover, nb_participants
+                    //Normalement, l'objet setté dans le localStorage contient la cover, nb_participants
                     //et nb_photos. Va savoir pourquoi, ces infos là sont bien dans le $scope.events,
                     //mais ne se mettent pas dans le localStorage, qui sette pourtant le $scope.events ...
                 },
@@ -104,7 +124,7 @@ angular.module('starter.controllers', ['starter.filters'])
         }
         else{
             $scope.events = $localstorage.getObject('events');
-            //En attendant on refait des appels pour récupere les infos de chaque event stockés dans le 
+            //En attendant on refait des appels pour récuperer les infos de chaque event stockés dans le 
             //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
             //donc nb_events * 4 appels à l'api fb.
             for(var i=0; i < $scope.events.length; i++){
@@ -135,20 +155,15 @@ angular.module('starter.controllers', ['starter.filters'])
             errorHandler);
     }
 
-    $scope.filterByDate = function(){
-        $scope.filteredEvents = $filter('eventsByDate')($scope.events, $scope.date);
-    }
-
-    $scope.addMonth = function(){
-        var date = moment($scope.date).add(1, 'M');
-        $scope.date = date.format('MMMM YYYY');
-        $scope.filterByDate();
-    }
-
-    $scope.substractMonth = function(){
-        var date = moment($scope.date).subtract(1, 'M');
-        $scope.date = date.format('MMMM YYYY');;
-        $scope.filterByDate();
+    $scope.selectStatus = function(index){
+        switch(index){
+            case 0: $scope.select = "passed";
+            break;
+            case 1: $scope.select = "live";
+            break;
+            case 2: $scope.select = "incoming";
+            break;
+        }
     }
 
     $scope.getEventPhotos = function(id) {
@@ -268,6 +283,10 @@ angular.module('starter.controllers', ['starter.filters'])
             },
             errorHandler);
     }
+
+    $scope.clearSearch = function() {
+        $scope.search.from = '';
+    };
 
     $scope.dislike = function(idPhoto, posPhoto){
         $scope.photos[posPhoto].total_likes--;
