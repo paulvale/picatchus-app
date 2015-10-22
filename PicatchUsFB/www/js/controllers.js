@@ -56,12 +56,18 @@ angular.module('starter.controllers', ['starter.filters'])
 })
 
 .controller('HomeController', function ($scope, ngFB, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage) {
-    $scope.init = function(){      
+    $scope.init = function(){
+        //Block action on physical return button for android by clearing the navigation history
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
-        $scope.date = moment().format('LLL');
-        $scope.select="live";
-        $scope.getInfo();
+
+        //Initialize data's scope
+        $scope.data = {
+            date: moment().format('LLL'),
+            filterSelected: "live", //Filter selected on events
+            uploadingPhoto: false //Boolean to display a uploading bar
+        };
+        $scope.getUserInfo();
         $scope.getEvents();
     }
 
@@ -71,53 +77,55 @@ angular.module('starter.controllers', ['starter.filters'])
         $scope.$broadcast('scroll.refreshComplete');
     }
 
-    $scope.getInfo = function() {
+    $scope.getUserInfo = function() {
+        //If user's information are not saved in local storage, we make an api call to fb
         if($localstorage.getObject('user').name == undefined || $localstorage.getObject('user').id == undefined){
             ngFB.api({path: '/me'}).then(
                 function(user) {
                     $scope.user = user;
-                    $localstorage.setObject('user', user);
+                    $localstorage.setObject('user', user); //We save the user information in local storage
                 },
                 errorHandler);
-        }else{
+        }else{ //User's information are saved in local storage
             $scope.user = $localstorage.getObject('user');
         }
     }
 
     $scope.getEvents = function() {
+        //If events' information are not saved in local storage, we make an api call to fb
         if($localstorage.getObject('events')[0] == undefined){
             ngFB.api({path: '/me/events'}).then(
                 function(events) {
                     var e = events.data;
                     $scope.events = e;
+                    //Wa make a loop on each event to get their information
                     for(var i=0; i < e.length; i++){
                         $scope.getEventInfos(i, e[i].id);
 
-                        //On récupère la date de début de l'événement
+                        //We get the start date of the event
                         var start_time = moment(e[i].start_time);
-                        console.log('start time = ' + start_time);
                         $scope.events[i].start_time = start_time.format('LLL');
 
-                        //Si la date de fin de l'événement n'est pas nulle, on la retient
+                        //If the event's end date is not null, we keep it
                         if(e[i].end_time != null){
                             var end_time = moment(e[i].end_time);
                             $scope.events[i].end_time = end_time.format('LLL');
-                        } //Sinon on prend par défaut date de fin = date de début + 48h
+                        } //Otherwise, we set the end date equals to start date + 48h
                         else{
                             var end_time = start_time.add(48, 'h');
                             $scope.events[i].end_time = end_time.format('LLL');
                         }
 
-                        //On garde la date de fin en mémoire pour comparaison
+                        //We keep end date in a var for comparison
                         var end_time = moment(new Date($scope.events[i].end_time));
 
-                        //Si la date de fin de l'événement est avant la date d'aujourd'hui, l'événement est passé
-                        if(end_time.isBefore($scope.date)){
+                        //If the event's end date is before the current date, then the event is passed
+                        if(end_time.isBefore($scope.data.date)){
                             $scope.events[i].status="passed";
-                        } //Sinon si la date de début de l'événement est après la date d'aujourd'hui, l'événement est futur
-                        else if(start_time.isAfter($scope.date))
+                        } //If the event's start date is after the current date, then the event is incoming
+                        else if(start_time.isAfter($scope.data.date))
                             $scope.events[i].status="incoming";
-                        else //Sinon il est en cours
+                        else //Otherwiste, the event is live
                             $scope.events[i].status="live";
                     }
                     $localstorage.setObject('events', $scope.events);
@@ -127,7 +135,7 @@ angular.module('starter.controllers', ['starter.filters'])
                 },
                 errorHandler);
         }
-        else{
+        else{ //If events' information are saved in local storage, we don't make an api call
             $scope.events = $localstorage.getObject('events');
             //En attendant on refait des appels pour récuperer les infos de chaque event stockés dans le 
             //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
@@ -139,6 +147,7 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.getEventInfos = function(i, idEvent){
+        //For each event we retrieve its information like the cover, the number of participants and number of photos
         ngFB.api({path: '/' + idEvent, params : {fields: 'cover'}}).then(
             function(data) {
                 try{
@@ -161,18 +170,19 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.selectStatus = function(index){
+        //Enables to change the filter on events
         switch(index){
-            case 0: $scope.select = "passed";
+            case 0: $scope.data.filterSelected = "passed";
             break;
-            case 1: $scope.select = "live";
+            case 1: $scope.data.filterSelected = "live";
             break;
-            case 2: $scope.select = "incoming";
+            case 2: $scope.data.filterSelected = "incoming";
             break;
         }
     }
 
     $scope.getEventPhotos = function(id) {
-        $location.path('/event/' + id);
+        $location.path('/event/' + id); //Change view to display event's photos
     }
 
     $scope.takePicture = function(id){
@@ -181,14 +191,15 @@ angular.module('starter.controllers', ['starter.filters'])
         });
 
         function onSuccess(imageURI) {
-            //var pic = addTextToImage(imageURI);
-            //var path = cordova.file.cacheDirectory;
+            $scope.data.uploadingPhoto = true; //Showing the uploading bar
 
             $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
               .then(function(result) {
+                $scope.data.uploadingPhoto = false; //Hidding the uploading bar
                 $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
               }, function(err) {
                 console.log(err);
+                $scope.data.uploadingPhoto = false; //Hidding the uploading bar
                 $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
               }, function (progress) {
                 // constant progress updates
@@ -212,26 +223,6 @@ angular.module('starter.controllers', ['starter.filters'])
             errorHandler);
     }
 
-    $scope.readPermissions = function() {
-        ngFB.api({
-            method: 'GET',
-            path: '/me/permissions'
-        }).then(
-            function(result) {
-                alert(JSON.stringify(result.data));
-            },
-            errorHandler
-        );
-    }
-
-    $scope.revoke = function() {
-        ngFB.revokePermissions().then(
-            function() {
-                alert('Permissions revoked');
-            },
-            errorHandler);
-    }
-
     $scope.logout = function() {
         ngFB.logout().then(
             function() {
@@ -249,21 +240,23 @@ angular.module('starter.controllers', ['starter.filters'])
 
 .controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location, $localstorage, $ionicModal) {
     $scope.init = function(){
+        //Loading the event's information
         ngFB.api({path: '/'+ $stateParams.eventId}).then(
             function(response) {
               $scope.event = response;
             },
             errorHandler);
 
+        //Loading the event's photos
         $scope.getPhotos($stateParams.eventId);
     }
 
     $scope.getPhotos = function(eventId){
+        //Retrieve the id of the entire event's photos with description and person who took the photo
         ngFB.api({path: '/' + eventId +'/photos', params: {fields: 'from,name'}}).then(
             function(photos) {
               var p = photos.data;
               $scope.photos = photos.data;
-              console.log($scope.photos);
               for(var i = 0; i < $scope.photos.length ; i++){
                 $scope.getPhoto(i, $scope.photos[i].id);
               }
@@ -272,6 +265,7 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.getPhoto = function(i, photoId){
+        //For each photo, we get the url to display and we set the orientation
         ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
             function(photo) {
                 $scope.photos[i].src = photo.images[photo.images.length-1].source;
@@ -281,6 +275,7 @@ angular.module('starter.controllers', ['starter.filters'])
             },
             errorHandler);
 
+        //We get the number of like too and if the user has already liked the photo
         ngFB.api({path: '/' + photoId + '/likes', params: {summary : 'total_count,can_like,has_liked'}}).then(
             function(photo) {
                 $scope.photos[i].total_likes = photo.summary.total_count;
