@@ -7,7 +7,7 @@ function addTextToImage(imagePath) {
     var img = new Image();
     img.src = imagePath;
     img.onload = function(){
-        context.drawImage(img, 0, 0);
+        context.drawImage(img, 20, 20);
         context.lineWidth = 1;
         context.fillStyle = "#CC00FF";
         context.lineStyle = "#ffff00";

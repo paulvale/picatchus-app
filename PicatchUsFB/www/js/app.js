@@ -49,6 +49,12 @@ angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ng
       url: '/event/:eventId',
       templateUrl: 'templates/event.html',
       controller: 'EventController'
+    })
+
+    .state('editPhoto', {
+      url:'/newPhoto',
+      templateUrl:'templates/editPhoto.html',
+      controller :'EditPhotoController'
     });
 
     $urlRouterProvider.otherwise('/login');
