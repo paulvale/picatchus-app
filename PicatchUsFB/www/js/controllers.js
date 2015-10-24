@@ -231,7 +231,7 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 })
 
-.controller('EditPhotoController', function ($scope, ngFB, $stateParams, $localstorage, $location){
+.controller('EditPhotoController', function ($scope, ngFB, $stateParams, $localstorage, $location, $cordovaFile, $cordovaFileTransfer, $cordovaToast){
     var canvasDom;
     var canvas;
     
@@ -278,8 +278,63 @@ angular.module('starter.controllers', ['starter.filters'])
                 canvas.font = "100px sans-serif";
                 canvas.fillText("PicatchUs", canvasDom.width-500, canvasDom.height-50);
                 /*canvas.drawImage(watermark, canvasDom.width-watermark.width, canvasDom.height - watermark.height);*/
+                saveImage();
             }
-            
+
+            var saveImage = function(){
+                window.canvas2ImagePlugin.saveImageDataToLibrary(
+                    function(fileURI){
+                        console.log(fileURI);
+                        $cordovaFileTransfer.upload("https://graph.facebook.com/887967921250791/photos?access_token=" + window.localStorage.fbAccessToken, fileURI)
+                          .then(function(result) {
+                            $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
+                          }, function(err) {
+                            console.log(err);
+                            $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
+                          }, function (progress) {
+                            // constant progress updates
+                          });
+                    },
+                    function(err){
+                        console.log(err);
+                    },
+                    'myCanvas'
+                );
+            }
+            var data = canvas.canvas.toDataURL("image/jpg", 1);
+            var blob = dataURLToBlob(data);
+            var path = 'file:///storage/sdcard0/';
+            var fileDir = cordova.file.externalDataDirectory.replace(cordova.file.externalRootDirectory, '');
+            console.log('path : ' + path);
+            console.log('fileDir : ' + fileDir);
+
+
+            /*$cordovaFile.writeFile(fileDir + 'photos/test.jpg', blob, '').then( 
+                function(result) {
+                    console.log('result : ' + JSON.stringify(result));
+                },
+                function(error){
+                    console.log('error : ' + JSON.stringify(error));
+                }
+            );*/
+
+            /*var filer = new Filer();
+            filer.init({persistent: false, size: 4 * 1024 * 1024}, function(fs) {
+              // filer.size == Filer.DEFAULT_FS_SIZE
+              // filer.isOpen == true
+              // filer.fs == fs
+                filer.write('test2.jpg', {data: blob, type: 'image/jpg'},
+                  function(fileEntry, fileWriter) {
+                    console.log('fileEntry : ' + JSON.stringify(fileEntry));
+                  },
+                  errorHandler);
+            }, errorHandler);*/
+
+
+        }
+
+        function errorHandler(error) {
+            console.log(JSON.stringify(error.message));
         }   
     }
 
