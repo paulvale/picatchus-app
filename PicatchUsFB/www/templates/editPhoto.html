@@ -9,8 +9,13 @@
 
 	    <canvas id="myCanvas" 
 	    		style="border:1px solid #d3d3d3; width:100%;" 
-	    		ng-model="myCanvas">
-		</canvas>                
+	    		ng-model="myCanvas" ng-hide="true">
+		</canvas>    
+
+		<img id="photo" src=""/>  
+		<button class="button button-positive" ng-click="toCanvas()">
+		  Envoyer
+		</button>         
 
 	</ion-content>
 </ion-view>

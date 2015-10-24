@@ -232,17 +232,22 @@ angular.module('starter.controllers', ['starter.filters'])
 })
 
 .controller('EditPhotoController', function ($scope, ngFB, $stateParams, $localstorage, $location, $cordovaFile, $cordovaFileTransfer, $cordovaToast){
-    var canvasDom;
-    var canvas;
+    //var canvasDom;
+    //var canvas;
     
     $scope.init = function () {
-        document.addEventListener("deviceready", startUp, false);
-    };
+        navigator.camera.getPicture(function(picuri){
+            var photo = document.getElementById('photo');
+            photo.src = picuri;
+        }, 
+            errorHandler, 
+            {quality: 75,destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true  }
+        );
+    }
 
     function startUp() {
 
-        canvasDom = document.getElementById('myCanvas');
-        canvas = canvasDom.getContext("2d");
+
 
         //Create a watermark image object
         /*watermark = new Image();
@@ -252,61 +257,15 @@ angular.module('starter.controllers', ['starter.filters'])
             $("#takePictureButton").removeAttr("disabled");
         }*/
 
-        navigator.camera.getPicture(camSuccess, camError, {quality: 75,destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true  });
-        
-        function camError(e) {
-            console.log("Camera Error");
-            console.log(JSON.stringify(e));
-        }
 
-        function camSuccess(picuri) {
-            console.log("Camera Success");
+            // canvasDom = document.getElementById('myCanvas');
 
-            var img = new Image();
-            img.src=picuri;
-
-            img.onload = function(e) {
-                canvasDom.width = img.width;
-                console.log(img.width);
-                canvasDom.height = img.height;
-                canvas.scale(1,1);
-                canvas.drawImage(img, 0, 0);
-                console.log(img.height);
-                canvas.lineWidth = 5;
-                canvas.fillStyle = "#2980b9";
-                canvas.lineStyle = "#ffff00";
-                canvas.font = "100px sans-serif";
-                canvas.fillText("PicatchUs", canvasDom.width-500, canvasDom.height-50);
-                /*canvas.drawImage(watermark, canvasDom.width-watermark.width, canvasDom.height - watermark.height);*/
-                saveImage();
-            }
-
-            var saveImage = function(){
-                window.canvas2ImagePlugin.saveImageDataToLibrary(
-                    function(fileURI){
-                        console.log(fileURI);
-                        $cordovaFileTransfer.upload("https://graph.facebook.com/887967921250791/photos?access_token=" + window.localStorage.fbAccessToken, fileURI)
-                          .then(function(result) {
-                            $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
-                          }, function(err) {
-                            console.log(err);
-                            $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
-                          }, function (progress) {
-                            // constant progress updates
-                          });
-                    },
-                    function(err){
-                        console.log(err);
-                    },
-                    'myCanvas'
-                );
-            }
-            var data = canvas.canvas.toDataURL("image/jpg", 1);
+/*            var data = canvas.canvas.toDataURL("image/jpg", 1);
             var blob = dataURLToBlob(data);
             var path = 'file:///storage/sdcard0/';
             var fileDir = cordova.file.externalDataDirectory.replace(cordova.file.externalRootDirectory, '');
             console.log('path : ' + path);
-            console.log('fileDir : ' + fileDir);
+            console.log('fileDir : ' + fileDir);*/
 
 
             /*$cordovaFile.writeFile(fileDir + 'photos/test.jpg', blob, '').then( 
@@ -333,13 +292,58 @@ angular.module('starter.controllers', ['starter.filters'])
 
         }
 
+        $scope.toCanvas = function() {
+            canvasDom = document.getElementById('myCanvas');
+            canvas = canvasDom.getContext("2d");
+
+            console.log(document.getElementById('myCanvas'));
+
+            var img = new Image();
+            var photo = document.getElementById('photo');
+            console.log(photo.src);
+            img.src=photo.src;
+
+            img.onload = function(e) {
+                canvasDom.width = img.width;
+                console.log(img.width);
+                canvasDom.height = img.height;
+                canvas.scale(1,1);
+                canvas.drawImage(img, 0, 0);
+                console.log(img.height);
+                canvas.lineWidth = 5;
+                canvas.fillStyle = "#2980b9";
+                canvas.lineStyle = "#ffff00";
+                canvas.font = "100px sans-serif";
+                canvas.fillText("PicatchUs", canvasDom.width-500, canvasDom.height-50);
+                /*canvas.drawImage(watermark, canvasDom.width-watermark.width, canvasDom.height - watermark.height);*/
+                sendPhoto();
+            }
+        }
+
+        var sendPhoto = function() {
+            window.canvas2ImagePlugin.saveImageDataToLibrary(
+                function(fileURI){
+                    console.log(fileURI);
+                    $cordovaFileTransfer.upload("https://graph.facebook.com/887967921250791/photos?access_token=" + window.localStorage.fbAccessToken, fileURI)
+                      .then(function(result) {
+                        $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
+                      }, function(err) {
+                        console.log(err);
+                        $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
+                      }, function (progress) {
+                        // constant progress updates
+                      });
+                },
+                function(err){
+                    console.log(err);
+                },
+                'myCanvas'
+            );
+        }
+
         function errorHandler(error) {
             console.log(JSON.stringify(error.message));
         }   
-    }
-
-
-    $scope.photo = {}
 
  /*   $scope.takePicture = function(){   
         var cameraOptions = {
