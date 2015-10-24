@@ -15,5 +15,5 @@ angular.module('starter.filters', [])
 .filter('moment', function() {
   return function(dateString, format){
     return moment(dateString).format(format);
-  }
+  };
 });

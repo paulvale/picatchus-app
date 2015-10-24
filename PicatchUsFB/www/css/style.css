@@ -199,10 +199,6 @@ div.userProfile img {
     font-size: 1.2em;
 }
 
-.col i {
-    margin-left: 5px;
-}
-
 .col-20 {
     text-align: center;
     margin-right: 5%;
@@ -311,13 +307,28 @@ div.userEvent img {
     color: black;
 }
 
-.likePhotos {
-    position:absolute;
-    right: 3px;
-    bottom: 3px;
-    text-align:right;
-    font-size:20px;
-    color:red;
+.listPhotos .col {
+    padding:3px;
+}
+
+.footer-photo {
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 20px;
+}
+
+.footer-photo-like .ion-ios-heart-outline, .ion-ios-heart {
+    color: red;
+}
+
+.footer-photo > div {
+    display: inline-block;
+    width: 50%;
+}
+
+.footer-photo .footer-photo-like {
+    padding-right: 6px;
+    text-align: right;
 }
 
 .bar-subheader {
@@ -343,6 +354,20 @@ div.userEvent img {
 
 .header-date-event > .mois{
     font-size:23px;
+}
+
+.item-divider {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    min-height: 22px;
+}
+
+.item {
+    padding: 5px;
+}
+
+.card {
+    margin: 0px;
 }
 
 /*

@@ -4,7 +4,7 @@
         <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="portrait" style="margin-top:17%"/>
         <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="landscape" style="margin-top:55%"/>
 	 	
-	 	<div class="row">
+	 	<div class="row" ng-if="modal.description">
 	 		<div class="col modal-description">
 				<textarea disabled>{{modal.description}}</textarea>
 	 		</div>

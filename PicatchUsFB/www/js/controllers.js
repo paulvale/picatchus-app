@@ -282,13 +282,21 @@ angular.module('starter.controllers', ['starter.filters'])
                 $scope.photos[i].has_liked = photo.summary.has_liked;
             },
             errorHandler);
+
+        ngFB.api({path: '/' + photoId + '/comments'}).then(
+            function(comments) {
+                $scope.photos[i].comments = comments.data;
+                $scope.photos[i].total_comments = comments.data.length;
+            },
+            errorHandler);
     }
 
     $scope.clearSearch = function() {
         $scope.search.from = '';
     };
 
-    $scope.dislike = function(idPhoto, posPhoto){
+    $scope.dislike = function(idPhoto, posPhoto, $event){
+        $event.stopPropagation();
         $scope.photos[posPhoto].total_likes--;
         $scope.photos[posPhoto].has_liked = false;
         ngFB.api({
@@ -305,7 +313,8 @@ angular.module('starter.controllers', ['starter.filters'])
         );
     }
 
-    $scope.like = function(idPhoto, posPhoto){
+    $scope.like = function(idPhoto, posPhoto, $event){
+        $event.stopPropagation();
         $scope.photos[posPhoto].total_likes++;
         $scope.photos[posPhoto].has_liked = true;
         ngFB.api({
@@ -322,28 +331,26 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.delete = function(idPhoto, idUserFrom) {
-        console.log($localstorage.getObject('user'));
-        console.log(idUserFrom);
         if(idUserFrom == $localstorage.getObject('user').id){
             var confirmPopup = $ionicPopup.confirm({
             title: 'Suppression',
             template: 'Es-tu certain de vouloir supprimer cette photo ?'
                });
-               confirmPopup.then(function(res) {
-                 if(res) {
-                    ngFB.api({
-                    method: 'DELETE',
-                    path: '/' + idPhoto
-                    }).then(
-                        function(result) {
-                            $cordovaToast.showLongBottom('La photo a bien été supprimée');
-                            $scope.refresh();
-                        },
-                        errorHandler
-                    );
-                 }
-               });
-            }
+            confirmPopup.then(function(res) {
+             if(res) {
+                ngFB.api({
+                method: 'DELETE',
+                path: '/' + idPhoto
+                }).then(
+                    function(result) {
+                        $cordovaToast.showLongBottom('La photo a bien été supprimée');
+                        $scope.refresh();
+                    },
+                    errorHandler
+                );
+             }
+           });
+        }
     }
 
     $ionicModal.fromTemplateUrl('templates/photo_modal.html', function($ionicModal) {
@@ -361,7 +368,6 @@ angular.module('starter.controllers', ['starter.filters'])
         $scope.modal.likes = $scope.photos[posPhoto].total_likes;
         $scope.modal.has_liked = $scope.photos[posPhoto].has_liked;
         $scope.modal.description = $scope.photos[posPhoto].name;
-        console.log("description : " + $scope.photos[posPhoto].name);
         $scope.modal.id = idPhoto;
         $scope.modal.pos = posPhoto;
         $scope.modal.show();
