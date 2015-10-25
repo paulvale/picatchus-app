@@ -216,78 +216,48 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 })
 
-.controller('EditPhotoController', function ($scope, ngFB, $stateParams, $localstorage, $location, $cordovaFile, $cordovaFileTransfer, $cordovaToast){
+.controller('EditPhotoController', function ($scope, ngFB, $stateParams, $localstorage, $location, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout){
    
     $scope.init = function () {
-        navigator.camera.getPicture(displayPhoto, errorHandler, {quality: 75,destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true});
-    }
-
-    $scope.prepareCanvas = function() {
-        console.log('redirection home');
-        $location.path('/home');
-        console.log('prepare canvas');
-        canvasDom = document.getElementById('myCanvas');
-        canvas = canvasDom.getContext("2d");
-
-        var img = new Image();
-        var photo = document.getElementById('photo');
-        img.src=photo.src;
-
-        img.onload = function(e) {
-            canvasDom.width = img.width;
-            canvasDom.height = img.height;
-            console.log('save image size');
-            canvas.scale(1,1);
-            canvas.drawImage(img, 0, 0);
-            console.log('image drawn');
-            canvas.lineWidth = 5;
-            canvas.fillStyle = "#2980b9";
-            canvas.lineStyle = "#ffff00";
-            canvas.font = "100px sans-serif";
-            console.log('font configured');
-            canvas.fillText("PicatchUs.com", canvasDom.width-700, canvasDom.height-50);
-            console.log('text filled');
-            /*canvas.drawImage(watermark, canvasDom.width-watermark.width, canvasDom.height - watermark.height);*/
-            sendPhoto();
-        }
+        navigator.camera.getPicture(displayPhoto, errorHandler, {quality: 75, destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true});
     }
 
     function displayPhoto (imageURI){
         var photo = document.getElementById('photo');
         photo.src = imageURI;
+        if(ionic.Platform.isAndroid()){
+            $timeout(function(){
+                window.canvas2ImagePlugin.saveImageDataToLibrary(
+                    function(fileURI){
+                    },
+                    function(err){
+                        console.log(err);
+                    },
+                    imageURI
+                );
+            }, 700);
+        }
     }
 
-    function sendPhoto() {
-        window.canvas2ImagePlugin.saveImageDataToLibrary(
-            function(fileURI){
-                console.log('prepare send');
-                var options = new FileUploadOptions();
-                var params = {};
-                params.caption = $scope.description;
-                console.log($scope.description);
-                options.params = params;
+    $scope.sendPhoto = function() {
+        var fileURI = document.getElementById('photo').src;
+        var options = new FileUploadOptions();
+        var params = {};
+        params.caption = $scope.description;
+        options.params = params;
 
-                console.log('start upload');
-                $cordovaFileTransfer.upload("https://graph.facebook.com/404456883087336/photos?access_token=" + window.localStorage.fbAccessToken, fileURI, options)
-                  .then(function(result) {
-                    $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
-                  }, function(err) {
-                    console.log(err);
-                    $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
-                  }, function (progress) {
-                    // constant progress updates
-                  });
-            },
-            function(err){
-                console.log(err);
-            },
-            'myCanvas'
-        );
-    }
+        $cordovaFileTransfer.upload("https://graph.facebook.com/404456883087336/photos?access_token=" + window.localStorage.fbAccessToken, fileURI, options)
+          .then(function(result) {
+            $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
+          }, function(err) {
+            console.log(err);
+            $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
+          }, function (progress) {
+            // constant progress updates
+          });
 
-    function errorHandler(error) {
-        console.log(JSON.stringify(error.message));
-    }       
+        $location.path('/home');
+    }      
 })
 
 .controller('EventController', function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $location, $localstorage, $ionicModal) {
