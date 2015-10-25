@@ -128,8 +128,8 @@ div.userProfile ,div.headerProfile{
     padding-right: 10px;
 }
 
-.select-date {
-    margin-top: 0px;
+.segmented-controls {
+    margin-top: 5%;
 }
 
 div.headerProfile {
@@ -199,10 +199,6 @@ div.userProfile img {
     font-size: 1.2em;
 }
 
-.col i {
-    margin-left: 5px;
-}
-
 .col-20 {
     text-align: center;
     margin-right: 5%;
@@ -231,10 +227,20 @@ div.userProfile img {
 
 /* EVENT DESIGN */
 
+.clear-search {
+  font-size: 18px;
+}
+
+.item-input-inset {
+    padding: 0px;
+    height: 100%;
+    border-radius: 5px;   
+}
+
 .header-info-event {
     color: white;
     height: 75px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     font-size: 1.8em;
 }
 
@@ -301,13 +307,28 @@ div.userEvent img {
     color: black;
 }
 
-.likePhotos {
-    position:absolute;
-    right: 3px;
-    bottom: 3px;
-    text-align:right;
-    font-size:20px;
-    color:red;
+.listPhotos .col {
+    padding:3px;
+}
+
+.footer-photo {
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 20px;
+}
+
+.footer-photo-like .ion-ios-heart-outline, .ion-ios-heart {
+    color: red;
+}
+
+.footer-photo > div {
+    display: inline-block;
+    width: 50%;
+}
+
+.footer-photo .footer-photo-like {
+    padding-right: 6px;
+    text-align: right;
 }
 
 .bar-subheader {
@@ -335,6 +356,20 @@ div.userEvent img {
     font-size:23px;
 }
 
+.item-divider {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    min-height: 22px;
+}
+
+.item {
+    padding: 5px;
+}
+
+.card {
+    margin: 0px;
+}
+
 /*
  * PHOTO MODAL PAGE 
  */
@@ -348,11 +383,19 @@ div.userEvent img {
 }
 
 .modal-likes{
-    position: absolute;
-    right: 6px;
-    bottom: -25px;
-    text-align: right;
     font-size: 25px;
     color: red;
+}
+
+.modal-description {
+    color: white;
+}
+
+.modal-description > textarea {
+    background-color: transparent;
+    color: white;
+    width: 100%;
+    height: 95px;
+    max-height: 95px;
 }
 

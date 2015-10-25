@@ -4,11 +4,18 @@
         <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="portrait" style="margin-top:17%"/>
         <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="landscape" style="margin-top:55%"/>
 	 	
-	 	<div class="modal-likes" ng-switch on="modal.has_liked">
-		{{modal.likes}}
-		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos)"></i>
-		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos)"></i>	
-		</div>	
+	 	<div class="row" ng-if="modal.description">
+	 		<div class="col modal-description">
+				<textarea disabled>{{modal.description}}</textarea>
+	 		</div>
+	 	</div>
+	 	<div class="row">
+		 	<div class="modal-likes col col-30 col-offset-70" ng-switch on="modal.has_liked">
+				{{modal.likes}}
+				<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos)"></i>
+				<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos)"></i>	
+			</div>
+	 	</div>
     </div>
     </ion-content>
 </ion-modal-view>

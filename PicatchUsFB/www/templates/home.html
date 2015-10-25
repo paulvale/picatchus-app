@@ -5,32 +5,27 @@
 			<i class="ion-log-out" ng-click="logout()"></i>
 		    <img ng-src="{{'http://graph.facebook.com/' + user.id + '/picture?type=large'}}"/>
 		    <h3>{{user.name}}</h3>
-		    <div class="row select-date">
-		    	<div class="col col-10 previousMonth" ng-click="substractMonth()">
-		    		<i class="ion-ios-arrow-left"></i>
-		    	</div>
-		    	<div class="col col-80 currentMonth">
-					<input type="text" placeholder="yyyy-MM" ng-model="date" ng-change="filterByDate()" disabled required>
-		    	</div>
-		    	<div class="col col-10 nextMonth" ng-click="addMonth()">
-		    		<i class="ion-ios-arrow-right"></i>
-		    	</div>
+		    <div class="row segmented-controls">
+		    	<ti-segmented-control style="width: 100%">
+			      <ti-segmented-control-button ng-click="selectStatus(0)" class="button-light">Terminés</ti-segmented-control-button>
+			      <ti-segmented-control-button ng-click="selectStatus(1)" class="button-light" selected>En cours</ti-segmented-control-button>
+			      <ti-segmented-control-button ng-click="selectStatus(2)" class="button-light">A venir</ti-segmented-control-button>
+			    </ti-segmented-control>
 		    </div>
 		</div>
 	</ion-header-bar>
 
-
 	<ion-content>
 		<ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 	    <ion-list class="list" canswipe="listCanSwipe" >
-	        <ion-item class="item itemListEvent" ng-repeat="event in filteredEvents" ng-swipe-left="takePicture()" ng-click="getEventPhotos({{event.id}})">
+	        <ion-item class="item itemListEvent" ng-repeat="event in events | filter:{status: data.filterSelected}" ng-swipe-left="takePicture({{event.id}})" ng-click="getEventPhotos({{event.id}})">
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
 			            	<p class="jour">
-			            		{{event.start_time | date:'d'}}
+			            		{{event.start_time | moment: 'D'}}
 			            	</p>
 			            	<p class="mois">
-			            		{{event.start_time | date :'MMM'}}
+			            		{{event.start_time | moment: 'MMM'}}
 			            	</p>
 		            	</div>
 		            	<div class="col">

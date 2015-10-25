@@ -5,7 +5,7 @@
 				<i class="ion-chevron-left" ng-click="back()"></i>
 			</div>
 			<div class="col-80">
-				{{event.start_time | date:'d MMM yyyy'}}
+				{{event.start_time | moment:'LL'}}
 			</div>
 		</div> 
 		<div class="userEvent">
@@ -22,30 +22,46 @@
 		    		{{photos.length}}<i class="ion-images light"></i>
 		    	</div>
 		    </div>
+		    <div class="row">
+		    	<div id="search-box" class="bar item-input-inset">
+		        <div class="item-input-wrapper">
+		          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+		          <input type="search" placeholder="Photos de ..." ng-model="search.from">
+		          <i class="clear-search ion-ios-close-empty" ng-click="clearSearch()"></i>
+		        </div>
+        </div>
+		    </div>
 		</div>
 	</ion-header-bar>
 
-	<ion-content>
+	<ion-content style="overflow:hidden !important;">
 		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div class="listPhotos">
 		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
-		    <div collection-repeat="photo in photos" style="padding:2px;" class="col col-33"> 
+		    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
 	            <div on-hold="delete(photo.id,photo.from.id)" ng-click="openModal(photo.id, photo.pos)" style="position:relative;
 	            			background-image:url({{photo.src}});
 	                        background-repeat:no-repeat; 
 	                        background-position: center center;
     						background-size: cover;
 	                        width:100%;
-	                        padding-top:100%"
-	                        > 
-	                <div class="likePhotos" ng-switch on="photo.has_liked">
-		        		{{photo.total_likes}}
-		        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>
-		        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>	
+	                        padding-top:100%;
+	                        margin-bottom:2px;"
+	            class="card"> 
+	                <div class="item item-divider footer-photo" ng-switch on="photo.has_liked">
+	                		<div>
+		                		{{photo.total_comments}}
+		                		<i class="ion-ios-chatbubble-outline"></i>
+	                		</div>
+	                		<div class="footer-photo-like">
+		                		{{photo.total_likes}}
+				        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos, $event)"></i>
+				        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos, $event)"></i>	
+	                		</div>
+	                	</div>
 		        	</div>
 	            </div>
 		    </div>
-		        <!-- <img ng-src="{{photo.src}}" on-hold="delete(photo.id)"/> -->
 		</div>
 	</ion-content>
 </ion-view>
