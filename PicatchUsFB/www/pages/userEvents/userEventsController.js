@@ -48,6 +48,8 @@ app.controller('UserEventsController', function ($scope, ngFB, $location, $ionic
                         //We get the start date of the event
                         var start_time = moment(e[i].start_time);
                         $scope.events[i].start_time = start_time.format('LLL');
+                        console.log($scope.events[i].name);
+                        console.log($scope.events[i].start_time);
 
                         //If the event's end date is not null, we keep it
                         if(e[i].end_time){
@@ -134,6 +136,8 @@ app.controller('UserEventsController', function ($scope, ngFB, $location, $ionic
             function() {
                 window.localStorage.removeItem("fbAccessToken");
                 window.localStorage.removeItem("first_use");
+                window.localStorage.removeItem("user");
+                window.localStorage.removeItem("events");
                 $location.path('/login');
             },
             errorHandler);

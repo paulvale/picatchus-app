@@ -26,7 +26,10 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
     });
   })
 
-.config(function($stateProvider, $urlRouterProvider) {
+
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom'); // other values: top
+
   $urlRouterProvider.otherwise("/login");
 
 
@@ -64,6 +67,15 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         'editPicture-tab': {
           templateUrl:'pages/editPicture/editPicture.html',
           controller:'EditPictureController'
+        }
+      }
+    })
+    .state('home.takePicture', {
+      url: "/takePicture",
+      views: {
+        'editPicture-tab': {
+          template:'',
+          controller:'TakePictureController'
         }
       }
     })
