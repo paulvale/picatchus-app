@@ -46,10 +46,17 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       controller: 'FirstUseController'
     })
 
+    .state('editPicture', {
+      url: "/editPicture",
+      templateUrl:'pages/editPicture/editPicture.html',
+      controller:'EditPictureController'
+    })
+
     .state('home', {
       url: '/home',
       abstract: true,
-      templateUrl: "pages/home/main.html"
+      templateUrl: "pages/home/main.html",
+      controller: 'HomeController'
     })
 
     .state('home.eventsFeed', {
@@ -61,24 +68,7 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         }
       }
     })
-    .state('home.editPicture', {
-      url: "/editPicture",
-      views: {
-        'editPicture-tab': {
-          templateUrl:'pages/editPicture/editPicture.html',
-          controller:'EditPictureController'
-        }
-      }
-    })
-    .state('home.takePicture', {
-      url: "/takePicture",
-      views: {
-        'editPicture-tab': {
-          template:'',
-          controller:'TakePictureController'
-        }
-      }
-    })
+
     .state('home.userEvents', {
       url: "/userEvents",
       views: {

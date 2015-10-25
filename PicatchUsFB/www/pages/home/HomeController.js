@@ -1,0 +1,17 @@
+app.controller('HomeController',function ($scope, $state, $location){
+	$scope.takePicture = function(){
+		navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
+            destinationType: Camera.DestinationType.FILE_URI,
+			 correctOrientation: true
+        });
+
+        function onSuccess(imageURI) {
+        	console.log('go edit picture');
+			$state.go('editPicture');
+        }
+
+        function onFail(message) {
+			$state.go('home.eventsFeed');
+        }
+	}
+});
