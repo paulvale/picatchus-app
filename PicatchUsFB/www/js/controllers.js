@@ -185,35 +185,8 @@ angular.module('starter.controllers', ['starter.filters'])
         $location.path('/event/' + id); //Change view to display event's photos
     }
 
-<<<<<<< HEAD
     $scope.takePicture = function(){
         $location.path('/newPhoto');
-=======
-    $scope.takePicture = function(id){
-        navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
-            destinationType: Camera.DestinationType.FILE_URI, correctOrientation: true
-        });
-
-        function onSuccess(imageURI) {
-            $scope.data.uploadingPhoto = true; //Showing the uploading bar
-
-            $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI)
-              .then(function(result) {
-                $scope.data.uploadingPhoto = false; //Hidding the uploading bar
-                $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
-              }, function(err) {
-                console.log(err);
-                $scope.data.uploadingPhoto = false; //Hidding the uploading bar
-                $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
-              }, function (progress) {
-                // constant progress updates
-              });
-        }
-
-        function onFail(message) {
-
-        }
->>>>>>> core_dev
     }
 
     $scope.share = function() {
@@ -250,6 +223,9 @@ angular.module('starter.controllers', ['starter.filters'])
     }
 
     $scope.prepareCanvas = function() {
+        console.log('redirection home');
+        $location.path('/home');
+        console.log('prepare canvas');
         canvasDom = document.getElementById('myCanvas');
         canvas = canvasDom.getContext("2d");
 
@@ -260,13 +236,17 @@ angular.module('starter.controllers', ['starter.filters'])
         img.onload = function(e) {
             canvasDom.width = img.width;
             canvasDom.height = img.height;
+            console.log('save image size');
             canvas.scale(1,1);
             canvas.drawImage(img, 0, 0);
+            console.log('image drawn');
             canvas.lineWidth = 5;
             canvas.fillStyle = "#2980b9";
             canvas.lineStyle = "#ffff00";
             canvas.font = "100px sans-serif";
-            canvas.fillText("PicatchUs", canvasDom.width-500, canvasDom.height-50);
+            console.log('font configured');
+            canvas.fillText("PicatchUs.com", canvasDom.width-700, canvasDom.height-50);
+            console.log('text filled');
             /*canvas.drawImage(watermark, canvasDom.width-watermark.width, canvasDom.height - watermark.height);*/
             sendPhoto();
         }
@@ -280,8 +260,15 @@ angular.module('starter.controllers', ['starter.filters'])
     function sendPhoto() {
         window.canvas2ImagePlugin.saveImageDataToLibrary(
             function(fileURI){
-                console.log(fileURI);
-                $cordovaFileTransfer.upload("https://graph.facebook.com/404456883087336/photos?access_token=" + window.localStorage.fbAccessToken, fileURI)
+                console.log('prepare send');
+                var options = new FileUploadOptions();
+                var params = {};
+                params.caption = $scope.description;
+                console.log($scope.description);
+                options.params = params;
+
+                console.log('start upload');
+                $cordovaFileTransfer.upload("https://graph.facebook.com/404456883087336/photos?access_token=" + window.localStorage.fbAccessToken, fileURI, options)
                   .then(function(result) {
                     $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
                   }, function(err) {
