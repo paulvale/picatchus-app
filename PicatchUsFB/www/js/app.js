@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
+angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -26,20 +26,64 @@ angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ng
     });
   })
 
-  .config(function($stateProvider, $urlRouterProvider){
-    $stateProvider
+.config(function($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise("/login");
 
+
+  $stateProvider
     .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html',
+      templateUrl: 'pages/login/login.html',
       controller: 'LoginController'
     })
 
     .state('first-use', {
       url: '/first-use',
-      templateUrl: 'templates/first_use.html',
+      templateUrl: 'pages/first_use/first_use.html',
       controller: 'FirstUseController'
     })
+
+    .state('home', {
+      url: '/home',
+      abstract: true,
+      templateUrl: "pages/home/main.html"
+    })
+
+    .state('home.eventsFeed', {
+      url: "/eventsFeed",
+      views: {
+        'eventsFeed-tab': {
+          templateUrl:'pages/eventsFeed/eventsFeed.html',
+          controller: 'EventsFeedController'
+        }
+      }
+    })
+    .state('home.editPicture', {
+      url: "/editPicture",
+      views: {
+        'editPicture-tab': {
+          templateUrl:'pages/editPicture/editPicture.html',
+          controller:'EditPictureController'
+        }
+      }
+    })
+    .state('home.userEvents', {
+      url: "/userEvents",
+      views: {
+        'userEvents-tab': {
+          templateUrl:'pages/userEvents/userEvents.html',
+          controller:'UserEventsController'
+        }
+      }
+    })
+
+
+})
+
+
+/*    
+
+    
 
     .state('home', {
       url: '/home',
@@ -51,7 +95,4 @@ angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ng
       url: '/event/:eventId',
       templateUrl: 'templates/event.html',
       controller: 'EventController'
-    });
-
-    $urlRouterProvider.otherwise('/login');
-  });
+    });*/

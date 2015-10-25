@@ -1,0 +1,16 @@
+<ion-view view-title="Edit Photo" ng-init="init()">
+
+	<ion-header-bar class="editBar">
+    	<button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+	</ion-header-bar>
+
+
+	<ion-content class="has-header contentPadding" ng-controller="EditPhotoController"> 
+
+	    <canvas id="myCanvas" 
+	    		style="border:1px solid #d3d3d3; width:100%;" 
+	    		ng-model="myCanvas">
+		</canvas>                
+
+	</ion-content>
+</ion-view>

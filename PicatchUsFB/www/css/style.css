@@ -84,30 +84,6 @@ body{
 
 /* Home Page */
 
-i.ion-navicon {
-    font-size: 2em;
-    padding-right:10px;
-    padding-left:10px;
-}
-
-i.ion-log-out{
-    position:absolute;
-    top:10px;
-    right:0px;
-    font-size: 2em;
-    padding-right:10px;
-}
-
-.has-header {
-    top: 33%;
-}
-
-div.userProfile ,div.headerProfile{
-    position:absolute;
-    width:100%;
-} 
-
-
 .currentMonth > input {
     background-color: transparent;
     font-size: 2em;
@@ -126,10 +102,6 @@ div.userProfile ,div.headerProfile{
     font-size:2.5em;
     text-align:right;
     padding-right: 10px;
-}
-
-.segmented-controls {
-    margin-top: 5%;
 }
 
 div.headerProfile {
@@ -329,14 +301,6 @@ div.userEvent img {
 .footer-photo .footer-photo-like {
     padding-right: 6px;
     text-align: right;
-}
-
-.bar-subheader {
-	height: 5%;
-}
-
-.bar-header {
-    height: 33%;
 }
 
 #picture{
