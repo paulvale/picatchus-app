@@ -47,18 +47,16 @@ app.controller('UserEventsController', function ($scope, ngFB, $location, $ionic
 
                         //We get the start date of the event
                         var start_time = moment(e[i].start_time);
-                        $scope.events[i].start_time = start_time.format('LLL');
-                        console.log($scope.events[i].name);
-                        console.log($scope.events[i].start_time);
+                        $scope.events[i].start_time = start_time;
 
                         //If the event's end date is not null, we keep it
                         if(e[i].end_time){
                             var end_time = moment(e[i].end_time);
-                            $scope.events[i].end_time = end_time.format('LLL');
+                            $scope.events[i].end_time = end_time;
                         } //Otherwise, we set the end date equals to start date + 48h
                         else{
                             var end_time = start_time.add(48, 'h');
-                            $scope.events[i].end_time = end_time.format('LLL');
+                            $scope.events[i].end_time = end_time;
                         }
 
                         //We keep end date in a var for comparison
@@ -83,7 +81,8 @@ app.controller('UserEventsController', function ($scope, ngFB, $location, $ionic
         }
         else{ //If events' information are saved in local storage, we don't make an api call
             $scope.events = $localstorage.getObject('events');
-        console.log($scope.events)
+            console.log("Deja fait");
+            console.log($scope.events);
             //En attendant on refait des appels pour récuperer les infos de chaque event stockés dans le 
             //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
             //donc nb_events * 4 appels à l'api fb.
