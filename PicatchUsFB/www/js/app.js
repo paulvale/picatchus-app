@@ -32,7 +32,6 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
 
   $urlRouterProvider.otherwise("/login");
 
-
   $stateProvider
     .state('login', {
       url: '/login',
@@ -50,6 +49,12 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       url: "/editPicture",
       templateUrl:'pages/editPicture/editPicture.html',
       controller:'EditPictureController'
+    })
+
+    .state('eventDetails', {
+      url: "/eventDetails?eventId",
+      templateUrl:'pages/eventDetails/eventDetails.html',
+      controller:'EventDetailsController'
     })
 
     .state('home', {
@@ -78,23 +83,6 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         }
       }
     })
-
-
 })
 
-
-/*    
-
-    
-
-    .state('home', {
-      url: '/home',
-      templateUrl: 'templates/home.html',
-      controller: 'HomeController'
-    })
-
-    .state('event', {
-      url: '/event/:eventId',
-      templateUrl: 'templates/event.html',
-      controller: 'EventController'
-    });*/
+var app = angular.module('starter.controllers', ['starter.filters']);

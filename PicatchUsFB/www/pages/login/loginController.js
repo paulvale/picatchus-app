@@ -14,7 +14,7 @@ app.controller('LoginController', function ($scope, ngFB, $state) {
             function(response) {
                 //If this is not the first use, user is redirected on home
                 if(window.localStorage.getItem("first_use") == 0)
-                    $state.go('home');
+                    $state.go('home.eventsFeed');
                 //Otherwise, onboarding views are displayed
                 else
                     $state.go('first-use');

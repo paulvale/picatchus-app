@@ -1,4 +1,4 @@
-app.controller('HomeController',function ($scope, $state, $location){
+app.controller('HomeController',function ($scope, $state){
 	$scope.takePicture = function(){
 		navigator.camera.getPicture(onSuccess, onFail, { quality: 75,
             destinationType: Camera.DestinationType.FILE_URI,
@@ -6,7 +6,6 @@ app.controller('HomeController',function ($scope, $state, $location){
         });
 
         function onSuccess(imageURI) {
-        	console.log('go edit picture');
 			$state.go('editPicture');
         }
 
@@ -14,4 +13,4 @@ app.controller('HomeController',function ($scope, $state, $location){
 			$state.go('home.eventsFeed');
         }
 	}
-});
+})
