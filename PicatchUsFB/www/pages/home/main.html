@@ -1,10 +1,10 @@
-<ion-tabs class="tabs-icon-center tabs-positive tabs-main">
+<ion-tabs class="tabs-icon-center tabs-stable tabs-main">
 
         <ion-tab icon="ion-flash" ui-sref="home.eventsFeed">
           <ion-nav-view name="eventsFeed-tab"></ion-nav-view>
         </ion-tab>
 
-        <ion-tab icon="ion-camera" ui-sref="home.takePicture">
+        <ion-tab icon="ion-camera" ng-click="takePicture()">
           <ion-nav-view name="editPicture-tab"></ion-nav-view>
         </ion-tab>
 

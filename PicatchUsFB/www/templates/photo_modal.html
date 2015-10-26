@@ -12,8 +12,8 @@
 	 	<div class="row">
 		 	<div class="modal-likes col col-30 col-offset-70" ng-switch on="modal.has_liked">
 				{{modal.likes}}
-				<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos)"></i>
-				<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos)"></i>	
+				<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos, $event)"></i>
+				<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos, $event)"></i>	
 			</div>
 	 	</div>
     </div>

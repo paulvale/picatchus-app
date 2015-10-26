@@ -32,7 +32,6 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
 
   $urlRouterProvider.otherwise("/login");
 
-
   $stateProvider
     .state('login', {
       url: '/login',
@@ -46,10 +45,17 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       controller: 'FirstUseController'
     })
 
+    .state('editPicture', {
+      url: "/editPicture",
+      templateUrl:'pages/editPicture/editPicture.html',
+      controller:'EditPictureController'
+    })
+
     .state('home', {
       url: '/home',
       abstract: true,
-      templateUrl: "pages/home/main.html"
+      templateUrl: "pages/home/main.html",
+      controller: 'HomeController'
     })
 
     .state('home.eventsFeed', {
@@ -61,24 +67,7 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         }
       }
     })
-    .state('home.editPicture', {
-      url: "/editPicture",
-      views: {
-        'editPicture-tab': {
-          templateUrl:'pages/editPicture/editPicture.html',
-          controller:'EditPictureController'
-        }
-      }
-    })
-    .state('home.takePicture', {
-      url: "/takePicture",
-      views: {
-        'editPicture-tab': {
-          template:'',
-          controller:'TakePictureController'
-        }
-      }
-    })
+
     .state('home.userEvents', {
       url: "/userEvents",
       views: {
@@ -89,22 +78,15 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       }
     })
 
-
+    .state('home.eventDetails', {
+      url: "/eventDetails?eventId",
+      views: {
+        'userEvents-tab': {
+          templateUrl:'pages/eventDetails/eventDetails.html',
+          controller:'EventDetailsController'
+        }
+      }
+    })
 })
 
-
-/*    
-
-    
-
-    .state('home', {
-      url: '/home',
-      templateUrl: 'templates/home.html',
-      controller: 'HomeController'
-    })
-
-    .state('event', {
-      url: '/event/:eventId',
-      templateUrl: 'templates/event.html',
-      controller: 'EventController'
-    });*/
+var app = angular.module('starter.controllers', ['starter.filters']);

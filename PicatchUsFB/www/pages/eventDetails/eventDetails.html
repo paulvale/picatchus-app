@@ -1,0 +1,45 @@
+<ion-view class="home-bg" view-title="{{event.name}}" id="eventDetails" ng-init='init()'>
+	<ion-nav-buttons side="right">
+      <button class="button" ng-click="logout()">
+        log out
+      </button>
+    </ion-nav-buttons>
+    
+    <ion-header-bar class="bar has-header item-input-wrapper bar-subheader">
+        <div class="item-input-inset">
+          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+          	<input id="searchPhotosFrom" type="search" placeholder="Photos de ..." ng-model="search.from">
+          <i class="clear-search ion-ios-close-empty" ng-click="clearSearch()"></i>
+        </div>
+    </ion-header-bar>
+
+	<ion-content style="overflow:hidden !important;">
+		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+		<div class="listPhotos">
+		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
+		    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
+	            <div on-hold="delete(photo.id,photo.from.id)" ng-click="openModal(photo.id, photo.pos)" style="position:relative;
+	            			background-image:url({{photo.src}});
+	                        background-repeat:no-repeat; 
+	                        background-position: center center;
+    						background-size: cover;
+	                        width:100%;
+	                        padding-top:100%;
+	                        margin-bottom:2px;"
+	            class="card"> 
+	                <div class="item item-divider footer-photo" ng-switch on="photo.has_liked">
+	                		<div>
+		                		{{photo.total_comments}}
+		                		<i class="ion-ios-chatbubble-outline"></i>
+	                		</div>
+	                		<div class="footer-photo-like">
+		                		{{photo.total_likes}}
+				        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos, $event)"></i>
+				        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos, $event)"></i>	
+	                		</div>
+	                	</div>
+		        	</div>
+	            </div>
+		    </div>
+	</ion-content>
+</ion-view>
