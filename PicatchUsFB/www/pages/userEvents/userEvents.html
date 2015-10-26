@@ -1,4 +1,4 @@
-<ion-view view-title="Events" id="events"class="home-bg" ng-init="init()">
+<ion-view view-title="Evénements" id="events"class="home-bg" ng-init="init()">
 	<ion-nav-buttons side="right">
       <button class="button" ng-click="logout()">
         log out
@@ -13,7 +13,7 @@
 	    </div>
 		<ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher> 
 	    <ion-list class="list" canswipe="listCanSwipe" >
-	        <ion-item class="item itemListEvent" ng-repeat="event in events | filter:{status: data.filterSelected}" ui-sref="eventDetails({eventId: event.id})">
+	        <ion-item class="item itemListEvent" ng-repeat="event in events | filter:{status: data.filterSelected}" ui-sref="home.eventDetails({eventId: event.id})">
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
 			            	<p class="jour">

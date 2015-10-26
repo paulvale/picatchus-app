@@ -2,6 +2,12 @@ body{
     width: auto;
     background-color:#4f4e53; 
 }
+/*
+ * HEADER & BOTTOM BAR
+ */
+.bar.bar-stable .title {
+    color: #A03C39;
+}
 
 /* LOGIN PAGE */
 .fbBtn {
@@ -198,6 +204,11 @@ div.userProfile img {
 }
 
 /* EVENT DESIGN */
+
+.item-content {
+    padding: 0px !important;
+    background-color: transparent !important;
+}
 
 .clear-search {
   font-size: 18px;

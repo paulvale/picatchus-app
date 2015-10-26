@@ -1,17 +1,12 @@
 <ion-view class="home-bg" view-title="{{event.name}}" id="eventDetails" ng-init='init()'>
-   <ion-nav-buttons side="left">  
-      <button class="button" ng-click="back()">
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
 	<ion-nav-buttons side="right">
       <button class="button" ng-click="logout()">
         log out
       </button>
     </ion-nav-buttons>
     
-    <ion-header-bar class="bar bar-subheader item-input-inset">
-        <div class="item-input-wrapper">
+    <ion-header-bar class="bar has-header item-input-wrapper bar-subheader">
+        <div class="item-input-inset">
           <i class="icon ion-ios-search-strong placeholder-icon"></i>
           	<input id="searchPhotosFrom" type="search" placeholder="Photos de ..." ng-model="search.from">
           <i class="clear-search ion-ios-close-empty" ng-click="clearSearch()"></i>

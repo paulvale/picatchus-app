@@ -51,12 +51,6 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       controller:'EditPictureController'
     })
 
-    .state('eventDetails', {
-      url: "/eventDetails?eventId",
-      templateUrl:'pages/eventDetails/eventDetails.html',
-      controller:'EventDetailsController'
-    })
-
     .state('home', {
       url: '/home',
       abstract: true,
@@ -80,6 +74,16 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         'userEvents-tab': {
           templateUrl:'pages/userEvents/userEvents.html',
           controller:'UserEventsController'
+        }
+      }
+    })
+
+    .state('home.eventDetails', {
+      url: "/eventDetails?eventId",
+      views: {
+        'userEvents-tab': {
+          templateUrl:'pages/eventDetails/eventDetails.html',
+          controller:'EventDetailsController'
         }
       }
     })
