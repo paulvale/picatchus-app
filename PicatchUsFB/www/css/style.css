@@ -9,6 +9,10 @@ body{
     color: #A03C39;
 }
 
+.button-custom {
+	color: #A03C39;
+}
+
 /* LOGIN PAGE */
 .fbBtn {
     display:block;

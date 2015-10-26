@@ -6,7 +6,7 @@ app.controller('HomeController',function ($scope, $state){
         });
 
         function onSuccess(imageURI) {
-			$state.go('editPicture');
+			$state.go('editPicture', {imageURI: imageURI});
         }
 
         function onFail(message) {
