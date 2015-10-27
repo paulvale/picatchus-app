@@ -36,7 +36,8 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
     $scope.getEvents = function() {
         //If events' information are not saved in local storage, we make an api call to fb
-        if($localstorage.getObject('events')[0] == undefined){
+        $scope.liveEvents = [];
+        //if($localstorage.getObject('events')[0] == undefined){
             ngFB.api({path: '/me/events'}).then(
                 function(events) {
                     var e = events.data;
@@ -64,22 +65,25 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
                         //If the current date is egual to the start_time or start_time+1 then it's a live event
                         //Else if the start_time+1 is is before the current date, then the event is passed
-                        if(moment($scope.data.date).isBetween(start_time,end_time,'day')){
+                        if(moment($scope.data.date).isBetween(start_time,end_time)){
                             $scope.events[i].status="live";
+                            $scope.events[i].isDestination=true;
+                            $scope.liveEvents.push($scope.events[i]);
                         } //If the event's start date is after the current date, then the event is incoming
                         else if(start_time.isAfter($scope.data.date,'day'))
                             $scope.events[i].status="incoming";
                         else //Otherwiste, the event is live
                             $scope.events[i].status="passed";
                     }
-                    $localstorage.setObject('events', $scope.events);
+                    $localstorage.setObject('liveEvents', $scope.liveEvents);
+                    //$localstorage.setObject('events', $scope.events);
                     //Normalement, l'objet setté dans le localStorage contient la cover, nb_participants
                     //et nb_photos. Va savoir pourquoi, ces infos là sont bien dans le $scope.events,
                     //mais ne se mettent pas dans le localStorage, qui sette pourtant le $scope.events ...
                 },
                 errorHandler);
         }
-        else{ //If events' information are saved in local storage, we don't make an api call
+        /*else{ //If events' information are saved in local storage, we don't make an api call
             $scope.events = $localstorage.getObject('events');
             //En attendant on refait des appels pour récuperer les infos de chaque event stockés dans le 
             //localStorage. Théoriquement, on ne devrait pas avoir besoin de faire ça et on économise
@@ -87,8 +91,8 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
             for(var i=0; i < $scope.events.length; i++){
                 $scope.getEventInfos(i, $scope.events[i].id);
             }
-        }
-    }
+        }*/
+    //}
 
     $scope.getEventInfos = function(i, idEvent){
         //For each event we retrieve its information like the cover, the number of participants and number of photos
