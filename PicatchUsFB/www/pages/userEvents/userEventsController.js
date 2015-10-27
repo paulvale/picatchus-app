@@ -48,16 +48,17 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
                         //We get the start date of the event
                         var start_time = moment(e[i].start_time);
-                        $scope.events[i].start_time = start_time.format('LLL');
+                        $scope.events[i].start_time = start_time;
+
 
                         //If the event's end date is not null, we keep it
                         if(e[i].end_time){
                             var end_time = moment(e[i].end_time);
-                            $scope.events[i].end_time = end_time.format('LLL');
+                            $scope.events[i].end_time = end_time;
                         } //Otherwise, we set the end date equals to start date + 48h
                         else{
                             var end_time = start_time.add(48, 'h');
-                            $scope.events[i].end_time = end_time.format('LLL');
+                            $scope.events[i].end_time = end_time;
                         }
 
                         //We keep end date in a var for comparison

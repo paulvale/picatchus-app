@@ -9,9 +9,15 @@ body{
     color: #A03C39;
 }
 
+
+.bar-subheader {
+    position: absolute;
+    top: 44px;
+    height: 44px;
+
 .button-custom {
 	color: #A03C39;
-}
+
 
 /* LOGIN PAGE */
 .fbBtn {
