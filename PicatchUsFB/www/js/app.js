@@ -48,7 +48,10 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
     .state('editPicture', {
       url: "/editPicture",
       templateUrl:'pages/editPicture/editPicture.html',
-      controller:'EditPictureController'
+      controller:'EditPictureController',
+      params: {
+        imageURI: null
+      }
     })
 
     .state('home', {
