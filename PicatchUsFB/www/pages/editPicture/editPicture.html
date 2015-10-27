@@ -13,8 +13,8 @@
 			</button>
 	    </div>
 	    <div class="row">
-	    	<textarea ng-model="description" placeholder="Dis quelque chose à propos de cette photo" style="width: 100%;height:60px;"></textarea>
+	    	<textarea id="photo-caption" ng-model="data.description" placeholder="Dis quelque chose à propos de cette photo" style="width: 100%;height:60px;"></textarea>
 	    </div>
-		<img id="photo" src="" style="width:100%"> 
+		<img id="photo" ng-src="{{data.imageURI}}" style="width:100%"> 
 	</ion-content>
 </ion-view>
