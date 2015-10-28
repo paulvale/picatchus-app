@@ -236,6 +236,13 @@ div.userProfile img {
 
 /* EVENT DESIGN */
 
+/* User Picture in nav bar*/
+img.userPicture {
+    border-radius:150px;
+    height:37px;
+    width:37px;
+} 
+
 .item-content {
     padding: 0px !important;
     background-color: transparent !important;

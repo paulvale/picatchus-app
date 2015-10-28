@@ -16,6 +16,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
     $scope.refresh = function(){
         $scope.user = UserFactory.refresh().then(function(user){
+            console.log(user);
             $scope.user = user;
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
@@ -33,6 +34,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     $scope.getUserInfo = function() {
         $scope.user = UserFactory.getUser().then(function(user){
             $scope.user = user;
+            console.log($scope.user.picture.data.url);
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
         })
@@ -140,6 +142,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
                 window.localStorage.removeItem("first_use");
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("events");
+                $scope.popover.hide();
                 $location.path('/login');
             },
             errorHandler);
