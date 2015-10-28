@@ -1,5 +1,5 @@
 service.factory('EventsFactory', function (ngFB, $q){
-	var now = moment().format('LLL');
+	var now = moment();
 
 	var factory = {};
 	factory.events = false;
@@ -18,16 +18,14 @@ service.factory('EventsFactory', function (ngFB, $q){
 
              	angular.forEach(factory.events, function(event){
              		var start_time = moment(event.start_time);
-                    event.start_time = start_time.format('LLL');
 
                     //If the event's end date is not null, we keep it
                     if(event.end_time){
                         var end_time = moment(event.end_time);
-                        event.end_time = end_time.format('LLL');
                     } //Otherwise, we set the end date equals to start date + 48h
                     else{
                         var end_time = start_time.add(48, 'h');
-                        event.end_time = end_time.format('LLL');
+                        event.end_time = end_time;
                     }
 
 	             	ngFB.api({path: '/' + event.id + '/attending', params : {summary: 'true'}}).then(
