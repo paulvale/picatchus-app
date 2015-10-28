@@ -3,9 +3,11 @@ service.factory('UserFactory', function (ngFB, $q){
 
 	factory.user = false;
 
-	factory.getUser = function (){
+	factory.getUser = function (refresh){
+        refresh == undefined ? refresh = false : refresh;
+
 		var deffered = $q.defer();
-		if(factory.user !== false){ //User information have been already loaded
+		if(factory.user !== false && refresh == false){ //User information have been already loaded and it is not a refresh
 			deffered.resolve(factory.user);
 		}
 		else{ //We make an api call
@@ -27,20 +29,6 @@ service.factory('UserFactory', function (ngFB, $q){
 
 	factory.getName = function (){
 		return factory.user.name;
-	}
-
-	factory.refresh = function(){
-		factory.user = false;
-		var deffered = $q.defer();
-
-		factory.getUser().then(function(data){
-			factory.user = data;
-			deffered.resolve(factory.user);
-		}, function(msg){
-			deffered.reject(msg);
-		});
-
-		return deffered.promise;
 	}
 
 	return factory;

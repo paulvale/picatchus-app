@@ -1,17 +1,17 @@
-service.factory('EventsFactory', function (ngFB, $q){
+service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 	var now = moment().format('LLL');
 
 	var factory = {};
 	factory.events = false;
 
-	factory.getEvents = function (){
+	factory.getEvents = function (refresh){
+        refresh == undefined ? refresh = false : refresh;
+
 		var deffered = $q.defer();
-		if(factory.events !== false){
-			console.log('déjà chargé');
+		if(factory.events !== false && refresh == false){
 			deffered.resolve(factory.events);
 		}
 		else{
-			console.log('chargement');
 			ngFB.api({path: '/me/events'}).then(
              function(events) {
              	factory.events = events.data;
@@ -53,52 +53,55 @@ service.factory('EventsFactory', function (ngFB, $q){
 		return deffered.promise;
 	}
 
-	factory.getEvent = function (id){
-		var e = null;
-		angular.forEach(factory.events, function(event){
-	    	if(event.id === id){
-	    		e = event;
-	    	}
-	    });
+	factory.getEvent = function (id, refresh){
+	    var deffered = $q.defer();
+	    var e = null;
+		factory.getEvents(refresh).then(function(events){
+			angular.forEach(events, function(event){
+		    	if(event.id === id){
+					e = event;	
+				}
+		    });
+		    deffered.resolve(e);
+		}, function(msg){	
+			deffered.reject(msg);
+		})
 
 	    return e;
 	}
 
-	factory.getLiveEvents = function (){
-		var liveEvents = [];
-		angular.forEach(factory.events, function(event){
-            if(moment(now).isBetween(event.start_time, event.end_time)){
-	    		liveEvents.push(event);
-	    	}
-	    });
-
-	    return liveEvents;
-	}
-
-	factory.getPassedEvents = function (){
-		var passedEvents = [];
-		angular.forEach(factory.events, function(event){
-            if(!moment(now).isBetween(event.start_time, event.end_time) && !moment(event.start_time).isAfter(now)){
-	    		passedEvents.push(event);
-	    	}
-	    });
-
-	    return passedEvents;
-	}
-
-	factory.refresh = function(){
-		console.log('refresh');
-		factory.events = false;
+	factory.getLiveEvents = function (refresh){
 		var deffered = $q.defer();
-
-		factory.getEvents().then(function(data){
-			factory.events = data;
-			deffered.resolve(factory.events);
-		}, function(msg){
+		var liveEvents = [];
+		factory.getEvents(refresh).then(function(events){
+			angular.forEach(events, function(event){
+	            if(moment(now).isBetween(event.start_time, event.end_time)){
+		    		liveEvents.push(event);
+		    	}
+		    });
+		    deffered.resolve(liveEvents);
+		}, function(msg){	
 			deffered.reject(msg);
-		});
+		})
 
-		return deffered.promise;
+	    return deffered.promise;
+	}
+
+	factory.getPassedEvents = function (refresh){
+	    var deffered = $q.defer();
+		var passedEvents = [];
+		factory.getEvents(refresh).then(function(events){
+			angular.forEach(events, function(event){
+            	if(!moment(now).isBetween(event.start_time, event.end_time) && !moment(event.start_time).isAfter(now)){
+		    		passedEvents.push(event);
+		    	}
+		    });
+		    deffered.resolve(passedEvents);
+		}, function(msg){	
+			deffered.reject(msg);
+		})
+
+	    return deffered.promise;
 	}
 
 	return factory;
