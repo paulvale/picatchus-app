@@ -7,7 +7,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
     function getEventPhotos(){
         $scope.photos = PhotoFactory.getEventPhotos($stateParams.eventId).then(function(photos){
             $scope.photos = photos;
-            console.log($scope.photos);
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
         })

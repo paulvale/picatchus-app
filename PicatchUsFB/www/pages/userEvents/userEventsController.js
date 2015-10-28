@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, UserFactory, EventsFactory) {
+app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
