@@ -16,7 +16,8 @@
 
 	<ion-content has-subheader="true" class="has-subheader">
 	    <ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher> 
-	    <ion-list class="list" canswipe="listCanSwipe" >
+	    <ion-spinner ng-show="loading"></ion-spinner>
+	    <ion-list class="list" canswipe="listCanSwipe">
 	        <ion-item class="item itemListEvent" ng-repeat="event in filteredEvents" ui-sref="home.eventDetails({eventId: event.id})">
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">

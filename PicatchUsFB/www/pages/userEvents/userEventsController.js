@@ -32,10 +32,12 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
     $scope.init = function(){
         //Block action on physical return button for android by clearing the navigation history
+        $scope.loading = true;
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         getEvents();
         getUserInfo();
+        $scope.loading = false;
     }
 
     $scope.refresh = function(){
@@ -52,7 +54,6 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
             break;
         }
     }
-    
     $scope.logout = function() {
         ngFB.logout().then(
             function() {

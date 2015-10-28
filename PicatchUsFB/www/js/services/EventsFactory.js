@@ -76,6 +76,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		factory.getEvents(refresh).then(function(events){
 			angular.forEach(events, function(event){
 	            if(moment(now).isBetween(event.start_time, event.end_time)){
+	            	event.isDestination = true;
 		    		liveEvents.push(event);
 		    	}
 		    });

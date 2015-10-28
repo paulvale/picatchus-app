@@ -1,55 +1,24 @@
-app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal){
-	
-	$scope.init = function(){
+app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
+	function getEvent(refresh){
+        refresh == undefined ? refresh = false : refresh;
+        $scope.event = EventsFactory.getEvent($stateParams.eventId, refresh);
+    }
+
+    function getEventPhotos(){
+        $scope.photos = PhotoFactory.getEventPhotos($stateParams.eventId).then(function(photos){
+            $scope.photos = photos;
+            console.log($scope.photos);
+        }, function(msg){
+            $cordovaToast.showLongBottom(msg);
+        })
+    }
+
+    $scope.init = function(){
         //Loading the event's information
-        ngFB.api({path: '/'+ $stateParams.eventId}).then(
-            function(response) {
-              $scope.event = response;
-            },
-            errorHandler);
-
+        getEvent();
         //Loading the event's photos
-        $scope.getPhotos($stateParams.eventId);
-    }
-
-    $scope.getPhotos = function(eventId){
-        //Retrieve the id of the entire event's photos with description and person who took the photo
-        ngFB.api({path: '/' + eventId +'/photos', params: {fields: 'from,name'}}).then(
-            function(photos) {
-              var p = photos.data;
-              $scope.photos = photos.data;
-              for(var i = 0; i < $scope.photos.length ; i++){
-                $scope.getPhoto(i, $scope.photos[i].id);
-              }
-            },
-            errorHandler);
-    }
-
-    $scope.getPhoto = function(i, photoId){
-        //For each photo, we get the url to display and we set the orientation
-        ngFB.api({path: '/' + photoId, params: {fields : 'images'}}).then(
-            function(photo) {
-                $scope.photos[i].src = photo.images[photo.images.length-1].source;
-                $scope.photos[i].src_modal = photo.images[0].source;
-                $scope.photos[i].orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
-                $scope.photos[i].pos = i;
-            },
-            errorHandler);
-
-        //We get the number of like too and if the user has already liked the photo
-        ngFB.api({path: '/' + photoId + '/likes', params: {summary : 'total_count,can_like,has_liked'}}).then(
-            function(photo) {
-                $scope.photos[i].total_likes = photo.summary.total_count;
-                $scope.photos[i].has_liked = photo.summary.has_liked;
-            },
-            errorHandler);
-
-        ngFB.api({path: '/' + photoId + '/comments'}).then(
-            function(comments) {
-                $scope.photos[i].comments = comments.data;
-                $scope.photos[i].total_comments = comments.data.length;
-            },
-            errorHandler);
+        getEventPhotos();
+        $scope.search = {from: ''};
     }
 
     $scope.clearSearch = function() {
@@ -61,56 +30,35 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         $event.stopPropagation();
         $scope.photos[posPhoto].total_likes--;
         $scope.photos[posPhoto].has_liked = false;
-        ngFB.api({
-            method: 'DELETE',
-            path: '/' + idPhoto + '/likes'
-        }).then(
-            function(result) {
-
-            },
-            function(error) {
-                $scope.photos[posPhoto].total_likes++;
-                $scope.photos[posPhoto].has_liked = true;
-            }
-        );
+        PhotoFactory.like(idPhoto).then(function(result){
+        }, function(msg){
+            $scope.photos[posPhoto].total_likes++;
+            $scope.photos[posPhoto].has_liked = true;
+        })
     }
 
     $scope.like = function(idPhoto, posPhoto, $event){
         $event.stopPropagation();
         $scope.photos[posPhoto].total_likes++;
         $scope.photos[posPhoto].has_liked = true;
-        ngFB.api({
-            method: 'POST',
-            path: '/' + idPhoto + '/likes'
-        }).then(
-            function(result) {
-            },
-            function(error) {
-                $scope.photos[posPhoto].total_likes--;
-                $scope.photos[posPhoto].has_liked = false;
-            }
-        );        
+        PhotoFactory.like(idPhoto).then(function(result){
+        }, function(msg){
+            $scope.photos[posPhoto].total_likes--;
+            $scope.photos[posPhoto].has_liked = false;
+        })       
     }
 
     $scope.delete = function(idPhoto, idUserFrom) {
-        if(idUserFrom == $localstorage.getObject('user').id){
+        if(idUserFrom == UserFactory.getId()){
             var confirmPopup = $ionicPopup.confirm({
             title: 'Suppression',
             template: 'Es-tu certain de vouloir supprimer cette photo ?'
                });
             confirmPopup.then(function(res) {
-             if(res) {
-                ngFB.api({
-                method: 'DELETE',
-                path: '/' + idPhoto
-                }).then(
-                    function(result) {
-                        $cordovaToast.showLongBottom('La photo a bien été supprimée');
-                        $scope.refresh();
-                    },
-                    errorHandler
-                );
-             }
+                PhotoFactory.delete(idPhoto).then(function(msg){
+                    $cordovaToast.showLongBottom(msg);
+                }, function(msg){
+                })
            });
         }
     }
@@ -151,12 +99,13 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         $scope.dislike(idPhoto, posPhoto, $event);
     }
 
-    $scope.back = function() {
+/*    $scope.back = function() {
         $state.go('home.userEvents');
-    }
+    }*/
 
     $scope.refresh = function(){
-        $scope.getPhotos($scope.event.id);
+        getEvent(true);
+        getPhotos();
         $scope.$broadcast('scroll.refreshComplete');
     }
     

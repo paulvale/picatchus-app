@@ -1,8 +1,13 @@
-app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout, $ionicModal){
+app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout, $ionicModal, EventsFactory){
     $scope.init = function(){
         $scope.data = {}
+        $scope.data.liveEvents = EventsFactory.getLiveEvents().then(
+            function(liveEvents){
+                $scope.data.liveEvents = liveEvents;
+            }, function(msg){
+                $cordovaToast.showLongBottom(msg);
+            })
         $scope.data.imageURI = $stateParams.imageURI;
-        $scope.data.liveEvents = $localstorage.getObject('liveEvents');
         if(ionic.Platform.isAndroid()){ //Not implemented for iOS yet
             $timeout(function(){
                 window.canvas2ImagePlugin.saveImageDataToLibrary(
