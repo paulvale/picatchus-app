@@ -93,3 +93,4 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
 })
 
 var app = angular.module('starter.controllers', ['starter.filters']);
+var service = angular.module('starter.services', []);
