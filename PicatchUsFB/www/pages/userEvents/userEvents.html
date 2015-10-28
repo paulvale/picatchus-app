@@ -1,8 +1,7 @@
 <ion-view view-title="Evénements" id="events"class="home-bg" ng-init="init()">
 	<ion-nav-buttons side="right">
-      <button class="button" ng-click="logout()">
-        log out
-      </button>
+	       <img class="userPicture" ng-src="{{user.picture.data.url}}" ng-click="popover.show($event)">
+	      </img> 
     </ion-nav-buttons>
     
     <ion-header-bar class="bar bar-stable bar-subheader">

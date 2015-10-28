@@ -236,6 +236,13 @@ div.userProfile img {
 
 /* EVENT DESIGN */
 
+/* User Picture in nav bar*/
+img.userPicture {
+    border-radius:150px;
+    height:37px;
+    width:37px;
+} 
+
 .item-content {
     padding: 0px !important;
     background-color: transparent !important;
@@ -417,5 +424,19 @@ ul#selectedEvents li {
 
 ul#selectedEvents {
     display: inline;
+}
+
+
+/* Customize popOver*/
+ion-popover-view {
+  height: auto !important;
+}
+
+ion-popover-view ion-content {
+  position: relative !important;
+}
+
+.platform-android ion-popover-view {
+  margin-top: 10px !important;
 }
 

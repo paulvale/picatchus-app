@@ -61,6 +61,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("events");
                 $state.go('login');
+                $scope.popover.hide();
             },
             errorHandler);
     }
@@ -68,4 +69,10 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));
     }
+
+    $ionicPopover.fromTemplateUrl('templates/popOverMenu.html', {
+            scope: $scope,
+        }).then(function(popover) {
+            $scope.popover = popover;
+    });
 })
