@@ -9,14 +9,35 @@ body{
     color: #A03C39;
 }
 
+/* Permet de changer la couleur de la bottom bar*/
+.tabs-striped.tabs-stable .tab-item.tab-item-active {
+    color: #A03C39;
+    border-color:#A03C39;
+}
+.tabs-striped.tabs-stable .tab-item {
+    color:rgba(160, 60, 57,0.4);
+}
+
+/* Permet de changer la couleur des outlets pour les events*/
+.button-outline.button-outline.active {
+    border-color:rgba(160, 60, 57,0.7);
+    background-color: rgba(160, 60, 57,0.7);
+}
+.button-outline.button-outline {
+    border-color: rgba(160, 60, 57,0.7);
+    color:rgba(160, 60, 57,0.7);
+}
 
 .bar-subheader {
     position: absolute;
     top: 44px;
     height: 44px;
+}
 
-.button-custom {
+.button-custom , .custom-icon {
 	color: #A03C39;
+}
+
 
 
 /* LOGIN PAGE */
