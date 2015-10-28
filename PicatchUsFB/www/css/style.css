@@ -419,3 +419,17 @@ ul#selectedEvents {
     display: inline;
 }
 
+
+/* Customize popOver*/
+ion-popover-view {
+  height: auto !important;
+}
+
+ion-popover-view ion-content {
+  position: relative !important;
+}
+
+.platform-android ion-popover-view {
+  margin-top: 10px !important;
+}
+

@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, UserFactory, EventsFactory) {
+app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $ionicPopover, $localstorage, UserFactory, EventsFactory) {
     $scope.init = function(){
         //Block action on physical return button for android by clearing the navigation history
         $ionicHistory.clearCache();
@@ -148,4 +148,10 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));
     }
+
+    $ionicPopover.fromTemplateUrl('templates/popOverMenu.html', {
+            scope: $scope,
+        }).then(function(popover) {
+            $scope.popover = popover;
+    });
 })
