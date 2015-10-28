@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage) {
+app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, UserFactory, EventsFactory) {
     $scope.init = function(){
         //Block action on physical return button for android by clearing the navigation history
         $ionicHistory.clearCache();
@@ -15,28 +15,41 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     }
 
     $scope.refresh = function(){
-        $localstorage.remove('events');
-        $scope.getEvents();
+        $scope.user = UserFactory.refresh().then(function(user){
+            $scope.user = user;
+        }, function(msg){
+            $cordovaToast.showLongBottom(msg);
+        })
+
+        $scope.events = EventsFactory.refresh().then(function(events){
+            $scope.events = events;
+            $scope.liveEvents = EventsFactory.getLiveEvents();
+            $scope.passedEvents = EventsFactory.getPassedEvents();
+        })
+        
         $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.getUserInfo = function() {
-        //If user's information are not saved in local storage, we make an api call to fb
-        if($localstorage.getObject('user').name == undefined || $localstorage.getObject('user').id == undefined){
-            ngFB.api({path: '/me'}).then(
-                function(user) {
-                    $scope.user = user;
-                    $localstorage.setObject('user', user); //We save the user information in local storage
-                },
-                errorHandler);
-        }else{ //User's information are saved in local storage
-            $scope.user = $localstorage.getObject('user');
-        }
+        $scope.user = UserFactory.getUser().then(function(user){
+            $scope.user = user;
+        }, function(msg){
+            $cordovaToast.showLongBottom(msg);
+        })
     }
 
     $scope.getEvents = function() {
+        $scope.events = EventsFactory.getEvents().then(function(events){
+            $scope.events = events;
+            $scope.liveEvents = EventsFactory.getLiveEvents();
+            $scope.passedEvents = EventsFactory.getPassedEvents();
+        }, function(msg){
+            $cordovaToast.showLongBottom(msg);
+        });
+
+
         //If events' information are not saved in local storage, we make an api call to fb
-        if($localstorage.getObject('events')[0] == undefined){
+/*        if($localstorage.getObject('events')[0] == undefined){
             ngFB.api({path: '/me/events'}).then(
                 function(events) {
                     var e = events.data;
@@ -87,18 +100,11 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
             for(var i=0; i < $scope.events.length; i++){
                 $scope.getEventInfos(i, $scope.events[i].id);
             }
-        }
+        }*/
     }
 
     $scope.getEventInfos = function(i, idEvent){
-        //For each event we retrieve its information like the cover, the number of participants and number of photos
-        ngFB.api({path: '/' + idEvent, params : {fields: 'cover'}}).then(
-            function(data) {
-                try{
-                    $scope.events[i].cover = data.cover.source;
-                }catch(e){  }
-            },
-            errorHandler);
+        //For each event we retrieve its information like the number of participants and number of photos
 
         ngFB.api({path: '/' + idEvent + '/attending', params : {summary: 'true'}}).then(
             function(event_attending) {
@@ -116,9 +122,9 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     $scope.selectStatus = function(index){
         //Enables to change the filter on events
         switch(index){
-            case 0: $scope.data.filterSelected = "passed";
+            case 0: $scope.filteredEvents = $scope.passedEvents;
             break;
-            case 1: $scope.data.filterSelected = "live";
+            case 1: $scope.filteredEvents = $scope.liveEvents;
             break;
         }
     }
