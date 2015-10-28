@@ -54,6 +54,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
 
     $scope.clearSearch = function() {
         document.getElementById('searchPhotosFrom').value = '';
+        $scope.search.from = '';
     }
 
     $scope.dislike = function(idPhoto, posPhoto, $event){

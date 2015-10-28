@@ -9,9 +9,15 @@ body{
     color: #A03C39;
 }
 
+
+.bar-subheader {
+    position: absolute;
+    top: 44px;
+    height: 44px;
+
 .button-custom {
 	color: #A03C39;
-}
+
 
 /* LOGIN PAGE */
 .fbBtn {
@@ -357,7 +363,7 @@ div.userEvent img {
     height: auto;
 }
 
-.modal {
+#modal-photo{
     background-color: black;
 }
 
@@ -376,5 +382,19 @@ div.userEvent img {
     width: 100%;
     height: 95px;
     max-height: 95px;
+}
+
+/* 
+ * EDIT PICTURE VIEW
+ */
+ul#selectedEvents li {
+   display: inline;
+   padding: 2px ;
+   margin: 0;
+   width: 19%;
+}
+
+ul#selectedEvents {
+    display: inline;
 }
 

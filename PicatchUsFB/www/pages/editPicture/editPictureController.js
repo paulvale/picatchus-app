@@ -1,7 +1,8 @@
-app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout){
+app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout, $ionicModal){
     $scope.init = function(){
         $scope.data = {}
         $scope.data.imageURI = $stateParams.imageURI;
+        $scope.data.liveEvents = $localstorage.getObject('liveEvents');
         if(ionic.Platform.isAndroid()){ //Not implemented for iOS yet
             $timeout(function(){
                 window.canvas2ImagePlugin.saveImageDataToLibrary(
@@ -10,23 +11,37 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
                     function(err){
                         console.log(err);
                     },
-                    imageURI
+                    $scope.data.imageURI
                 );
             }, 2000);
         }
     }
 
     $scope.sendPhoto = function() {
-        var fileURI = document.getElementById('photo').src;
-        var options = new FileUploadOptions();
+        $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
             params.caption = "Pris avec <3 par #PicatchUs";
         else
             params.caption = $scope.data.description + " - Pris avec <3 par #PicatchUs";
-        options.params = params;
+        $scope.data.options.params = params;
 
-        $cordovaFileTransfer.upload("https://graph.facebook.com/404456883087336/photos?access_token=" + window.localStorage.fbAccessToken, $scope.data.imageURI, options)
+        for(var i = 0; i < $scope.data.liveEvents.length; i++){
+	      if($scope.data.liveEvents[i].isDestination == true){
+	        upload($scope.data.liveEvents[i].id);
+	      }
+	  	}
+
+	    if($scope.data.onMyWall == true){
+	        upload('me');
+	    }
+
+        $scope.data.imageURI = '';
+        $state.go('home.eventsFeed');
+    }
+
+    function upload(id){
+    	$cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, $scope.data.imageURI, $scope.data.options)
           .then(function(result) {
             $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
           }, function(err) {
@@ -35,13 +50,27 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
           }, function (progress) {
             // constant progress updates
           });
-
-        $scope.data.imageURI = '';
-        $state.go('home.eventsFeed');
     }
 
     $scope.quit = function(){
         $scope.data.imageURI = '';
     	$state.go('home.eventsFeed');
+    }
+
+
+    /*
+     * Modal view to select event(s) destination
+     */
+    $ionicModal.fromTemplateUrl('pages/editPicture/selectEventModal.html', function($ionicModal) {
+        $scope.modal = $ionicModal;
+            }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });
+
+    $scope.openModal = function(){
+    	$scope.modal.show();
     }
 });
