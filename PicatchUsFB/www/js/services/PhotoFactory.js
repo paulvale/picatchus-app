@@ -1,7 +1,22 @@
-service.factory('PhotoFactory', function (ngFB, $q){
+service.factory('PhotoFactory', function (ngFB, $q, $cordovaFileTransfer){
 	var factory = {};
 
 	factory.photos = {};
+
+  factory.upload = function(id, imageURI, options){
+    var deffered = $q.defer();
+
+    $cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, imageURI, options)
+      .then(function(result) {
+        deffered.resolve("Votre photo a bien été envoyée !");
+      }, function(err) {
+        deffered.reject("Oups ! Votre photo n\'a pas été envoyée ...")
+      }, function (progress) {
+
+      });
+
+      return deffered.promise;
+  }
 
   factory.like = function(id){
     var deffered = $q.defer();

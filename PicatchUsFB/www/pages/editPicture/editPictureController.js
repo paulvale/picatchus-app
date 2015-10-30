@@ -1,8 +1,7 @@
-app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout, $ionicModal, EventsFactory){
+app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $localstorage, $state, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $timeout, $ionicModal, $rootScope, EventsFactory, PhotoFactory, ngProgressFactory){
     $scope.init = function(){
         $scope.data = {}
-        $scope.data.liveEvents = EventsFactory.getLiveEvents().then(
-            function(liveEvents){
+        $scope.data.liveEvents = EventsFactory.getLiveEvents().then(function(liveEvents){
                 $scope.data.liveEvents = liveEvents;
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
@@ -26,9 +25,9 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
-            params.caption = "Pris avec <3 par #PicatchUs";
+            params.caption = "#PicatchUs";
         else
-            params.caption = $scope.data.description + " - Pris avec <3 par #PicatchUs";
+            params.caption = $scope.data.description + " - #PicatchUs";
         $scope.data.options.params = params;
 
         for(var i = 0; i < $scope.data.liveEvents.length; i++){
@@ -46,22 +45,17 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
     }
 
     function upload(id){
-    	$cordovaFileTransfer.upload("https://graph.facebook.com/" + id + "/photos?access_token=" + window.localStorage.fbAccessToken, $scope.data.imageURI, $scope.data.options)
-          .then(function(result) {
-            $cordovaToast.showLongBottom('Votre photo a bien été envoyée !');
-          }, function(err) {
-            console.log(err);
-            $cordovaToast.showLongBottom('Oups ! Votre photo n\'a pas été envoyée ...');
-          }, function (progress) {
-            // constant progress updates
-          });
+        PhotoFactory.upload(id, $scope.data.imageURI, $scope.data.options).then(function(msg){
+            $cordovaToast.showLongBottom(msg);
+        }, function(msg){
+            $cordovaToast.showLongBottom(msg);
+        });
     }
 
     $scope.quit = function(){
         $scope.data.imageURI = '';
     	$state.go('home.eventsFeed');
     }
-
 
     /*
      * Modal view to select event(s) destination
