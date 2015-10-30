@@ -440,3 +440,16 @@ ion-popover-view ion-content {
   margin-top: 10px !important;
 }
 
+/* Customize ion-spinner */
+div.spinner {
+  position: absolute;
+  top: 10px; left: 0; bottom: 0; right: 0;
+  height: 85px;
+  text-align: center;
+}
+
+.spinner svg {
+  width: 19% !important;
+  height: 40px !important;
+}
+

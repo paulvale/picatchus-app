@@ -14,8 +14,10 @@
 	</ion-header-bar>
 
 	<ion-content has-subheader="true" class="has-subheader">
-	    <ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher> 
-	    <ion-spinner ng-show="loading"></ion-spinner>
+	    <ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+	    <div class="spinner">
+	    	<ion-spinner ng-show="loading"></ion-spinner>
+	    </div>
 	    <ion-list class="list" canswipe="listCanSwipe">
 	        <ion-item class="item itemListEvent" ng-repeat="event in filteredEvents" ui-sref="home.eventDetails({eventId: event.id})">
 		            <div class="row listInfoEvent">
@@ -31,7 +33,7 @@
 			            	<h2>{{event.name}}</h2>
 			            	<div class="row">
 			            		<div class="col col-50">
-			            			{{event.total_participants}}<i class="ion-person-stalker light"></i>
+			            			{{event.attending_count}}<i class="ion-person-stalker light"></i>
 			            		</div>
 			            		<div class="col col-50">
 		            				{{event.total_photos}}<i class="ion-images light"></i>

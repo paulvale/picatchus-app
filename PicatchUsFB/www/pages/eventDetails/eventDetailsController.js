@@ -4,18 +4,16 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         $scope.event = EventsFactory.getEvent($stateParams.eventId, refresh);
     }
 
-    function getEventPhotos(){
-        $scope.photos = PhotoFactory.getEventPhotos($stateParams.eventId).then(function(photos){
+    function getEventPhotos(refresh){
+        $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
             $scope.photos = photos;
+            console.log($scope.photos);
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
         })
     }
 
     $scope.init = function(){
-        //Loading the event's information
-        getEvent();
-        //Loading the event's photos
         getEventPhotos();
         $scope.search = {from: ''};
     }
@@ -52,11 +50,13 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
             var confirmPopup = $ionicPopup.confirm({
             title: 'Suppression',
             template: 'Es-tu certain de vouloir supprimer cette photo ?'
-               });
+            });
+
             confirmPopup.then(function(res) {
                 PhotoFactory.delete(idPhoto).then(function(msg){
-                    $cordovaToast.showLongBottom(msg);
-                }, function(msg){
+                $cordovaToast.showLongBottom(msg);
+                },
+                function(msg){
                 })
            });
         }
@@ -103,8 +103,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
     }*/
 
     $scope.refresh = function(){
-        getEvent(true);
-        getPhotos();
+        getEventPhotos(true);
         $scope.$broadcast('scroll.refreshComplete');
     }
     

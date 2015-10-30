@@ -3,6 +3,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
 	var factory = {};
 	factory.events = false;
+	var events_photos_already_loaded = [];
 
 	factory.getEvents = function (refresh){
         refresh == undefined ? refresh = false : refresh;
@@ -12,7 +13,8 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 			deffered.resolve(factory.events);
 		}
 		else{
-			ngFB.api({path: '/me/events'}).then(
+			events_photos_already_loaded = []; //When we refresh events, we reset photos loaded. Otherwise, it creates a bug and photos are not loaded
+			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos{id, created_time, from, images, comments}'}}).then(
              function(events) {
              	factory.events = events.data;
 
@@ -30,19 +32,9 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
                         event.end_time = end_time;
                     }
 
-	             	ngFB.api({path: '/' + event.id + '/attending', params : {summary: 'true'}}).then(
-		            	function(event_attending) {
-		                event.total_participants = event_attending.summary.count;
-		            }, function(){
-		            	deffered.reject("Erreur de connexion réseau");
-		            });
+                    if(event.photos !== undefined)
+                    	event.total_photos = event.photos.data.length;
 
-		            ngFB.api({path: '/' + event.id + '/photos'}).then(
-		            function(photos) {
-		                event.total_photos = photos.data.length;
-		            }, function(){
-		            	deffered.reject("Erreur de connexion réseau");
-		            });
              	});
 
              	deffered.resolve(factory.events);
@@ -67,7 +59,46 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 			deffered.reject(msg);
 		})
 
-	    return e;
+	    return deffered.promise;
+	}
+
+	factory.getEventPhotos = function(id, refresh) {
+		refresh == undefined ? refresh = false : refresh;
+		var deffered = $q.defer();
+		if(events_photos_already_loaded.indexOf(id) > -1 && refresh == false){ //photos of id event have been already loaded
+			factory.getEvent(id).then(function(event){
+				factory.photos = event.photos.data;
+				deffered.resolve(factory.photos);
+			})
+		}
+		else{ //Otherwise, photos have never been loaded or events have been refreshed
+			factory.getEvent(id, refresh).then(function(event){
+				factory.photos = event.photos.data;
+				var i = 0;
+					angular.forEach(factory.photos, function(photo){
+						ngFB.api({path: '/' + photo.id + '/likes', params: {summary : 'total_count,can_like,has_liked'}}).then(
+					        function(likes) {
+					            photo.total_likes = likes.summary.total_count;
+					            photo.has_liked = likes.summary.has_liked;
+					        },
+					        function(){
+					        });
+
+						photo.pos = i;
+						photo.src = photo.images[photo.images.length - 1].source; //We keep the smaller photo for the grid
+						photo.src_modal = photo.images[0].source; //We keep the bigger photo
+						photo.orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
+						photo.comments !== undefined ? photo.total_comments = photo.comments.data.length : photo.total_comments = 0;
+						i++;
+					});
+				events_photos_already_loaded.push(id); //We save event's photos as already loaded
+				deffered.resolve(factory.photos);
+			}, function(msg){
+				deffered.reject(msg);
+			});
+		}
+
+		return deffered.promise;
 	}
 
 	factory.getLiveEvents = function (refresh){

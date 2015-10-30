@@ -3,16 +3,20 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
             $scope.liveEvents = liveEvents;
-            $scope.filteredEvents = liveEvents
+            
+            if($scope.filteredEvents == undefined){ //Allows the app to display the live events directly, but to not do that for the refresh
+                $scope.filteredEvents = liveEvents;
+            }
 
-            $scope.events = EventsFactory.getEvents(refresh).then(function(events){
+            $scope.events = EventsFactory.getEvents().then(function(events){
                 $scope.events = events;
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
             });
 
-            $scope.passedEvents = EventsFactory.getPassedEvents(refresh).then(function(passedEvents){
+            $scope.passedEvents = EventsFactory.getPassedEvents().then(function(passedEvents){
                 $scope.passedEvents = passedEvents;
+                $scope.loading = false;
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
             });
@@ -37,7 +41,6 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
         $ionicHistory.clearHistory();
         getEvents();
         getUserInfo();
-        $scope.loading = false;
     }
 
     $scope.refresh = function(){
