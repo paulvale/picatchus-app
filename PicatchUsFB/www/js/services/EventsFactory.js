@@ -14,7 +14,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		}
 		else{
 			events_photos_already_loaded = []; //When we refresh events, we reset photos loaded. Otherwise, it creates a bug and photos are not loaded
-			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos{id, created_time, from, images, comments}'}}).then(
+			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos{id, created_time, name, from{id, name, picture}, images, comments}'}}).then(
              function(events) {
              	factory.events = events.data;
 
@@ -34,6 +34,8 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
                     if(event.photos !== undefined)
                     	event.total_photos = event.photos.data.length;
+                    else
+                    	event.total_photos = 0;
 
              	});
 
@@ -85,8 +87,10 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 					        });
 
 						photo.pos = i;
+						photo.time_ago = moment(photo.created_time).fromNow();
+						console.log(photo.time_ago);
 						photo.src = photo.images[photo.images.length - 1].source; //We keep the smaller photo for the grid
-						photo.src_modal = photo.images[0].source; //We keep the bigger photo
+						photo.src_modal = photo.images[0].source; //We keep the bigger photo for the modal display
 						photo.orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
 						photo.comments !== undefined ? photo.total_comments = photo.comments.data.length : photo.total_comments = 0;
 						i++;
@@ -101,6 +105,33 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		return deffered.promise;
 	}
 
+	factory.getPhotosLiveEvents = function(refresh){
+		refresh == undefined ? refresh = false : refresh;
+		var deffered = $q.defer();
+
+		var livePhotos = [];
+		factory.getLiveEvents(refresh).then(function(liveEvents){
+			angular.forEach(liveEvents, function(event){
+				
+				factory.getEventPhotos(event.id, refresh).then(function(photos){
+					angular.forEach(photos, function(photo){
+						livePhotos.push(photo);
+					})
+
+				}, function(msg){
+					deffered.reject(msg);
+				})
+			})
+
+			console.log(livePhotos);
+			deffered.resolve(livePhotos);
+		}, function(msg){
+			deffered.reject(msg);
+		})
+
+		return deffered.promise;
+	}
+
 	factory.getLiveEvents = function (refresh){
 		var deffered = $q.defer();
 		var liveEvents = [];
@@ -108,6 +139,10 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 			angular.forEach(events, function(event){
 	            if(moment(now).isBetween(event.start_time, event.end_time)){
 	            	event.isDestination = true;
+		    		liveEvents.push(event);
+		    	}
+		    	else if(event.id == "887967921250791"){ //use for test
+		    		console.log('push test picatchus 1');
 		    		liveEvents.push(event);
 		    	}
 		    });
@@ -134,6 +169,12 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		})
 
 	    return deffered.promise;
+	}
+
+	function flatten(arr) {
+	  return arr.reduce(function (flat, toFlatten) {
+	    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+	  }, []);
 	}
 
 	return factory;

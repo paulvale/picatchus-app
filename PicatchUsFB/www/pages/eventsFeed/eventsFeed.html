@@ -1,5 +1,40 @@
-<ion-view hide-nav-bar="false" view-title="Fil d'actualité" id="feed">
+<ion-view hide-nav-bar="false" view-title="Fil d'actualité" id="feed" ng-init="init()">
 	<ion-content>
-		<p>Je suis le fil d'actu des events en cours<p>
+		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+		<div class="spinner">
+	    	<ion-spinner ng-show="loading"></ion-spinner>
+	    </div>
+		<div class="list card" ng-repeat="photo in livePhotos | orderBy:'created_time':true">
+			  <div class="item item-avatar row">
+				  <div class="col col-20">
+				  	<img ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
+				  </div>
+				  <div class="col col-80">
+				    <h2>{{photo.from.name}}</h2>
+				    <p>{{photo.time_ago}}</p>
+				  </div>
+			  </div>
+
+			  <div class="item item-body">
+			    <img class="full-image" ng-src="{{photo.src_modal}}">
+			    <p>{{photo.name}}</p>
+			    <p>
+			      <a href="#" class="subdued">{{photo.total_likes}} Likes</a>
+			      <a href="#" class="subdued">{{photo.total_comments}} Commentaires</a>
+			    </p>
+			  </div>
+
+				<div class="item tabs tabs-secondary tabs-icon-left" ng-switch on="photo.has_liked">
+				    <a class="tab-item" href="#">
+				      <i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos)"></i>
+				      <i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>
+				      Like
+				    </a>
+				    <a class="tab-item" href="#">
+				      <i class="icon ion-share"></i>
+				      Share
+				    </a>
+			  </div>
+		</div>
 	</ion-content>
 </ion-view>
