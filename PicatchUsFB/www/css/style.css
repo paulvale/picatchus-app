@@ -203,7 +203,7 @@ div.userProfile img {
     border:2px;
 }
 
-.col h2{
+#events .col h2{
     color: white;
     font-size: 1.2em;
 }
@@ -379,7 +379,7 @@ div.userEvent img {
     padding: 5px;
 }
 
-.card {
+#eventDetails .card {
     margin: 0px;
 }
 
@@ -425,6 +425,13 @@ ul#selectedEvents li {
 ul#selectedEvents {
     display: inline;
 }
+
+/*
+ * FEED PAGE
+ */
+ #feed .tabs-icon-left.tabs .tab-item {
+    font-size: 16px;
+ }
 
 
 /* Customize popOver*/
