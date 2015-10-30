@@ -1,19 +1,26 @@
 app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
-        $scope.event = EventsFactory.getEvent($stateParams.eventId, refresh);
+        EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
+        	$scope.event = event;
+        	console.log($scope.event);
+        }, function(msg){
+        	$cordovaToast.showLongBottom(msg);
+        });
     }
 
     function getEventPhotos(refresh){
         $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
             $scope.photos = photos;
-            console.log($scope.photos);
+            $scope.$broadcast('scroll.refreshComplete');
         }, function(msg){
+            $scope.$broadcast('scroll.refreshComplete');
             $cordovaToast.showLongBottom(msg);
         })
     }
 
     $scope.init = function(){
+    	getEvent();
         getEventPhotos();
         $scope.search = {from: ''};
     }
@@ -104,7 +111,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
 
     $scope.refresh = function(){
         getEventPhotos(true);
-        $scope.$broadcast('scroll.refreshComplete');
     }
     
     function errorHandler(error) {

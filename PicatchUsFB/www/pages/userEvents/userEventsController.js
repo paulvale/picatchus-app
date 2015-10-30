@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, UserFactory, EventsFactory) {
+app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -17,8 +17,10 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
             $scope.passedEvents = EventsFactory.getPassedEvents().then(function(passedEvents){
                 $scope.passedEvents = passedEvents;
                 $scope.loading = false;
+                $scope.$broadcast('scroll.refreshComplete');
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
+                $scope.$broadcast('scroll.refreshComplete');
             });
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
@@ -45,7 +47,6 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
 
     $scope.refresh = function(){
         getEvents(true);     
-        $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.selectStatus = function(index){
@@ -57,6 +58,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
             break;
         }
     }
+
     $scope.logout = function() {
         ngFB.logout().then(
             function() {
@@ -71,6 +73,12 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));
+    }
+
+    if($rootScope.progressbar != null){
+        console.log('uploading');
+        $scope.progressbar = $rootScope.progressbar;
+        $scope.progressbar.start();
     }
 
     $ionicPopover.fromTemplateUrl('templates/popOverMenu.html', {

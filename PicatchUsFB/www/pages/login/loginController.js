@@ -1,4 +1,4 @@
-app.controller('LoginController', function ($scope, ngFB, $state) {
+app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast) {
     // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
