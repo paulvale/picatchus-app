@@ -1,0 +1,25 @@
+<ion-modal-view id="modal-photo-slide" on-swipe-down="quitModal()">
+	<ion-content>
+		<ion-slide-box on-slide-changed="slideChanged(index)" 
+               show-pager="false" >
+            <ion-slide ng-repeat="photo in photos">
+            	<img id="modal_img" ng-src="{{photo.src_modal}}" ng-if="photo.orientation == 'portrait'" style="margin-top:17%"/>
+		        <img id="modal_img" ng-src="{{photo.src_modal}}" ng-if="photo.orientation == 'landscape'" style="margin-top:55%"/>
+			 	
+			 	<div class="row" ng-if="modal.description">
+			 		<div class="col modal-description">
+						<textarea disabled>{{photo.description}}</textarea>
+			 		</div>
+			 	</div>
+			 	<div class="row">
+				 	<div class="modal-likes col col-30 col-offset-70" ng-switch on="modal.has_liked">
+						{{photo.total_likes}}
+<!-- 						<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos, $event)"></i>
+						<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos, $event)"></i>	 -->
+					</div>
+			 	</div>
+            </ion-slide>
+        </ion-slide-box>
+
+	</ion-content>
+</ion-modal-view>

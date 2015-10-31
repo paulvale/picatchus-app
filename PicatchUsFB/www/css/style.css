@@ -248,14 +248,23 @@ img.userPicture {
     background-color: transparent !important;
 }
 
-.clear-search {
-  font-size: 18px;
+/* Search bar in header bar*/
+.search-icon {
+    font-size: 2em;
 }
 
 .item-input-inset {
     padding: 0px;
-    height: 100%;
-    border-radius: 5px;   
+    height: 100%; 
+    width:100%;
+    background-color:transparent;  
+}
+
+#searchPhotosFrom {
+    width:95%;
+    margin-right:auto;
+    margin-left: auto;
+    background-color: transparent;
 }
 
 .header-info-event {
