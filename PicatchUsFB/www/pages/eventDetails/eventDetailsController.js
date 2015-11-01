@@ -12,6 +12,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
     function getEventPhotos(refresh){
         $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
             $scope.photos = photos;
+            console.log($scope.photos);
             $scope.$broadcast('scroll.refreshComplete');
             $timeout(function(){
                $scope.openModal();  
@@ -74,8 +75,12 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
         }
     }
 
-    $ionicModal.fromTemplateUrl('templates/photo_modal_slide.html', function($ionicModal) {
-        $scope.modal = $ionicModal;
+    /* ==================================================================== */
+    /* =================== MODAL SLIDE PHOTOS ============================= */
+    /* ==================================================================== */
+
+    $ionicModal.fromTemplateUrl('templates/photo_modal_slide.html', function(modal) {
+        $scope.modalPhoto = modal;
             }, {
         // Use our scope for the scope of the modal to keep it simple
         scope: $scope,
@@ -84,22 +89,14 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
     });
 
     $scope.openModal = function() {
-/*        $scope.modal.src_modal = $scope.photos[posPhoto].src_modal;
-        $scope.modal.orientation = $scope.photos[posPhoto].orientation;
-        $scope.modal.likes = $scope.photos[posPhoto].total_likes;
-        $scope.modal.has_liked = $scope.photos[posPhoto].has_liked;
-        $scope.modal.description = $scope.photos[posPhoto].name;
-        $scope.modal.id = idPhoto;
-        $scope.modal.pos = posPhoto;*/
-        $scope.modal.show(); 
+        $scope.modalPhoto.show(); 
         $ionicSlideBoxDelegate.update();
-        $scope.modal.hide();
+        $scope.modalPhoto.hide();
     }
 
 
     $scope.openPhoto = function(posPhoto) {
-        $scope.modal.show();
-        console.log($ionicSlideBoxDelegate.slidesCount());
+        $scope.modalPhoto.show();
         $scope.slideIndex = posPhoto;
         $ionicSlideBoxDelegate.update();
         $ionicSlideBoxDelegate.slide($scope.slideIndex);        
@@ -110,21 +107,34 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
       $scope.slideIndex = index;
     };
 
-    $scope.quitModal = function(){
-        $scope.modal.hide();
+    $scope.quitModalPhoto = function(){
+        $scope.modalPhoto.hide();
     }
 
-    $scope.likeModal = function(idPhoto, posPhoto, $event){
-        $scope.modal.likes++;
-        $scope.modal.has_liked = true;
-        $scope.like(idPhoto, posPhoto, $event);
+    /* ==================================================================== */
+    /* ======================= MODAL COMMENTS ============================= */
+    /* ==================================================================== */
+
+    $ionicModal.fromTemplateUrl('templates/commentsModal.html', function(modal) {
+        $scope.modalComments = modal;
+            }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });
+
+    $scope.openComment = function(idPhoto,posPhoto) {
+        $scope.modalComments.idPhoto = idPhoto;
+        console.log($scope.photos[posPhoto].comments);
+        $scope.modalComments.commentsPhoto = angular.copy($scope.photos[posPhoto].comments.data);
+        $scope.modalComments.show();       
     }
 
-    $scope.dislikeModal = function(idPhoto, posPhoto, $event){
-        $scope.modal.likes--;
-        $scope.modal.has_liked = false;
-        $scope.dislike(idPhoto, posPhoto, $event);
+    $scope.quitModalComment = function(){
+        $scope.modalComments.hide();
     }
+
 
 /*    $scope.back = function() {
         $state.go('home.userEvents');
