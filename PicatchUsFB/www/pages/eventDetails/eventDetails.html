@@ -16,7 +16,7 @@
 		<div class="listPhotos">
 		    <!-- <div id="{{photo.id}}" class="event_photos" ng-repeat="photo in photos"> -->
 		    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
-	            <div ng-click="openModal(photo.id, photo.pos)" style="position:relative;
+	            <div ng-click="openPhoto(photo.pos)" style="position:relative;
 	            			background-image:url({{photo.src}});
 	                        background-repeat:no-repeat; 
 	                        background-position: center center;

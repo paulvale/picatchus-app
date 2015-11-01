@@ -1,4 +1,4 @@
-app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory,$ionicSlideBoxDelegate){
+app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory,$ionicSlideBoxDelegate){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
@@ -13,6 +13,10 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
             $scope.photos = photos;
             $scope.$broadcast('scroll.refreshComplete');
+            $timeout(function(){
+               $scope.openModal();  
+             },0)
+            
         }, function(msg){
             $scope.$broadcast('scroll.refreshComplete');
             $cordovaToast.showLongBottom(msg);
@@ -24,6 +28,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         getEventPhotos();
         $scope.search = {from: ''};
     }
+
 
     $scope.clearSearch = function() {
         document.getElementById('searchPhotosFrom').value = '';
@@ -78,7 +83,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         animation: 'slide-in-up'
     });
 
-    $scope.openModal = function(idPhoto, posPhoto) {
+    $scope.openModal = function() {
 /*        $scope.modal.src_modal = $scope.photos[posPhoto].src_modal;
         $scope.modal.orientation = $scope.photos[posPhoto].orientation;
         $scope.modal.likes = $scope.photos[posPhoto].total_likes;
@@ -86,9 +91,18 @@ app.controller('EventDetailsController',function ($scope, ngFB, $stateParams, $i
         $scope.modal.description = $scope.photos[posPhoto].name;
         $scope.modal.id = idPhoto;
         $scope.modal.pos = posPhoto;*/
-
-        $scope.modal.show();
+        $scope.modal.show(); 
         $ionicSlideBoxDelegate.update();
+        $scope.modal.hide();
+    }
+
+
+    $scope.openPhoto = function(posPhoto) {
+        $scope.modal.show();
+        console.log($ionicSlideBoxDelegate.slidesCount());
+        $scope.slideIndex = posPhoto;
+        $ionicSlideBoxDelegate.update();
+        $ionicSlideBoxDelegate.slide($scope.slideIndex);        
     }
 
     // Called each time the slide changes

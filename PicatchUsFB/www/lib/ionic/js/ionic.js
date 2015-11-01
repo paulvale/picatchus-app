@@ -691,6 +691,7 @@ window.ionic.version = '1.1.0';
         ionic.Gestures.detection.register(ionic.Gestures.gestures[name]);
       }
     }
+    
 
     // Add touch events on the document
     ionic.Gestures.event.onTouch(ionic.Gestures.DOCUMENT, ionic.Gestures.EVENT_MOVE, ionic.Gestures.detection.detect);
