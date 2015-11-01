@@ -3,21 +3,55 @@
 		<ion-slide-box on-slide-changed="slideChanged(index)" 
                show-pager="false" active-slide="slideIndex">
             <ion-slide ng-repeat="photo in photos">
-            	<img id="modal_img" ng-src="{{photo.src_modal}}" ng-if="photo.orientation == 'portrait'" style="margin-top:17%"/>
+<!--             	<img id="modal_img" ng-src="{{photo.src_modal}}" ng-if="photo.orientation == 'portrait'" style="margin-top:17%"/>
 		        <img id="modal_img" ng-src="{{photo.src_modal}}" ng-if="photo.orientation == 'landscape'" style="margin-top:55%"/>
 			 	
-			 	<div class="row" ng-if="modal.description">
+			 	<div class="row" ng-if="photo.description">
 			 		<div class="col modal-description">
 						<textarea disabled>{{photo.description}}</textarea>
 			 		</div>
 			 	</div>
-			 	<div class="row">
-				 	<div class="modal-likes col col-30 col-offset-70" ng-switch on="modal.has_liked">
-						{{photo.total_likes}}
-<!-- 						<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos, $event)"></i>
-						<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos, $event)"></i>	 -->
+			 	<div class="row" ng-switch on="photo.has_liked">
+            		<div class="modal-likes col col-30 ">
+                		{{photo.total_likes}}
+		        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.id, photo.pos, $event)">J'aime</i>
+		        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos, $event)">J'aime</i>	
+            		</div>
+            		<div class="col col-30">
+            			<i class="ion-chatbox">Commenter</i>            			
+            		</div>
+            		<div class="col col-30">
+            			<i class=""
+            			
+            		</div>
+               	</div> -->
+               	<div class="list card">
+					<div class="item item-body">
+					    <img class="full-image" ng-src="{{photo.src_modal}}">
+					    <p>{{photo.description}}</p>
+					    <p>
+					      <a class="subdued">{{photo.total_likes}} J'aime</a>
+					      <a class="subdued">{{photo.total_comments}} Commentaires</a>
+					    </p>
 					</div>
-			 	</div>
+
+					<div class="item tabs tabs-secondary tabs-icon-left" ng-switch on="photo.has_liked">
+					    <a class="tab-item" ng-switch-when="false" ng-click="like(photo.id, photo.pos,$event)">
+					      <i  class="ion-ios-heart-outline">J'aime</i>
+					    </a>
+					    <a class="tab-item" ng-switch-when="true">
+					      <i class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos,$event)">Je n'aime plus</i>
+					    </a>
+					    <a class="tab-item" href="#">
+					      <i class="icon ion-chatbox"></i>
+					      Commenter
+					    </a>
+					    <a class="tab-item" href="#">
+					      <i class="icon ion-share"></i>
+					      Partager
+					    </a>
+				    </div>
+               	</div>
             </ion-slide>
         </ion-slide-box>
 
