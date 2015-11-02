@@ -127,7 +127,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
     $scope.openComment = function(idPhoto,posPhoto) {
         $scope.modalComments.idPhoto = idPhoto;
         console.log($scope.photos[posPhoto].comments);
-        $scope.modalComments.commentsPhoto = angular.copy($scope.photos[posPhoto].comments.data);
+        $scope.modalComments.commentsPhoto = $scope.photos[posPhoto].comments != undefined ? angular.copy($scope.photos[posPhoto].comments.data):[];
         $scope.modalComments.show();       
     }
 

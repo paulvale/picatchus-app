@@ -79,10 +79,11 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
         animation: 'slide-in-up'
     });
 
-    $scope.openComment = function(idPhoto,posPhoto) {
+    $scope.openModalComment = function(idPhoto,posPhoto) {
         $scope.modalComments.idPhoto = idPhoto;
         console.log($scope.livePhotos[posPhoto]);
-        $scope.modalComments.commentsPhoto = angular.copy($scope.livePhotos[posPhoto].comments.data);
+        $scope.modalComments.commentsPhoto = $scope.livePhotos[posPhoto].comments != undefined ?angular.copy($scope.livePhotos[posPhoto].comments.data):[];
+        console.log($scope.modalComments.commentsPhoto);
         $scope.modalComments.show();       
     }
 
