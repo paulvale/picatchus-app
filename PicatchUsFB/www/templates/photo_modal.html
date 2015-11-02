@@ -1,21 +1,32 @@
-<ion-modal-view id="modal-photo" on-swipe-down="quitModal()">
+<ion-modal-view id="modal-photo" on-swipe-down="closeModalPhoto()">
+		<ion-header-bar align-title="left" class="bar-stable row ">	
+		<div class="col col-20">
+		    <i class="ion-chevron-left" ng-click="closeModalPhoto()"></i>
+		</div>
+	</ion-header-bar>
     <ion-content>
-	    <div ng-switch on="modal.orientation">
-	        <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="portrait" style="margin-top:17%"/>
-	        <img id="modal_img" ng-src="{{modal.src_modal}}" ng-switch-when="landscape" style="margin-top:55%"/>
-		 	
-		 	<div class="row" ng-if="modal.description">
-		 		<div class="col modal-description">
-					<textarea disabled>{{modal.description}}</textarea>
-		 		</div>
-		 	</div>
-		 	<div class="row">
-			 	<div class="modal-likes col col-30 col-offset-70" ng-switch on="modal.has_liked">
-					{{modal.likes}}
-					<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="likeModal(modal.id, modal.pos, $event)"></i>
-					<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislikeModal(modal.id, modal.pos, $event)"></i>	
-				</div>
-		 	</div>
-	    </div>
+	    <div class="list card">
+					<div class="item item-body">
+					    <img class="full-image" ng-src="{{modal.photo.src_modal}}">
+					    <p>{{modal.photo.description}}</p>
+					    <p>
+					      <a class="subdued">{{modal.photo.total_likes}} J'aime</a>
+					      <a class="subdued">{{modal.photo.total_comments}} Commentaires</a>
+					    </p>
+					</div>
+
+					<div class="item tabs tabs-secondary tabs-icon-left" ng-switch on="modal.photo.has_liked">
+					    <a class="tab-item" ng-switch-when="false" ng-click="like(modal.idPhoto, modal.photo.pos,$event)">
+					      <i  class="ion-ios-heart-outline">J'aime</i>
+					    </a>
+					    <a class="tab-item" ng-switch-when="true" ng-click="dislike(modal.idPhoto, modal.photo.pos,$event)">
+					      <i class="ion-ios-heart">Je n'aime plus</i>
+					    </a>
+					    <a class="tab-item" href="#" ng-click="openComment(modal.idPhoto,modal.photo.pos)">
+					      <i class="icon ion-chatbox"></i>
+					      Commenter
+					    </a>
+				    </div>
+               	</div>
     </ion-content>
 </ion-modal-view>

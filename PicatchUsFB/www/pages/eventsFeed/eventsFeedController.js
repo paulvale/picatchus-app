@@ -16,8 +16,6 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     }
 
     $scope.like = function(idPhoto, posPhoto){
-    	console.log('like');
-        console.log(posPhoto);
         $scope.livePhotos[posPhoto].total_likes++;
         $scope.livePhotos[posPhoto].has_liked = true;
         PhotoFactory.like(idPhoto).then(function(result){
@@ -28,7 +26,6 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     }
 
     $scope.dislike = function(idPhoto, posPhoto){
-    	console.log('dislike');
         $scope.livePhotos[posPhoto].total_likes--;
         $scope.livePhotos[posPhoto].has_liked = false;
         PhotoFactory.like(idPhoto).then(function(result){
@@ -46,23 +43,52 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     /* =========== PHOTO MODAL ================*/
     /* ========================================*/
 
-    $ionicModal.fromTemplateUrl('photo_modal.html', {
+    $ionicModal.fromTemplateUrl('templates/photo_modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function(modal) {
         $scope.modal = modal;
     });
 
-    $scope.openModal = function() {
+    $scope.openModalPhoto = function(idPhoto,posPhoto) {
+        console.log(idPhoto);
+        $scope.modal.idPhoto = idPhoto;
+        $scope.modal.photo = $scope.livePhotos[posPhoto];
+        console.log($scope.modal.photo)
         $scope.modal.show();
     };
 
-    $scope.closeModal = function() {
+    $scope.closeModalPhoto = function() {
         $scope.modal.hide();
     };
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
     });
+
+    /* ========================================*/
+    /* =========== COMMENTS MODAL ==============*/
+    /* ========================================*/
+
+        $ionicModal.fromTemplateUrl('templates/commentsModal.html', function(modal) {
+        $scope.modalComments = modal;
+            }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });
+
+    $scope.openComment = function(idPhoto,posPhoto) {
+        $scope.modalComments.idPhoto = idPhoto;
+        console.log($scope.livePhotos[posPhoto]);
+        $scope.modalComments.commentsPhoto = angular.copy($scope.livePhotos[posPhoto].comments.data);
+        $scope.modalComments.show();       
+    }
+
+    $scope.quitModalComment = function(){
+        $scope.modalComments.hide();
+    }
+
 
 })

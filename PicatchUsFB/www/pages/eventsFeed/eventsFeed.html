@@ -16,7 +16,7 @@
 			  </div>
 
 			  <div class="item item-body">
-			    <img class="full-image" ng-src="{{photo.src_modal}}">
+			    <img class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.id, photo.pos)">
 			    <p>{{photo.name}}</p>
 			    <p>
 			      <a href="#" class="subdued">{{photo.total_likes}} Likes</a>
