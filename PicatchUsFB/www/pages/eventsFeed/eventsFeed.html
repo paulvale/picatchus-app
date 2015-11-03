@@ -4,7 +4,9 @@
 		<div class="spinner">
 	    	<ion-spinner ng-show="loading"></ion-spinner>
 	    </div>
-		<div class="list card" ng-repeat="photo in livePhotos | orderBy:'created_time':true">
+		<div class="list card" collection-repeat="photo in livePhotos | orderBy:'created_time':true"
+								collection-item-width="100%"
+								collection-item-height="500px">
 			<div class="item item-avatar row">
 				<div class="col col-20">
 			  		<img ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">

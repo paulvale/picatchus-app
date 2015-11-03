@@ -99,7 +99,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
         $scope.modalPhoto.show();
         $scope.slideIndex = posPhoto;
         $ionicSlideBoxDelegate.update();
-        $ionicSlideBoxDelegate.slide($scope.slideIndex);        
+        $ionicSlideBoxDelegate.slide($scope.slideIndex);     
     }
 
     // Called each time the slide changes

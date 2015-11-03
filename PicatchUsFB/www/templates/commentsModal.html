@@ -7,7 +7,7 @@
 	</ion-header-bar>
     <ion-content>
 	    <ion-list>
-		  <ion-item class="item item-avatar row" ng-repeat="comment in modalComments.commentsPhoto">
+		  <ion-item class="item item-avatar row" collection-repeat="comment in modalComments.commentsPhoto">
  		  	<div class="col col-20"> 
 		     	<img ng-src="http://graph.facebook.com/{{comment.from.id}}/picture"> 
 		  	</div>
