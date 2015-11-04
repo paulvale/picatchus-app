@@ -10,21 +10,16 @@
 					    <img class="full-image" ng-src="{{modal.photo.src_modal}}">
 					    <p>{{modal.photo.description}}</p>
 					    <p>
-					      <a class="subdued">{{modal.photo.total_likes}} J'aime</a>
-					      <a class="subdued">{{modal.photo.total_comments}} Commentaires</a>
+					      <a class="subdued">{{modal.photo.total_likes}} Like</a>
 					    </p>
 					</div>
 
 					<div class="item tabs tabs-secondary tabs-icon-left" ng-switch on="modal.photo.has_liked">
-					    <a class="tab-item" ng-switch-when="false" ng-click="like(modal.idPhoto, modal.photo.pos,$event)">
-					      <i  class="ion-ios-heart-outline">J'aime</i>
+					    <a class="tab-item" ng-switch-when="false" ng-click="like(modal.photo.pos,$event)">
+					      <i  class="ion-ios-heart-outline">Like</i>
 					    </a>
-					    <a class="tab-item" ng-switch-when="true" ng-click="dislike(modal.idPhoto, modal.photo.pos,$event)">
-					      <i class="ion-ios-heart">Je n'aime plus</i>
-					    </a>
-					    <a class="tab-item" href="#" ng-click="openComment(modal.idPhoto,modal.photo.pos)">
-					      <i class="icon ion-chatbox"></i>
-					      Commenter
+					    <a class="tab-item" ng-switch-when="true" ng-click="dislike(modal.photo.pos,$event)">
+					      <i class="ion-ios-heart">Like</i>
 					    </a>
 				    </div>
                	</div>

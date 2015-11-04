@@ -15,20 +15,20 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     	getPhotosLiveEvents();
     }
 
-    $scope.like = function(idPhoto, posPhoto){
+    $scope.like = function(posPhoto){
         $scope.livePhotos[posPhoto].total_likes++;
         $scope.livePhotos[posPhoto].has_liked = true;
-        PhotoFactory.like(idPhoto).then(function(result){
+        PhotoFactory.like($scope.livePhotos[posPhoto].id).then(function(result){
         }, function(msg){
             $scope.livePhotos[posPhoto].total_likes--;
             $scope.livePhotos[posPhoto].has_liked = false;
         })  
     }
 
-    $scope.dislike = function(idPhoto, posPhoto){
+    $scope.dislike = function(posPhoto){
         $scope.livePhotos[posPhoto].total_likes--;
         $scope.livePhotos[posPhoto].has_liked = false;
-        PhotoFactory.like(idPhoto).then(function(result){
+        PhotoFactory.like($scope.livePhotos[posPhoto].id).then(function(result){
         }, function(msg){
             $scope.livePhotos[posPhoto].total_likes++;
             $scope.livePhotos[posPhoto].has_liked = true;
@@ -43,53 +43,28 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     /* =========== PHOTO MODAL ================*/
     /* ========================================*/
 
-    $ionicModal.fromTemplateUrl('templates/photo_modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
+    var initModal = function(){
+	return $ionicModal.fromTemplateUrl('templates/photo_modal.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function(modal) {
+	        $scope.modal = modal;
+	    });
+    }
 
-    $scope.openModalPhoto = function(idPhoto,posPhoto) {
-        console.log(idPhoto);
-        $scope.modal.idPhoto = idPhoto;
-        $scope.modal.photo = $scope.livePhotos[posPhoto];
-        console.log($scope.modal.photo)
-        $scope.modal.show();
+
+    $scope.openModalPhoto = function(posPhoto) {
+    	initModal().then(function() {
+	        $scope.modal.photo = $scope.livePhotos[posPhoto];
+    		console.log($scope.livePhotos[posPhoto]);
+      		$scope.modal.show();
+        });
     };
 
     $scope.closeModalPhoto = function() {
-        $scope.modal.hide();
+        $scope.modal.remove()
+	    .then(function() {
+	      $scope.modal = null;
+	    });
     };
-    //Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-    });
-
-    /* ========================================*/
-    /* =========== COMMENTS MODAL ==============*/
-    /* ========================================*/
-
-        $ionicModal.fromTemplateUrl('templates/commentsModal.html', function(modal) {
-        $scope.modalComments = modal;
-            }, {
-        // Use our scope for the scope of the modal to keep it simple
-        scope: $scope,
-        // The animation we want to use for the modal entrance
-        animation: 'slide-in-up'
-    });
-
-    $scope.openModalComment = function(idPhoto,posPhoto) {
-        $scope.modalComments.idPhoto = idPhoto;
-        console.log($scope.livePhotos[posPhoto]);
-        $scope.modalComments.commentsPhoto = $scope.livePhotos[posPhoto].comments != undefined ?angular.copy($scope.livePhotos[posPhoto].comments.data):[];
-        console.log($scope.modalComments.commentsPhoto);
-        $scope.modalComments.show();       
-    }
-
-    $scope.quitModalComment = function(){
-        $scope.modalComments.hide();
-    }
-
-
 })

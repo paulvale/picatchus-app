@@ -88,7 +88,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
 						photo.pos = i;
 						photo.time_ago = moment(photo.created_time).fromNow();
-						console.log(photo.time_ago);
 						photo.src = photo.images[photo.images.length - 1].source; //We keep the smaller photo for the grid
 						photo.src_modal = photo.images[0].source; //We keep the bigger photo for the modal display
 						photo.orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
@@ -115,6 +114,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 				
 				factory.getEventPhotos(event.id, refresh).then(function(photos){
 					angular.forEach(photos, function(photo){
+						photo.event_name = event.name;
 						livePhotos.push(photo);
 					})
 
@@ -123,7 +123,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 				})
 			})
 
-			console.log(livePhotos);
 			deffered.resolve(livePhotos);
 		}, function(msg){
 			deffered.reject(msg);
@@ -142,7 +141,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		    		liveEvents.push(event);
 		    	}
 		    	else if(event.id == "887967921250791"){ //use for test
-		    		console.log('push test picatchus 1');
 		    		liveEvents.push(event);
 		    	}
 		    });

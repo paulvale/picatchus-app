@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, UserFactory, EventsFactory) {
+app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate, UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -52,9 +52,9 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     $scope.selectStatus = function(index){
         //Enables to change the filter on events
         switch(index){
-            case 0: $scope.filteredEvents = $scope.passedEvents;
+            case 0: $scope.filteredEvents = $scope.passedEvents; $ionicScrollDelegate;
             break;
-            case 1: $scope.filteredEvents = $scope.liveEvents;
+            case 1: $scope.filteredEvents = $scope.liveEvents; $ionicScrollDelegate;
             break;
         }
     }

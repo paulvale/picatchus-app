@@ -13,16 +13,15 @@
 				</div>
 				<div class="col col-80">
 			    	<h2>{{photo.from.name}}</h2>
-			    	<p>{{photo.time_ago}}</p>
+			    	<p>{{photo.time_ago}} - {{photo.event_name}}</p>
 			  	</div>
  	     	</div>
 
 			<div class="item item-body">
-			    <img class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.id, photo.pos)">
+			    <img class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.pos)">
 			    <p>{{photo.name}}</p>
 			    <p>
-			    	<a href="#" class="subdued" ng-click="openModalComment(photo.id,photo.pos)">{{photo.total_likes}} Likes</a>
-			    	<a href="#" class="subdued" ng-click="openModalComment(photo.id,photo.pos)">{{photo.total_comments}} Commentaires</a>
+			    	<a href="#" class="subdued" ng-click="like(photo.pos)">{{photo.total_likes}} Likes</a>
 			    </p>
 			</div>
 
@@ -32,10 +31,6 @@
 			    	<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.id, photo.pos)"></i>
 			    	Like
 			    </a>
-			    <a class="tab-item" href="#" ng-click="openModalComment(photo.id,photo.pos)">
-				    <i class="icon ion-chatbox"></i>
-				    Commenter
-				</a>
 		    </div>
 		</div>
 	</ion-content>
