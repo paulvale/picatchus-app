@@ -10,7 +10,8 @@ service.factory('PhotoFactory', function (ngFB, $q, $cordovaFileTransfer){
       .then(function(result) {
         deffered.resolve("Votre photo a bien été envoyée !");
       }, function(err) {
-        deffered.reject("Oups ! Votre photo n\'a pas été envoyée ...")
+        deffered.reject("Oups ! Votre photo n\'a pas été envoyée ...");
+            console.log(err);
       }, function (progress) {
 
       });

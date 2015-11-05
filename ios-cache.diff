@@ -1,0 +1,183 @@
+diff --git a/PicatchUsFB/hooks/after_prepare/010_add_platform_class.js b/PicatchUsFB/hooks/after_prepare/010_add_platform_class.js
+old mode 100644
+new mode 100755
+diff --git a/PicatchUsFB/www/index.html b/PicatchUsFB/www/index.html
+index ee73e3e..9401844 100644
+--- a/PicatchUsFB/www/index.html
++++ b/PicatchUsFB/www/index.html
+@@ -20,6 +20,8 @@
+     <script src="lib/angular-touch-min.js"></script>
+     <script src="lib/ngLocalStorage/ngLocalStorage.js"></script>
+     <script src="lib/momentjs/moment.js"></script>
++    <script src="lib/imgcache/imgcache.js"></script>
++    <script src="lib/imgcache/angular-imgcache.js"></script>
+     <script src="lib/ngProgress/ngprogress.min.js"></script>
+     <script src="lib/segmented-controls/ti-segmented-control.js"></script>
+     <script src="js/openfb.js"></script>
+diff --git a/PicatchUsFB/www/js/app.js b/PicatchUsFB/www/js/app.js
+index aac11b8..d9df32c 100644
+--- a/PicatchUsFB/www/js/app.js
++++ b/PicatchUsFB/www/js/app.js
+@@ -7,7 +7,7 @@
+ // 'starter.controllers' is found in controllers.js
+ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ngProgress', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
+ 
+-  .run(function($ionicPlatform) {
++  .run(function($ionicPlatform, ImgCache) {
+     $ionicPlatform.ready(function() {
+ 
+       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+@@ -15,7 +15,6 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
+       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+         cordova.plugins.Keyboard.disableScroll(true);
+-
+       }
+       if (window.StatusBar) {
+         // org.apache.cordova.statusbar required
+@@ -23,11 +22,12 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
+       }
+ 
+       moment.locale('fr');
++      ImgCache.$init();
+     });
+   })
+ 
+ 
+-.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
++.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider, ImgCacheProvider) {
+   $ionicConfigProvider.tabs.position('bottom'); // other values: top
+ 
+   $urlRouterProvider.otherwise("/login");
+@@ -90,6 +90,17 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
+         }
+       }
+     })
++        
++        // or more options at once
++        ImgCacheProvider.setOptions({
++                                    debug: true,
++                                    usePersistentCache: true
++                                    });
++        
++        // ImgCache library is initialized automatically,
++        // but set this option if you are using platform like Ionic -
++        // in this case we need init imgcache.js manually after device is ready
++        ImgCacheProvider.manualInit = true;
+ })
+ 
+ var app = angular.module('starter.controllers', ['starter.filters']);
+diff --git a/PicatchUsFB/www/js/services/EventsFactory.js b/PicatchUsFB/www/js/services/EventsFactory.js
+index 71cc2a8..7773ce8 100644
+--- a/PicatchUsFB/www/js/services/EventsFactory.js
++++ b/PicatchUsFB/www/js/services/EventsFactory.js
+@@ -88,7 +88,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
+ 
+ 						photo.pos = i;
+ 						photo.time_ago = moment(photo.created_time).fromNow();
+-						console.log(photo.time_ago);
+ 						photo.src = photo.images[photo.images.length - 1].source; //We keep the smaller photo for the grid
+ 						photo.src_modal = photo.images[0].source; //We keep the bigger photo for the modal display
+ 						photo.orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
+@@ -123,7 +122,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
+ 				})
+ 			})
+ 
+-			console.log(livePhotos);
+ 			deffered.resolve(livePhotos);
+ 		}, function(msg){
+ 			deffered.reject(msg);
+@@ -142,7 +140,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
+ 		    		liveEvents.push(event);
+ 		    	}
+ 		    	else if(event.id == "887967921250791"){ //use for test
+-		    		console.log('push test picatchus 1');
+ 		    		liveEvents.push(event);
+ 		    	}
+ 		    });
+diff --git a/PicatchUsFB/www/pages/eventDetails/eventDetailsController.js b/PicatchUsFB/www/pages/eventDetails/eventDetailsController.js
+index bd89709..04077ef 100644
+--- a/PicatchUsFB/www/pages/eventDetails/eventDetailsController.js
++++ b/PicatchUsFB/www/pages/eventDetails/eventDetailsController.js
+@@ -3,7 +3,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
+         refresh == undefined ? refresh = false : refresh;
+         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
+         	$scope.event = event;
+-        	console.log($scope.event);
+         }, function(msg){
+         	$cordovaToast.showLongBottom(msg);
+         });
+@@ -12,11 +11,10 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
+     function getEventPhotos(refresh){
+         $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
+             $scope.photos = photos;
+-            console.log($scope.photos);
+             $scope.$broadcast('scroll.refreshComplete');
+-            $timeout(function(){
+-               $scope.openModal();  
+-             },0)
++//            $timeout(function(){
++//               $scope.openModal();
++//             },0)
+             
+         }, function(msg){
+             $scope.$broadcast('scroll.refreshComplete');
+@@ -126,7 +124,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
+ 
+     $scope.openComment = function(idPhoto,posPhoto) {
+         $scope.modalComments.idPhoto = idPhoto;
+-        console.log($scope.photos[posPhoto].comments);
+         $scope.modalComments.commentsPhoto = $scope.photos[posPhoto].comments != undefined ? angular.copy($scope.photos[posPhoto].comments.data):[];
+         $scope.modalComments.show();       
+     }
+diff --git a/PicatchUsFB/www/pages/eventsFeed/eventsFeed.html b/PicatchUsFB/www/pages/eventsFeed/eventsFeed.html
+index 6d62a70..6de6107 100644
+--- a/PicatchUsFB/www/pages/eventsFeed/eventsFeed.html
++++ b/PicatchUsFB/www/pages/eventsFeed/eventsFeed.html
+@@ -18,7 +18,7 @@
+  	     	</div>
+ 
+ 			<div class="item item-body">
+-			    <img class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.id, photo.pos)">
++			    <img img-cache class="full-image" ic-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.id, photo.pos)">
+ 			    <p>{{photo.name}}</p>
+ 			    <p>
+ 			    	<a href="#" class="subdued" ng-click="openModalComment(photo.id,photo.pos)">{{photo.total_likes}} Likes</a>
+diff --git a/PicatchUsFB/www/pages/eventsFeed/eventsFeedController.js b/PicatchUsFB/www/pages/eventsFeed/eventsFeedController.js
+index 8a0fd86..8ced309 100644
+--- a/PicatchUsFB/www/pages/eventsFeed/eventsFeedController.js
++++ b/PicatchUsFB/www/pages/eventsFeed/eventsFeedController.js
+@@ -51,10 +51,8 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
+     });
+ 
+     $scope.openModalPhoto = function(idPhoto,posPhoto) {
+-        console.log(idPhoto);
+         $scope.modal.idPhoto = idPhoto;
+         $scope.modal.photo = $scope.livePhotos[posPhoto];
+-        console.log($scope.modal.photo)
+         $scope.modal.show();
+     };
+ 
+@@ -81,9 +79,7 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
+ 
+     $scope.openModalComment = function(idPhoto,posPhoto) {
+         $scope.modalComments.idPhoto = idPhoto;
+-        console.log($scope.livePhotos[posPhoto]);
+         $scope.modalComments.commentsPhoto = $scope.livePhotos[posPhoto].comments != undefined ?angular.copy($scope.livePhotos[posPhoto].comments.data):[];
+-        console.log($scope.modalComments.commentsPhoto);
+         $scope.modalComments.show();       
+     }
+ 
+diff --git a/PicatchUsFB/www/templates/photo_modal.html b/PicatchUsFB/www/templates/photo_modal.html
+index 1e5ee13..0ce801e 100644
+--- a/PicatchUsFB/www/templates/photo_modal.html
++++ b/PicatchUsFB/www/templates/photo_modal.html
+@@ -7,7 +7,7 @@
+     <ion-content>
+ 	    <div class="list card">
+ 					<div class="item item-body">
+-					    <img class="full-image" ng-src="{{modal.photo.src_modal}}">
++					    <img img-cache class="full-image" ic-src="{{modal.photo.src_modal}}">
+ 					    <p>{{modal.photo.description}}</p>
+ 					    <p>
+ 					      <a class="subdued">{{modal.photo.total_likes}} J'aime</a>

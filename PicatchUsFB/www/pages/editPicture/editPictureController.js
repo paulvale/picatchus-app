@@ -6,7 +6,17 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
             })
-        $scope.data.imageURI = $stateParams.imageURI;
+        
+        var uri = $stateParams.imageURI;
+        if(ionic.Platform.isIOS()){
+               var uriArray = uri.split('/');
+               
+               var filename = uriArray[uriArray.length - 1];
+               var path = uriArray[uriArray.length - 2];
+               uri = '/' + path + '/' + filename;
+        }
+        $scope.data.imageURI = uri;
+               
         if(ionic.Platform.isAndroid()){ //Not implemented for iOS yet
             $timeout(function(){
                 window.canvas2ImagePlugin.saveImageDataToLibrary(
@@ -45,7 +55,7 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
     }
 
     function upload(id){
-        PhotoFactory.upload(id, $scope.data.imageURI, $scope.data.options).then(function(msg){
+        PhotoFactory.upload(id, $stateParams.imageURI, $scope.data.options).then(function(msg){
             $cordovaToast.showLongBottom(msg);
         }, function(msg){
             $cordovaToast.showLongBottom(msg);
