@@ -9,7 +9,7 @@
 								collection-item-height="500px">
 			<div class="item item-avatar row">
 				<div class="col col-20">
-			  		<img ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
+			  		<img img-cache ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
 				</div>
 				<div class="col col-80">
 			    	<h2>{{photo.from.name}}</h2>
@@ -18,7 +18,7 @@
  	     	</div>
 
 			<div class="item item-body">
-			    <img class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.pos)">
+			    <img img-cache class="full-image" ng-src="{{photo.src_modal}}" ng-click="openModalPhoto(photo.pos)">
 			    <p>{{photo.name}}</p>
 			    <p>
 			    	<a href="#" class="subdued" ng-click="like(photo.pos)">{{photo.total_likes}} Likes</a>

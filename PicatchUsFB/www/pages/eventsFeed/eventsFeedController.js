@@ -56,7 +56,6 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     $scope.openModalPhoto = function(posPhoto) {
     	initModal().then(function() {
 	        $scope.modal.photo = $scope.livePhotos[posPhoto];
-    		console.log($scope.livePhotos[posPhoto]);
       		$scope.modal.show();
         });
     };

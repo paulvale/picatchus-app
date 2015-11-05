@@ -77,7 +77,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
     $scope.openModalPhoto = function(posPhoto) {
     	initModal().then(function() {
 	        $scope.modal.photo = $scope.photos[posPhoto];
-    		console.log($scope.photos[posPhoto]);
       		$scope.modal.show();
         });
     };

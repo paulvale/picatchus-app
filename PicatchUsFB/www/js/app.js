@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ngProgress', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
+angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ngProgress', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
 
-  .run(function($ionicPlatform) {
+  .run(function($ionicPlatform, ImgCache) {
     $ionicPlatform.ready(function() {
 
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -23,11 +23,12 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
       }
 
       moment.locale('fr');
+      ImgCache.$init();
     });
   })
 
 
-.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider, ImgCacheProvider) {
   $ionicConfigProvider.tabs.position('bottom'); // other values: top
 
   $urlRouterProvider.otherwise("/login");
@@ -90,6 +91,17 @@ angular.module('starter', ['ionic', 'ngLocalStorage','ui.router', 'ngOpenFB', 'n
         }
       }
     })
+        
+        // or more options at once
+        ImgCacheProvider.setOptions({
+                                    debug: true,
+                                    usePersistentCache: true
+                                    });
+        
+        // ImgCache library is initialized automatically,
+        // but set this option if you are using platform like Ionic -
+        // in this case we need init imgcache.js manually after device is ready
+        ImgCacheProvider.manualInit = true;
 })
 
 var app = angular.module('starter.controllers', ['starter.filters']);
