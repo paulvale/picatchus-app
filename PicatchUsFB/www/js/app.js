@@ -30,6 +30,8 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
 
 .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider, ImgCacheProvider) {
   $ionicConfigProvider.tabs.position('bottom'); // other values: top
+  //Permet de supprimer le texte du back button pour iOS.
+  $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
   $urlRouterProvider.otherwise("/login");
 

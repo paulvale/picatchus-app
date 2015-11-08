@@ -27,6 +27,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
 
 
     $scope.clearSearch = function() {
+        console.log("JE suis ici");
         document.getElementById('searchPhotosFrom').value = '';
         $scope.search.from = '';
     }
