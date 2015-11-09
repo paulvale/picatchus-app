@@ -108,3 +108,5 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
 
 var app = angular.module('starter.controllers', ['starter.filters']);
 var service = angular.module('starter.services', []);
+
+

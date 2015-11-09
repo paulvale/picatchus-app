@@ -2,6 +2,8 @@ body{
     width: auto;
     background-color:#4f4e53; 
 }
+
+
 /*
  * HEADER & BOTTOM BAR
  */
@@ -265,7 +267,6 @@ div.userEvent img {
 
 .footer-photo .footer-photo-like {
     padding-right: 6px;
-    text-align: right;
 }
 
 #picture{
@@ -291,9 +292,9 @@ div.userEvent img {
     min-height: 22px;
 }
 
-/* .item {
-    padding: 5px;
-} */
+.myItem {
+    padding: 5px !important;
+} 
 
 #eventDetails .card {
     margin: 0px;

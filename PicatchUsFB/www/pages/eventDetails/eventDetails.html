@@ -10,7 +10,8 @@
         <div class="item-input-inset">
         	<div class="item-input-wrapper">
 	          	<i class="search-icon icon ion-ios-search-strong placeholder-icon"></i>
-	          	<input id="searchPhotosFrom" type="search" placeholder="Photos de ..." ng-model="search.from">
+	          	<input id="searchPhotosFrom" type="search" 
+	          			placeholder="Photos de ..." ng-model="search.from">
           		<i class="search-icon ion-ios-close-empty" ng-click="clearSearch()" ng-if="search.from != ''"></i>
         	</div>
         </div>
@@ -29,13 +30,17 @@
 	                        padding-top:100%;
 	                        margin-bottom:2px;"
 	            class="card"> 
-	                <div class="item item-divider footer-photo" ng-switch on="photo.has_liked">
-                		<div class="footer-photo-like">
-	                		{{photo.total_likes}}
-			        		<i ng-switch-when="false" class="ion-ios-heart-outline" ng-click="like(photo.pos, $event)"></i>
-			        		<i ng-switch-when="true" class="ion-ios-heart" ng-click="dislike(photo.pos, $event)"></i>	
-                		</div>
-	               	</div>
+	                <div class="eventDetailsPhoto-bandeau">			    	
+				    </div>
+	        		<div class="eventDetailsPhoto-like">
+	            		{{photo.total_likes}} Likes
+	            	</div>
+					<div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+		        		<i class="ion-ios-heart-outline" ></i>
+		        	</div>
+		        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+		        		<i class="ion-ios-heart"></i>
+		        	</div>
 		      	</div>
 	        </div>
 		</div>
