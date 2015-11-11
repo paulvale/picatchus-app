@@ -1,0 +1,52 @@
+.modalPane {
+	background-color: black;
+}
+
+.portrait{
+	height:100%;
+}
+
+.portrait img {
+	height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.landscape {
+	height:100%;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.landscape img {
+	width: 100%;
+    vertical-align: middle;
+}
+
+.modalPhoto-like {
+	position: absolute;
+  	z-index: 2;
+  	bottom: 0px;
+  	left: 5px;
+  	font-size: 18px;
+  	color: white;
+}
+
+.modalPhoto-userLike{
+	z-index: 2;
+  	text-align: center;
+  	background-color: white;
+  	height: 55px;
+  	width: 55px;
+  	right: 5px;
+  	font-size: 50px;
+  	padding-top: 4px;
+  	border-radius: 50%;
+  	position: absolute;
+  	bottom: 5px;
+}
