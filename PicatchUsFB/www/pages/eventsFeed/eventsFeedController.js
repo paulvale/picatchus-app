@@ -1,6 +1,6 @@
-app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory){
+app.controller('EventsFeedController',function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory){
     function getPhotosLiveEvents(refresh){
-    	$scope.liveEvents = EventsFactory.getPhotosLiveEvents().then(function(livePhotos){
+    	$scope.liveEvents = EventsFactory.getPhotosLiveEvents(refresh).then(function(livePhotos){
     		$scope.livePhotos = livePhotos;
     		$scope.loading = false;
     		$scope.$broadcast('scroll.refreshComplete');
@@ -36,7 +36,7 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
     }
 
     $scope.refresh = function (){
-    	getPhotosLiveEvents(true);
+        getPhotosLiveEvents(true);
     }
 
     /* ========================================*/
@@ -66,4 +66,5 @@ app.controller('EventsFeedController',function ($scope,$ionicModal, $cordovaToas
 	      $scope.modal = null;
 	    });
     };
+
 })

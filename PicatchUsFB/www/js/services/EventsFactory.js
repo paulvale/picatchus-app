@@ -95,6 +95,8 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 						i++;
 					});
 				events_photos_already_loaded.push(id); //We save event's photos as already loaded
+				console.log("Dans le getPhotoEvents");
+		    	console.log(factory.photos);
 				deffered.resolve(factory.photos);
 			}, function(msg){
 				deffered.reject(msg);
