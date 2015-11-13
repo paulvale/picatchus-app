@@ -1,4 +1,4 @@
-app.controller('UserEventsController', function ($scope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate, UserFactory, EventsFactory) {
+app.controller('UserEventsController', function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate, UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -46,7 +46,7 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
     }
 
     $scope.refresh = function(){
-        getEvents(true);     
+        getEvents(true);   
     }
 
     $scope.selectStatus = function(index){
@@ -86,4 +86,5 @@ app.controller('UserEventsController', function ($scope, ngFB, $state, $location
         }).then(function(popover) {
             $scope.popover = popover;
     });
+
 })

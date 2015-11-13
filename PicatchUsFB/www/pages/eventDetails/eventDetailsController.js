@@ -1,4 +1,4 @@
-app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
+app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
@@ -27,7 +27,6 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
 
 
     $scope.clearSearch = function() {
-        console.log("JE suis ici");
         document.getElementById('searchPhotosFrom').value = '';
         $scope.search.from = '';
     }
@@ -36,7 +35,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
         $event.stopPropagation();
         $scope.photos[posPhoto].total_likes--;
         $scope.photos[posPhoto].has_liked = false;
-        PhotoFactory.like($scope.photos[posPhoto].id).then(function(result){
+        PhotoFactory.dislike($scope.photos[posPhoto].id).then(function(result){
         }, function(msg){
             $scope.photos[posPhoto].total_likes++;
             $scope.photos[posPhoto].has_liked = true;
@@ -78,6 +77,7 @@ app.controller('EventDetailsController',function ($scope, ngFB, $timeout,$stateP
     $scope.openModalPhoto = function(posPhoto) {
     	initModal().then(function() {
 	        $scope.modal.photo = $scope.photos[posPhoto];
+            console.log($scope.modal.photo);
       		$scope.modal.show();
         });
     };
