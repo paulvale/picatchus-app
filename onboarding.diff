@@ -1,0 +1,33 @@
+diff --git a/PicatchUsFB/www/css/firstUse.css b/PicatchUsFB/www/css/firstUse.css
+new file mode 100644
+index 0000000..e69de29
+diff --git a/PicatchUsFB/www/css/firstUse.css b/PicatchUsFB/www/css/firstUse.css
+index e69de29..26699f2 100644
+--- a/PicatchUsFB/www/css/firstUse.css
++++ b/PicatchUsFB/www/css/firstUse.css
+@@ -0,0 +1,4 @@
++.first-use > img{
++    width: 100%;
++    height: auto;
++}
+\ No newline at end of file
+diff --git a/PicatchUsFB/www/pages/first_use/firstUseController.js b/PicatchUsFB/www/pages/first_use/firstUseController.js
+index 14ea7cf..5b4069f 100644
+--- a/PicatchUsFB/www/pages/first_use/firstUseController.js
++++ b/PicatchUsFB/www/pages/first_use/firstUseController.js
+@@ -1,13 +1,13 @@
+ app.controller('FirstUseController', function ($scope, ngFB, $state) {
+     $scope.init = function(){
+-        $scope.source = 'img/onboarding_tap.png';
++        $scope.source = 'img/feed.png';
+         $scope.isnext = true;
+     }
+ 
+     //On next click, we change onboarding image and logo on top right
+     $scope.next = function(){
+         $scope.isnext = false;
+-        $scope.source = 'img/onboarding_swipe_left.png';
++        $scope.source = 'img/event_details.png';
+     }
+ 
+     $scope.skip = function(){
