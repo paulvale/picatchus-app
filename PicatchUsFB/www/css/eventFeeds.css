@@ -2,6 +2,21 @@
 	background-color: #D3D3D3;
 }
 
+.uploadPhoto {
+	position:absolute;
+	top:50px;
+	right:33%;
+    z-index: 3;
+    height: 25px;
+    text-align: center;
+    width: 35%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+    background-color: rgba(160, 60, 57,0.7);
+    color: white;
+}
+
 .userAvatarCard {
 	padding-bottom: 0px;
   	height: 66px;
