@@ -20,6 +20,7 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     }
 
     $scope.init = function(){
+        console.log("Je suis dans l'init du eventDetailsController");
     	getEvent();
         getEventPhotos();
         $scope.search = {from: ''};
@@ -54,6 +55,7 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     }
 
     $scope.refresh = function(){
+        //$rootScope.$broadcast("refresh");
         getEventPhotos(true);
     }
     
@@ -88,4 +90,11 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
 	      $scope.modal = null;
 	    });
     };
+
+/*    $scope.$on("refresh",function(){
+        console.log("Refresh le eventDetailsController");
+        getEventPhotos(true);
+    })*/
+
+    $scope.init();
 })

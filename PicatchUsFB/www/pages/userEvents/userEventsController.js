@@ -1,4 +1,7 @@
-app.controller('UserEventsController', function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer, $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate, UserFactory, EventsFactory) {
+app.controller('UserEventsController', 
+    function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer,
+             $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate,
+              UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -39,14 +42,16 @@ app.controller('UserEventsController', function ($scope,$rootScope, ngFB, $state
     $scope.init = function(){
         //Block action on physical return button for android by clearing the navigation history
         $scope.loading = true;
-        $ionicHistory.clearCache();
+        //$ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         getEvents();
         getUserInfo();
+        console.log("Je suis dans l'init du userEventsController");
     }
 
-    $scope.refresh = function(){
-        getEvents(true);   
+    $scope.refresh = function(){ 
+        //$rootScope.$broadcast("refresh");
+        getEvents(true);
     }
 
     $scope.selectStatus = function(index){
@@ -86,5 +91,12 @@ app.controller('UserEventsController', function ($scope,$rootScope, ngFB, $state
         }).then(function(popover) {
             $scope.popover = popover;
     });
+
+/*    $rootScope.$on("refresh",function(){
+        getEvents(true);
+        console.log("Refresh le userEventsController");
+    })
+*/
+    $scope.init();
 
 })

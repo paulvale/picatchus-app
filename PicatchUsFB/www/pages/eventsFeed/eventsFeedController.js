@@ -1,4 +1,7 @@
-app.controller('EventsFeedController',function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory){
+app.controller('EventsFeedController',
+    function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory,
+            $ionicHistory){
+
     function getPhotosLiveEvents(refresh){
     	$scope.liveEvents = EventsFactory.getPhotosLiveEvents(refresh).then(function(livePhotos){
     		$scope.livePhotos = livePhotos;
@@ -11,7 +14,10 @@ app.controller('EventsFeedController',function ($scope,$rootScope,$ionicModal, $
     }
 
     $scope.init = function(){
+        console.log("Je suis dans l'init du eventsFeedController");
     	$scope.loading = true;
+        //$ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
     	getPhotosLiveEvents();
     }
 
@@ -36,6 +42,7 @@ app.controller('EventsFeedController',function ($scope,$rootScope,$ionicModal, $
     }
 
     $scope.refresh = function (){
+        //$rootScope.$broadcast("refresh")
         getPhotosLiveEvents(true);
     }
 
@@ -66,5 +73,12 @@ app.controller('EventsFeedController',function ($scope,$rootScope,$ionicModal, $
 	      $scope.modal = null;
 	    });
     };
+
+/*    $scope.$on("refresh",function(){
+        console.log("Refresh le eventsFeedController");
+        getPhotosLiveEvents(true);
+    })*/
+
+    $scope.init();
 
 })
