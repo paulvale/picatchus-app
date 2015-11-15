@@ -18,7 +18,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 			events_photos_already_loaded = []; //When we refresh events, we reset photos loaded. Otherwise, it creates a bug and photos are not loaded
 			console.log("3- Je suis dans le getEvents pour refresh");
 			console.log(events_photos_already_loaded);
-			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos.limit(2000){id, created_time, name, from{id, name, picture}, images}'}}).then(
+			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos.limit(5000){id, created_time, name, from{id, name, picture}, images}'}}).then(
              function(events) {
              	factory.events = events.data;
 

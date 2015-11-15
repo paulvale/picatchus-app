@@ -4,6 +4,9 @@
 		<div class="spinner">
 	    	<ion-spinner ng-show="loading"></ion-spinner>
 	    </div>
+	    <div ng-if="$root.uploadPhoto == 1">Votre photo est en cours d'envoi</div>
+	    <div ng-if="$root.uploadPhoto == 2">Rafraichir pour voir votre catch</div>
+
 		<div class="list card eventCard" ng-repeat="photo in livePhotos | orderBy:'created_time':true">
 			<div class="item item-avatar row userAvatarCard">
 				<div class="col col-20 infoCardPhoto">

@@ -40,6 +40,7 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
             params.caption = $scope.data.description + " - #PicatchUs";
         $scope.data.options.params = params;
 
+        $rootScope.uploadPhoto = 1;
         for(var i = 0; i < $scope.data.liveEvents.length; i++){
 	      if($scope.data.liveEvents[i].isDestination == true){
 	        upload($scope.data.liveEvents[i].id);
@@ -56,8 +57,10 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
 
     function upload(id){
         PhotoFactory.upload(id, $stateParams.imageURI, $scope.data.options).then(function(msg){
+            $rootScope.uploadPhoto = 2;
             $cordovaToast.showLongBottom(msg);
         }, function(msg){
+            $rootScope.uploadPhoto = 0;
             $cordovaToast.showLongBottom(msg);
         });
     }

@@ -55,8 +55,8 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     }
 
     $scope.refresh = function(){
-        //$rootScope.$broadcast("refresh");
-        getEventPhotos(true);
+        $rootScope.$broadcast("refresh");
+        //getEventPhotos(true);
     }
     
     function errorHandler(error) {
@@ -91,10 +91,10 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
 	    });
     };
 
-/*    $scope.$on("refresh",function(){
+    $scope.$on("refresh",function(){
         console.log("Refresh le eventDetailsController");
         getEventPhotos(true);
-    })*/
+    })
 
     $scope.init();
 })

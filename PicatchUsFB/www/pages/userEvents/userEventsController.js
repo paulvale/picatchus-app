@@ -9,6 +9,7 @@ app.controller('UserEventsController',
             
             if($scope.filteredEvents == undefined){ //Allows the app to display the live events directly, but to not do that for the refresh
                 $scope.filteredEvents = liveEvents;
+                $scope.filterStatus = 1;
             }
 
             $scope.events = EventsFactory.getEvents().then(function(events){
@@ -50,11 +51,12 @@ app.controller('UserEventsController',
     }
 
     $scope.refresh = function(){ 
-        //$rootScope.$broadcast("refresh");
-        getEvents(true);
+        $rootScope.$broadcast("refresh");
+        //getEvents(true);
     }
 
     $scope.selectStatus = function(index){
+        $scope.filterStatus = index;   
         //Enables to change the filter on events
         switch(index){
             case 0: $scope.filteredEvents = $scope.passedEvents; $ionicScrollDelegate;
@@ -92,11 +94,11 @@ app.controller('UserEventsController',
             $scope.popover = popover;
     });
 
-/*    $rootScope.$on("refresh",function(){
+    $rootScope.$on("refresh",function(){
         getEvents(true);
         console.log("Refresh le userEventsController");
     })
-*/
+
     $scope.init();
 
 })
