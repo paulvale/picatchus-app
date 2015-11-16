@@ -1,8 +1,12 @@
 body{
     width: auto;
-    background-color:#4f4e53; 
+    /*background-color:#4f4e53;*/ 
 }
 
+/* Pour l'editPicture au niveau de la top bar */ 
+.button-custom ,.ion-android-close{
+    color:white !important;
+}
 
 /*
  * HEADER & BOTTOM BAR
