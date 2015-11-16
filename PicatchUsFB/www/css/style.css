@@ -8,6 +8,16 @@ body{
     color:white !important;
 }
 
+.liveEvent {
+    margin-left:10px;
+}
+
+.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before{
+    background:#A03C39 !important ;
+    border-color:#A03C39 !important;
+}
+
+
 /*
  * HEADER & BOTTOM BAR
  */
