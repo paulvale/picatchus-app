@@ -1,7 +1,7 @@
 app.controller('UserEventsController', 
     function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer,
              $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate,
-              UserFactory, EventsFactory) {
+              $ionicModal,UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -93,6 +93,58 @@ app.controller('UserEventsController',
         }).then(function(popover) {
             $scope.popover = popover;
     });
+
+    /* ========================================*/
+    /* =========== CGU MODAL ================*/
+    /* ========================================*/
+
+    var initCGU = function(){
+    return $ionicModal.fromTemplateUrl('templates/CGU.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+    }
+
+    $scope.openCGU = function(posPhoto) {
+        initCGU().then(function() {
+            $scope.modal.show();
+        });
+    };
+
+    $scope.closeCGU = function() {
+        $scope.modal.remove()
+        .then(function() {
+          $scope.modal = null;
+        });
+    };
+
+    /* ========================================*/
+    /* =========== CONF MODAL ================*/
+    /* ========================================*/
+
+    var initConfidentialite = function(){
+    return $ionicModal.fromTemplateUrl('templates/politiqueConfidentialite.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+    }
+
+    $scope.openConfidentialite = function(posPhoto) {
+        initConfidentialite().then(function() {
+            $scope.modal.show();
+        });
+    };
+
+    $scope.closeConfidentialite = function() {
+        $scope.modal.remove()
+        .then(function() {
+          $scope.modal = null;
+        });
+    };
 
     $rootScope.$on("refresh",function(){
         getEvents(true);
