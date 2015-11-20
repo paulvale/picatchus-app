@@ -9,7 +9,7 @@ service.factory('UserFactory', function (ngFB, $q){
 			deffered.resolve(factory.user);
 		}
 		else{ //We make an api call
-			ngFB.api({path: '/me',params:{fields:'id,name,picture'}}).then(
+			ngFB.api({path: '/me',params:{fields:'id,name,picture,gender,age_range'}}).then(
 			function(data) {
                     factory.user = data;
                     deffered.resolve(factory.user);
