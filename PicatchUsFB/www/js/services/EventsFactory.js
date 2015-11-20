@@ -20,15 +20,16 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
              	angular.forEach(factory.events, function(event){
              		var start_time = moment(event.start_time);
-                    event.start_time = start_time;
+             		var start_time2 = moment(event.start_time);
+                    event.start_time = start_time.subtract(12, 'h');
 
                     //If the event's end date is not null, we keep it
                     if(event.end_time){
                         var end_time = moment(event.end_time);
-                        event.end_time = end_time;
+                        event.end_time = end_time.add(12, 'h');
                     } //Otherwise, we set the end date equals to start date + 48h
                     else{
-                        var end_time = start_time.add(36, 'h');
+                        var end_time = start_time2.add(48, 'h');
                         event.end_time = end_time;
                     }
 
@@ -146,9 +147,7 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		var liveEvents = [];
 		factory.getEvents(refresh).then(function(events){
 			angular.forEach(events, function(event){
-				var start_time = event.start_time.subtract(12, 'h');
-				var end_time = event.end_time.add(12, 'h');
-	            if(moment(now).isBetween(start_time, end_time)){
+	            if(moment(now).isBetween(event.start_time, event.end_time)){
 	            	event.isDestination = true;
 		    		liveEvents.push(event);
 		    	}
