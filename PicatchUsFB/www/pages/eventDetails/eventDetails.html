@@ -1,0 +1,48 @@
+<ion-view class="home-bg" view-title="{{event.name}}" align-title="center" id="eventDetails">
+	<ion-nav-back-button class="button-clear">
+    	<i class="ion-arrow-left-c"></i> Back
+  	</ion-nav-back-button>
+	<ion-nav-title>
+		{{event.name}}
+	</ion-nav-title>
+    
+    <ion-header-bar class="bar bar-stable bar-subheader myHeader">
+        <div class="item-input-inset">
+        	<div class="item-input-wrapper">
+	          	<i class="search-icon icon ion-ios-search-strong placeholder-icon"></i>
+	          	<input id="searchPhotosFrom" type="search" 
+	          			placeholder="Photos prises par ..." ng-model="search.from">
+          		<i class="search-icon ion-ios-close-empty" ng-click="clearSearch()" ng-if="search.from != ''"></i>
+        	</div>
+        </div>
+    </ion-header-bar>
+
+	<ion-content style="overflow:hidden !important;">
+		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+		<div class="listPhotos">
+		    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
+	            <div ng-click="openModalPhoto(photo.pos)" style="position:relative;
+	            			background-image:url({{photo.src}});
+	                        background-repeat:no-repeat; 
+	                        background-position: center center;
+    						background-size: cover;
+	                        width:100%;
+	                        padding-top:100%;
+	                        margin-bottom:2px;"
+	            class="card"> 
+	                <div class="eventDetailsPhoto-bandeau">			    	
+				    </div>
+	        		<div class="eventDetailsPhoto-like">
+	            		{{photo.total_likes}} Likes
+	            	</div>
+					<div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+		        		<i class="ion-ios-heart-outline" ></i>
+		        	</div>
+		        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+		        		<i class="ion-ios-heart"></i>
+		        	</div>
+		      	</div>
+	        </div>
+		</div>
+	</ion-content>
+</ion-view>

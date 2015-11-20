@@ -5,15 +5,15 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'starter.controllers', 'starter.filters', 'starter.services'])
+angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ngProgress', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
 
-  .run(function($ionicPlatform) {
+  .run(function($ionicPlatform, ImgCache) {
     $ionicPlatform.ready(function() {
 
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
         cordova.plugins.Keyboard.disableScroll(true);
 
       }
@@ -21,35 +21,92 @@ angular.module('starter', ['ionic', 'ngLocalStorage', 'ngOpenFB', 'ngTouch', 'ng
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
       }
+
+      moment.locale('fr');
+      ImgCache.$init();
     });
   })
 
-  .config(function($stateProvider, $urlRouterProvider){
-    $stateProvider
 
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider, ImgCacheProvider) {
+  $ionicConfigProvider.tabs.position('bottom'); // other values: top
+  //Permet de supprimer le texte du back button pour iOS.
+  $ionicConfigProvider.backButton.previousTitleText(false).text('');
+
+  $urlRouterProvider.otherwise("/login");
+
+  $stateProvider
     .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html',
+      templateUrl: 'pages/login/login.html',
       controller: 'LoginController'
     })
 
     .state('first-use', {
       url: '/first-use',
-      templateUrl: 'templates/first_use.html',
+      templateUrl: 'pages/first_use/first_use.html',
       controller: 'FirstUseController'
+    })
+
+    .state('editPicture', {
+      url: "/editPicture",
+      templateUrl:'pages/editPicture/editPicture.html',
+      controller:'EditPictureController',
+      params: {
+        imageURI: null
+      }
     })
 
     .state('home', {
       url: '/home',
-      templateUrl: 'templates/home.html',
+      abstract: true,
+      templateUrl: "pages/home/main.html",
       controller: 'HomeController'
     })
 
-    .state('event', {
-      url: '/event/:eventId',
-      templateUrl: 'templates/event.html',
-      controller: 'EventController'
-    });
+    .state('home.eventsFeed', {
+      url: "/eventsFeed",
+      views: {
+        'eventsFeed-tab': {
+          templateUrl:'pages/eventsFeed/eventsFeed.html',
+          controller: 'EventsFeedController'
+        }
+      }
+    })
 
-    $urlRouterProvider.otherwise('/login');
-  });
+    .state('home.userEvents', {
+      url: "/userEvents",
+      views: {
+        'userEvents-tab': {
+          templateUrl:'pages/userEvents/userEvents.html',
+          controller:'UserEventsController'
+        }
+      }
+    })
+
+    .state('home.eventDetails', {
+      url: "/eventDetails?eventId",
+      views: {
+        'userEvents-tab': {
+          templateUrl:'pages/eventDetails/eventDetails.html',
+          controller:'EventDetailsController'
+        }
+      }
+    })
+        
+        // or more options at once
+        ImgCacheProvider.setOptions({
+                                    debug: true,
+                                    usePersistentCache: true
+                                    });
+        
+        // ImgCache library is initialized automatically,
+        // but set this option if you are using platform like Ionic -
+        // in this case we need init imgcache.js manually after device is ready
+        ImgCacheProvider.manualInit = true;
+})
+
+var app = angular.module('starter.controllers', ['starter.filters']);
+var service = angular.module('starter.services', []);
+
+

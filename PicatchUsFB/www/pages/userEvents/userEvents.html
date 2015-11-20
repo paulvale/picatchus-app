@@ -1,0 +1,48 @@
+<ion-view view-title="Evénements" id="events"class="home-bg">
+	<ion-nav-buttons side="right">
+	       <img class="userPicture" ng-src="{{user.picture.data.url}}" ng-click="popover.show($event)">
+	      </img> 
+    </ion-nav-buttons>
+    
+    <ion-header-bar class="bar bar-stable bar-subheader myHeader">
+  		<div class="row segmented-controls">
+	    	<ti-segmented-control style="width: 100%">
+		      <ti-segmented-control-button ng-click="selectStatus(0)">Terminés</ti-segmented-control-button>
+		      <ti-segmented-control-button ng-click="selectStatus(1)" selected>En cours</ti-segmented-control-button>
+		    </ti-segmented-control>
+	    </div>
+	</ion-header-bar>
+
+	<ion-content has-subheader="true" class="has-subheader">
+	    <ion-refresher pulling-text="Tirez pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+	    <div class="spinner">
+	    	<ion-spinner ng-show="loading"></ion-spinner>
+	    </div>
+	    <ion-list class="list" canswipe="listCanSwipe">
+	        <ion-item class="item itemListEvent" collection-repeat="event in filteredEvents" ui-sref="home.eventDetails({eventId: event.id})">
+		            <div class="row listInfoEvent">
+		            	<div class="col col-20">
+			            	<p class="jour">
+			            		{{event.start_time | moment : 'D'}}
+			            	</p>
+			            	<p class="mois">
+			            		{{event.start_time | moment : 'MMM'}}
+			            	</p>
+		            	</div>
+		            	<div class="col">
+			            	<h2>{{event.name}}</h2>
+			            	<div class="row">
+			            		<div class="col col-50">
+			            			{{event.attending_count}}<i class="ion-person-stalker"></i>
+			            		</div>
+			            		<div class="col col-50">
+		            				{{event.total_photos}}<i class="ion-images"></i>
+			            		</div>
+			            		
+			            	</div>
+		            	</div>
+		            </div>
+	        </ion-item>
+	    </ion-list>
+	</ion-content>
+</ion-view>

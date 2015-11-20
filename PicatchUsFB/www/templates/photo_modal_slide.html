@@ -1,0 +1,38 @@
+<ion-modal-view id="modal-photo-slide" on-swipe-down="quitModalPhoto()">
+	<ion-header-bar align-title="left" class="bar-stable row ">	
+		<div class="col col-20">
+		    <i class="ion-chevron-left" ng-click="quitModalPhoto()"></i>
+		</div>
+	</ion-header-bar>
+	<ion-content>
+		<ion-slide-box on-slide-changed="slideChanged(index)" 
+               show-pager="false" active-slide="slideIndex" >
+            <ion-slide ng-repeat="photo in photos">
+               	<div class="list card">
+					<div class="item item-body">
+					    <img class="full-image" ng-src="{{photo.src_modal}}">
+					    <p>{{photo.description}}</p>
+					    <p>
+					      <a class="subdued">{{photo.total_likes}} J'aime</a>
+					      <a class="subdued">{{photo.total_comments}} Commentaires</a>
+					    </p>
+					</div>
+
+					<div class="item tabs tabs-secondary tabs-icon-left" ng-switch on="photo.has_liked">
+					    <a class="tab-item" ng-switch-when="false" ng-click="like(photo.id, photo.pos,$event)">
+					      <i  class="ion-ios-heart-outline">J'aime</i>
+					    </a>
+					    <a class="tab-item" ng-switch-when="true" ng-click="dislike(photo.id, photo.pos,$event)">
+					      <i class="ion-ios-heart">Je n'aime plus</i>
+					    </a>
+					    <a class="tab-item" href="#" ng-click="openComment(photo.id,photo.pos)">
+					      <i class="icon ion-chatbox"></i>
+					      Commenter
+					    </a>
+				    </div>
+               	</div>
+            </ion-slide>
+        </ion-slide-box>
+
+	</ion-content>
+</ion-modal-view>

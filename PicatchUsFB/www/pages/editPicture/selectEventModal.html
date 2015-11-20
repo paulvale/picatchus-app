@@ -1,0 +1,18 @@
+<ion-modal-view>
+	<ion-header-bar align-title="center" class="bar-stable myHeader">	
+		<h1 class="title">Destination</h1>
+		<div class="buttons">
+    		<button class="button" ng-click="modal.hide()">Valider</button>
+  		</div>
+	</ion-header-bar>
+
+    <ion-content>
+    	<ion-checkbox ng-model="data.onMyWall">Sur mon mur</ion-checkbox>
+    	<h3 class="liveEvent">Evénements en cours</h3>
+		<ion-checkbox ng-model="event.isDestination" 
+						ng-true-value="{{event.isDestination}}" 
+						ng-repeat="event in data.liveEvents">
+			{{event.name}}
+		</ion-checkbox>
+    </ion-content>
+</ion-modal-view>

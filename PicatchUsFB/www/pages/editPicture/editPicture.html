@@ -1,0 +1,29 @@
+<ion-view view-title="Envoie ton catch !" hide-nav-bar="false">
+	<ion-nav-buttons side="left">
+    	<button class="button button-icon icon ion-android-close" ng-click="quit()"></button>
+    </ion-nav-buttons>
+	<ion-nav-buttons side="right">
+     	<button class="button button-clear button-custom" ng-click="sendPhoto()">Envoyer</button>
+    </ion-nav-buttons>
+
+	<ion-content ng-init="init()">
+		<div class="row item item-divider" ng-click="modal.show()">
+			<div class="col col-80">
+				<span>
+					Sur :
+			    	<ul id="selectedEvents">
+			    		<li ng-show="data.onMyWall">Mon mur -</li>
+			    		<li ng-repeat="event in data.liveEvents" ng-show="event.isDestination">{{event.name}} -</li>
+			    	</ul>
+		    	</span>
+			</div>
+			<div class="col col-20">
+				<i class="ion-chevron-right"></i>				
+			</div>
+	    </div>
+	    <div class="row item">
+	    	<textarea id="photo-caption" ng-model="data.description" placeholder="Dis quelque chose à propos de cette photo" style="width: 100%;height:60px;"></textarea>
+	    </div>
+		<img img-cache id="photo" ng-src="{{data.imageURI}}" style="width:100%">
+	</ion-content>
+</ion-view>

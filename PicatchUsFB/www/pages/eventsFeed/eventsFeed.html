@@ -1,0 +1,51 @@
+<ion-view hide-nav-bar="false" view-title="Fil d'actualité" id="feed" class="eventView">
+	    <div ng-if="$root.uploadPhoto == 1" class="uploadPhoto">Envoi en cours...</div>
+	    <div ng-if="$root.uploadPhoto == 2" class="uploadPhoto">Rafraichissez</div>
+	<ion-content>
+		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
+		<div class="spinner">
+	    	<ion-spinner ng-show="loading"></ion-spinner>
+	    </div>
+
+<!-- 	    <div class="row">
+		    <div class="col col-100">
+		    	<p style="text-align: center; margin-top:50%;">{{no_event1}}</p>
+		    </div>
+	    </div>
+
+	   	<div class="row">
+		    <div class="col col-100">
+		    	<p style="text-align: center;">{{no_event2}}</p>
+		    </div>
+	    </div> -->
+
+		<div class="list card eventCard" ng-repeat="photo in livePhotos | orderBy:'created_time':true">
+			<div class="item item-avatar row userAvatarCard">
+				<div class="col col-20 infoCardPhoto">
+			  		<img img-cache ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
+				</div>
+				<div class="col col-80 infoCard">
+			    	<h2>{{photo.from.name}} <span>- {{photo.time_ago}}<span></h2>
+			    	<p>{{photo.event_name}}</p>
+			  	</div>
+ 	     	</div>
+
+			<div class="item item-body myItem">
+				<p ng-if="photo.name != undefined" class="commentCard">{{photo.name}}</p>
+			    <img img-cache class="full-image " ng-src="{{photo.src_modal}}">
+			    <!-- ng-click="openModalPhoto(photo.pos)" -->
+			    <div class="eventPhoto-bandeau">			    	
+			    </div>
+        		<div class="eventPhoto-like">
+            		{{photo.total_likes}} Likes
+            	</div>
+				<div class="eventPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+	        		<i class="ion-ios-heart-outline" ></i>
+	        	</div>
+	        	<div class="eventPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+	        		<i class="ion-ios-heart"></i>
+	        	</div>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

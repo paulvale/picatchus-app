@@ -1,19 +1,19 @@
 angular.module('starter.filters', [])
 
-.filter('eventsByDate', function() {
-  return function(events, date) {
-  	var selectedDate = new Date(date);
-  	var selectedMonth = selectedDate.getMonth()+1;
-  	var selectedYear = selectedDate.getFullYear();
+.filter('passedEvents', function() {
+  return function(events) {
+    var filtered = [];
+    angular.forEach(events, function(event){
+      if(event.status == "passed")
+        filtered.push(event);
+    });
 
-  	var filtered = [];
-  	angular.forEach(events, function(event){
-  		var eventDate = new Date(event.start_time);
-  		var eventMonth = eventDate.getMonth()+1;
-  		var eventYear = eventDate.getFullYear();
-  		if(selectedMonth == eventMonth && selectedYear == eventYear)
-  			filtered.push(event);
-  	});
     return filtered;
+  }; 
+})
+
+.filter('moment', function() {
+  return function(dateString, format){
+    return moment(dateString).format(format);
   };
 });

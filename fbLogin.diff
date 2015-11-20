@@ -1,0 +1,203 @@
+diff --git a/PicatchUsFB/www/index.html b/PicatchUsFB/www/index.html
+index 6a3d1e3..d5b9d34 100644
+--- a/PicatchUsFB/www/index.html
++++ b/PicatchUsFB/www/index.html
+@@ -10,6 +10,7 @@
+     <link href="css/login.css" rel="stylesheet">
+     <link href="css/ngProgress.css" rel="stylesheet">
+     <link href="css/eventFeeds.css" rel="stylesheet">
++    <link href="css/firstUse.css" rel="stylesheet">
+ 
+     <script src="lib/ionic/js/ionic.bundle.js"></script>
+     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+@@ -51,6 +52,16 @@
+ 
+     <!-- Mixpanel library -->
+     <script src="lib/mixpanel/mixpanel.js"></script>
++    <script>
++      (function(d, s, id) {
++        console.log('load fb sdk');
++        var js, fjs = d.getElementsByTagName(s)[0];
++        if (d.getElementById(id)) return;
++        js = d.createElement(s); js.id = id;
++        js.src = "//connect.facebook.net/en_US/sdk.js";
++        fjs.parentNode.insertBefore(js, fjs);
++      }(document, 'script', 'facebook-jssdk'));
++    </script>
+ </head>
+ <body ng-app="starter">
+         
+diff --git a/PicatchUsFB/www/js/app.js b/PicatchUsFB/www/js/app.js
+index c4d351a..370caac 100644
+--- a/PicatchUsFB/www/js/app.js
++++ b/PicatchUsFB/www/js/app.js
+@@ -24,6 +24,17 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
+ 
+       moment.locale('fr');
+       ImgCache.$init();
++      ngFB.init();
++
++      (function(d, s, id) {
++        console.log('load fb sdk');
++        var js, fjs = d.getElementsByTagName(s)[0];
++        if (d.getElementById(id)) return;
++        js = d.createElement(s); js.id = id;
++        js.src = "//connect.facebook.net/en_US/sdk.js";
++        fjs.parentNode.insertBefore(js, fjs);
++      }(document, 'script', 'facebook-jssdk'));
++    
+     });
+   })
+ 
+diff --git a/PicatchUsFB/www/js/ngopenfb.js b/PicatchUsFB/www/js/ngopenfb.js
+index 4da909b..8971715 100644
+--- a/PicatchUsFB/www/js/ngopenfb.js
++++ b/PicatchUsFB/www/js/ngopenfb.js
+@@ -10,10 +10,17 @@ angular.module('ngOpenFB', [])
+ 
+     .factory('ngFB', function ($q, $window) {
+ 
+-        function init(params) {
+-            return $window.openFB.init(params);
++        function init() {
++          FB.init({
++            appId      : '1028038917241302',
++            cookie     : true,  // enable cookies to allow the server to access 
++                                // the session
++            xfbml      : true,  // parse social plugins on this page
++            version    : 'v2.4' // use version 2.2
++          });
+         }
+ 
++
+         function login(options) {
+             var deferred = $q.defer();
+             $window.openFB.login(function(result) {
+@@ -60,12 +67,15 @@ angular.module('ngOpenFB', [])
+         }
+ 
+         function getLoginStatus() {
++            console.log('ngFB get login status')
+             var deferred = $q.defer();
+-            $window.openFB.getLoginStatus(
+-                function(result) {
+-                    deferred.resolve(result);
+-                }
+-            );
++            FB.getLoginStatus(function(response) {
++              var loginStatus = $window.openFB.statusChangeCallback(response);
++              deferred.resolve(loginStatus);
++            }, function(response){
++                deferred.reject(response);
++            });
++
+             return deferred.promise;
+         }
+ 
+diff --git a/PicatchUsFB/www/js/openfb.js b/PicatchUsFB/www/js/openfb.js
+index 4e8aebe..323a7b5 100644
+--- a/PicatchUsFB/www/js/openfb.js
++++ b/PicatchUsFB/www/js/openfb.js
+@@ -90,18 +90,29 @@ var openFB = (function () {
+      * Checks if the user has logged in with openFB and currently has a session api token.
+      * @param callback the function that receives the loginstatus
+      */
+-    function getLoginStatus(callback) {
+-        var token = tokenStore.fbAccessToken,
+-            loginStatus = {};
+-        if (token) {
+-            loginStatus.status = 'connected';
+-            loginStatus.authResponse = {accessToken: token};
+-        } else {
+-            loginStatus.status = 'unknown';
+-        }
+-        if (callback) callback(loginStatus);
++
++      function statusChangeCallback(response) {
++
++    // The response object is returned with a status field that lets the
++    // app know the current login status of the person.
++    // Full docs on the response object can be found in the documentation
++    // for FB.getLoginStatus().    	
++    console.log('statusChangeCallback');
++    console.log(response);
++    if (response.status === 'connected') {
++      // Logged into your app and Facebook.
++        loginStatus.status = 'connected';
++        loginStatus.authResponse = {accessToken: token};
++    } else if (response.status === 'not_authorized') {
++      // The person is logged into Facebook, but not your app.
++      	loginStatus.status - 'not_authorized';
++    } else {
++        loginStatus.status = 'unknown';
+     }
+ 
++    return loginStatus;
++  }
++
+     /**
+      * Login to Facebook using OAuth. If running in a Browser, the OAuth workflow happens in a a popup window.
+      * If running in Cordova container, it happens using the In-App Browser. Don't forget to install the In-App Browser
+diff --git a/PicatchUsFB/www/pages/login/login.html b/PicatchUsFB/www/pages/login/login.html
+index 7b9c804..3eeeb8b 100644
+--- a/PicatchUsFB/www/pages/login/login.html
++++ b/PicatchUsFB/www/pages/login/login.html
+@@ -2,9 +2,8 @@
+ 	<ion-content>
+ 		<p class="slogan">Changer le cours des évènements avec</p>
+ 		<img src="img/icon.png" class="logo">
+-		<button class="fbBtn" ng-click="login()">
+-			<strong>Se connecter</strong> avec <strong>facebook</strong>
+-		</button>
++		<fb:login-button scope="public_profile,email,user_events,user_photos,publish_actions" onlogin="checkLoginState()">
++		</fb:login-button>
+ 	</ion-content>
+ </ion-view>
+ 
+diff --git a/PicatchUsFB/www/pages/login/loginController.js b/PicatchUsFB/www/pages/login/loginController.js
+index 63656f0..e8e3ccf 100644
+--- a/PicatchUsFB/www/pages/login/loginController.js
++++ b/PicatchUsFB/www/pages/login/loginController.js
+@@ -1,12 +1,13 @@
+ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast) {
+     // Defaults to sessionStorage for storing the Facebook token
+-    ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
++
+     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
+     $scope.init = function(){
+-        if(window.localStorage.getItem("fbAccessToken")){
+-            $state.go('home.eventsFeed');
+-        }
++        //if(window.localStorage.getItem("fbAccessToken")){
++        //    $state.go('home.eventsFeed');
++        //}
++        debug.log('dans le init login');
+     }
+ 
+     $scope.login = function() {
+@@ -23,6 +24,24 @@ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast)
+             $cordovaToast.showLongBottom('La connexion a échoué');
+         });
+     }
++
++    $scope.checkLoginState = function(){
++        console.log('check login state');
++        ngFB.getLoginStatus().then(function(response){
++            console.log('checkLoginState controller success');
++            console.log(response);
++            //If this is not the first use, user is redirected on home
++            if(window.localStorage.getItem("first_use") == 0)
++                $state.go('home.eventsFeed');
++            //Otherwise, onboarding views are displayed
++            else
++                $state.go('first-use');
++        }, function(error){
++            console.log('checkLoginState controller success');
++            console.log(error);
++            $cordovaToast.showLongBottom('La connexion a échoué');
++        });
++    }
+     
+     function errorHandler(error) {
+         console.log(JSON.stringify(error.message));

@@ -1,0 +1,105 @@
+.eventView {
+	background-color: #D3D3D3;
+}
+
+.uploadPhoto {
+	position:absolute;
+	top:50px;
+	right:33%;
+    z-index: 3;
+    height: 25px;
+    text-align: center;
+    width: 35%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+    background-color: rgba(160, 60, 57,0.7);
+    color: white;
+}
+
+.userAvatarCard {
+	padding-bottom: 0px;
+  	height: 66px;
+}
+
+.eventCard {
+	margin: 20px 0px ;
+}
+
+.infoCard {
+	padding: 1px;
+  	height: 55px;
+}
+
+.infoCard h2{
+	font-size:15px;
+	margin-bottom: 0px;
+  	margin-top: 10px;
+}
+
+.infoCard h2 span {
+	font-size:11px;
+	color:grey;
+}
+
+.commentCard {
+	margin-top:0px !important;
+}
+
+.infoCard p{
+	font-size:11px;
+	height:16px;
+}
+
+.infoCardPhoto {
+	padding-bottom: 0px;
+  	height: 55px;
+}
+
+.item-body{
+	position:relative;
+}
+
+.eventPhoto-bandeau {
+	position:absolute;
+	z-index: 1;
+	height:35px;
+	background-color: rgba(0,0,0,0.4);
+	left:5px;
+	right:5px;
+	padding-right: 5px;
+	bottom:8px;
+}
+
+.eventPhoto-like {
+	position:absolute;
+	z-index: 2;
+	bottom:15px;
+	left:10px;
+	font-size: 20px;
+  	color: white;
+}
+
+.eventPhoto-userLike {
+	z-index: 2;
+	text-align: center;
+	background-color: white;
+	height:55px;
+	width:55px;
+	border-radius:50%;
+	position:absolute;
+	bottom:15px;
+	right:10px;
+	padding-top: 8px;
+    font-size: 45px;
+}
+
+.ion-ios-heart-outline {
+	color:#A03C39;
+}
+
+.ion-ios-heart {
+	color:#A03C39;
+}
+
+
