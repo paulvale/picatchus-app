@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.picatchus.app" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>PicatchUs</name>
-  <description>&#xD;
-        PicatchUs app, the best way to share your event's photos !&#xD;
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.picatchus.app" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PicatchUs</name>
+    <description>
+
+        PicatchUs app, the best way to share your facebook event's photos !
+
     </description>
   <author email="contact@picatchus.fr" href="http://picatchus.com/">&#xD;
 	PicatchUs team	&#xD;
