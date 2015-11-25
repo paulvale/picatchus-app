@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 <ion-view hide-nav-bar="false" view-title="Fil d'actualité" id="feed">
-	    <div ng-if="$root.uploadPhoto == 1" class="uploadPhoto">Votre photo est en cours d'envoi</div>
-	    <div ng-if="$root.uploadPhoto == 2" class="uploadPhoto">Rafraichir pour voir votre catch</div>
-=======
-<ion-view hide-nav-bar="false" view-title="Fil d'actualité" id="feed" class="eventView">
 	    <div ng-if="$root.uploadPhoto == 1" class="uploadPhoto">Envoi en cours...</div>
-	    <div ng-if="$root.uploadPhoto == 2" class="uploadPhoto">Rafraichissez</div>
->>>>>>> 3d6364403fa6b5159c9a82c119fd0bdd18179fac
+	    <div ng-if="$root.uploadPhoto == 2" class="uploadPhoto" ng-click="refresh()">Rafraichissez</div>
+
 	<ion-content>
 		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
 		<div class="spinner">
@@ -24,7 +19,6 @@
 				  	</div>
 	 	     	</div>
 
-<<<<<<< HEAD
 				<div class="item item-body myItem">
 					<p ng-if="photo.name != undefined" class="commentCard">{{photo.name}}</p>
 				    <img img-cache class="full-image " ng-src="{{photo.src_modal}}">
@@ -40,24 +34,7 @@
 		        	<div class="eventPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
 		        		<i class="ion-ios-heart"></i>
 		        	</div>
-=======
-<!-- 	    <div class="row">
-		    <div class="col col-100">
-		    	<p style="text-align: center; margin-top:50%;">{{no_event1}}</p>
-		    </div>
-	    </div>
 
-	   	<div class="row">
-		    <div class="col col-100">
-		    	<p style="text-align: center;">{{no_event2}}</p>
-		    </div>
-	    </div> -->
-
-		<div class="list card eventCard" ng-repeat="photo in livePhotos | orderBy:'created_time':true">
-			<div class="item item-avatar row userAvatarCard">
-				<div class="col col-20 infoCardPhoto">
-			  		<img img-cache ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
->>>>>>> 3d6364403fa6b5159c9a82c119fd0bdd18179fac
 				</div>
 			</div>
 		</div>
