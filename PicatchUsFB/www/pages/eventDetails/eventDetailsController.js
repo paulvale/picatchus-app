@@ -20,7 +20,7 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     }
 
     $scope.init = function(){
-        console.log("Je suis dans l'init du eventDetailsController");
+        mixpanel.track('event.details');
     	getEvent();
         getEventPhotos();
         $scope.search = {from: ''};
@@ -48,6 +48,9 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         $scope.photos[posPhoto].total_likes++;
         $scope.photos[posPhoto].has_liked = true;
         PhotoFactory.like($scope.photos[posPhoto].id).then(function(result){
+            mixpanel.people.increment("Likes total");
+            mixpanel.people.increment("Likes on event page");
+            mixpanel.track('photo.like.onEventDetails');
         }, function(msg){
             $scope.photos[posPhoto].total_likes--;
             $scope.photos[posPhoto].has_liked = false;
@@ -79,7 +82,6 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     $scope.openModalPhoto = function(posPhoto) {
     	initModal().then(function() {
 	        $scope.modal.photo = $scope.photos[posPhoto];
-            console.log($scope.modal.photo);
       		$scope.modal.show();
         });
     };
@@ -92,7 +94,6 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     };
 
     $scope.$on("refresh",function(){
-        console.log("Refresh le eventDetailsController");
         getEventPhotos(true);
     })
 

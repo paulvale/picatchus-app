@@ -20,6 +20,15 @@
     font-style: Helvetica;
 }
 
+.picatchus {
+    margin-top: 20% !important;
+    text-align: center;
+    color:white;
+    line-height: 30px;
+    font-size: 42px;
+    font-style: Helvetica;
+}
+
 
 /* Facebook Button */
 .fbBtn {

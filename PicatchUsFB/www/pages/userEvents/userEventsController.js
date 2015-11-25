@@ -47,7 +47,6 @@ app.controller('UserEventsController',
         $ionicHistory.clearHistory();
         getEvents();
         getUserInfo();
-        console.log("Je suis dans l'init du userEventsController");
     }
 
     $scope.refresh = function(){ 
@@ -59,14 +58,15 @@ app.controller('UserEventsController',
         $scope.filterStatus = index;   
         //Enables to change the filter on events
         switch(index){
-            case 0: $scope.filteredEvents = $scope.passedEvents; $ionicScrollDelegate;
+            case 0: $scope.filteredEvents = $scope.passedEvents; mixpanel.track('event.passed'); $ionicScrollDelegate;
             break;
-            case 1: $scope.filteredEvents = $scope.liveEvents; $ionicScrollDelegate;
+            case 1: $scope.filteredEvents = $scope.liveEvents; mixpanel.track('event.live'); $ionicScrollDelegate;
             break;
         }
     }
 
     $scope.logout = function() {
+        mixpanel.track('logout');
         ngFB.logout().then(
             function() {
                 window.localStorage.removeItem("fbAccessToken");
@@ -83,7 +83,6 @@ app.controller('UserEventsController',
     }
 
     if($rootScope.progressbar != null){
-        console.log('uploading');
         $scope.progressbar = $rootScope.progressbar;
         $scope.progressbar.start();
     }
@@ -148,7 +147,6 @@ app.controller('UserEventsController',
 
     $rootScope.$on("refresh",function(){
         getEvents(true);
-        console.log("Refresh le userEventsController");
     })
 
     $scope.init();

@@ -7,8 +7,12 @@ app.controller('EventsFeedController',
     function getPhotosLiveEvents(refresh){
     	$scope.liveEvents = EventsFactory.getPhotosLiveEvents(refresh).then(function(livePhotos){
     		$scope.livePhotos = livePhotos;
-    		$scope.loading = false;
-    		$scope.$broadcast('scroll.refreshComplete');
+            $scope.loading = false;
+            $scope.$broadcast('scroll.refreshComplete');
+/*            if($scope.livePhotos.length == 0){
+                $scope.no_event1 = "Vous ne participez à aucun événement en cours ou aucune photo n'a encore été partagée :(";
+                $scope.no_event2 = "Rejoignez un événement Facebook et partagez une photo avec les autres participants !";
+            }*/
     	}, function(msg){
 			$cordovaToast.showLongBottom(msg);
 			$scope.$broadcast('scroll.refreshComplete');
@@ -16,8 +20,9 @@ app.controller('EventsFeedController',
     }
 
     $scope.init = function(){
-        console.log("Je suis dans l'init du eventsFeedController");
-    	$scope.loading = true;
+        $scope.no_event1 = "";
+        $scope.no_event2 = "";
+        $scope.loading = true;
         //$ionicHistory.clearCache();
         $ionicHistory.clearHistory();
     	getPhotosLiveEvents();
@@ -27,6 +32,9 @@ app.controller('EventsFeedController',
         $scope.livePhotos[posPhoto].total_likes++;
         $scope.livePhotos[posPhoto].has_liked = true;
         PhotoFactory.like($scope.livePhotos[posPhoto].id).then(function(result){
+            mixpanel.people.increment("Likes total");
+            mixpanel.people.increment("Likes on feed");
+            mixpanel.track('photo.like.onFeed');
         }, function(msg){
             $scope.livePhotos[posPhoto].total_likes--;
             $scope.livePhotos[posPhoto].has_liked = false;
@@ -78,7 +86,6 @@ app.controller('EventsFeedController',
     };
 
     $scope.$on("refresh",function(){
-        console.log("Refresh le eventsFeedController");
         getPhotosLiveEvents(true);
     })
 

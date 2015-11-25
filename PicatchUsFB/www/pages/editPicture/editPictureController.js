@@ -32,6 +32,7 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
     }
 
     $scope.sendPhoto = function() {
+        mixpanel.people.increment("Photos taken");
         $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
@@ -41,16 +42,26 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         $scope.data.options.params = params;
 
         $rootScope.uploadPhoto = 1;
+        var nb_event = 0;
         for(var i = 0; i < $scope.data.liveEvents.length; i++){
-	      if($scope.data.liveEvents[i].isDestination == true){
-	        upload($scope.data.liveEvents[i].id);
-	      }
-	  	}
+          if($scope.data.liveEvents[i].isDestination == true){
+            upload($scope.data.liveEvents[i].id);
+            nb_event++;
+            mixpanel.people.increment("Photos sent");
+            mixpanel.people.increment("Photos on event");
+          }
+        }
 
-	    if($scope.data.onMyWall == true){
-	        upload('me');
-	    }
+        if($scope.data.onMyWall == true){
+            upload('me');
+            mixpanel.people.increment("Photos sent");
+            mixpanel.people.increment("Photos on wall");
+        }
 
+        mixpanel.track('photo.send', {
+            "Event number": nb_event,
+            "On his wall": $scope.data.onMyWall
+        });
         $scope.data.imageURI = '';
         $state.go('home.eventsFeed');
     }
@@ -66,6 +77,7 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
     }
 
     $scope.quit = function(){
+        mixpanel.people.increment("Photos canceled");
         $scope.data.imageURI = '';
     	$state.go('home.eventsFeed');
     }

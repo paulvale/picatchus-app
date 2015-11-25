@@ -10,29 +10,26 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
 		var deffered = $q.defer();
 		if(factory.events !== false && refresh == false){
-			console.log("Je suis dans le getEvents");
-			console.log(factory.events);
 			deffered.resolve(factory.events);
 		}
 		else{
 			events_photos_already_loaded = []; //When we refresh events, we reset photos loaded. Otherwise, it creates a bug and photos are not loaded
-			console.log("3- Je suis dans le getEvents pour refresh");
-			console.log(events_photos_already_loaded);
 			ngFB.api({path: '/me/events', params: {fields: 'name,id,attending_count,start_time,end_time, photos.limit(5000){id, created_time, name, from{id, name, picture}, images}'}}).then(
              function(events) {
              	factory.events = events.data;
 
              	angular.forEach(factory.events, function(event){
              		var start_time = moment(event.start_time);
-                    event.start_time = start_time;
+             		var start_time2 = moment(event.start_time);
+                    event.start_time = start_time.subtract(12, 'h');
 
                     //If the event's end date is not null, we keep it
                     if(event.end_time){
                         var end_time = moment(event.end_time);
-                        event.end_time = end_time;
+                        event.end_time = end_time.add(12, 'h');
                     } //Otherwise, we set the end date equals to start date + 48h
                     else{
-                        var end_time = start_time.add(48, 'h');
+                        var end_time = start_time2.add(48, 'h');
                         event.end_time = end_time;
                     }
 
@@ -42,7 +39,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
                     	event.total_photos = 0;
 
              	});
-             	console.log(factory.events);
              	deffered.resolve(factory.events);
             }, function(){
             	deffered.reject("Erreur de connexion réseau");
@@ -67,7 +63,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 			})
 
 	    }else {
-	    	console.log("Je suis dans le getEvent");
 	    	angular.forEach(factory.events, function(event){
 		    	if(event.id === id){
 					e = event;	
@@ -84,21 +79,14 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 
 	factory.getEventPhotos = function(id, refresh) {
 		refresh == undefined ? refresh = false : refresh;
-		console.log("Je suis dans le getEventPhotos");
-		console.log(refresh);
-		console.log("4- Je suis dans le getEventPhotos pour refresh");
-		console.log(events_photos_already_loaded);
 		var deffered = $q.defer();
 		if(events_photos_already_loaded.indexOf(id) > -1 && refresh == false){ //photos of id event have been already loaded
-			console.log(events_photos_already_loaded);
 			factory.getEvent(id).then(function(event){
-				console.log("Je suis dans la factory sans refresh");
 				factory.photos = event.photos.data;
 				deffered.resolve(factory.photos);
 			})
 		}
 		else{ //Otherwise, photos have never been loaded or events have been refreshed
-			console.log("Je viens de refresh dans le getEventPhotos");
 			factory.getEvent(id, refresh).then(function(event){
 				factory.photos = event.photos.data;
 				var i = 0;
@@ -139,8 +127,6 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 		var deffered = $q.defer();
 
 		var livePhotos = [];
-		console.log("1- Je suis dans le getPhotosLiveEvents pour refresh");
-		console.log(events_photos_already_loaded);
 		factory.getLiveEvents(refresh).then(function(liveEvents){
 			angular.forEach(liveEvents, function(event){
 				
@@ -165,15 +151,10 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 	factory.getLiveEvents = function (refresh){
 		var deffered = $q.defer();
 		var liveEvents = [];
-		console.log("2- Je suis dans le getLiveEvents pour refresh");
-		console.log(events_photos_already_loaded);
 		factory.getEvents(refresh).then(function(events){
 			angular.forEach(events, function(event){
 	            if(moment(now).isBetween(event.start_time, event.end_time)){
 	            	event.isDestination = true;
-		    		liveEvents.push(event);
-		    	}
-		    	else if(event.id == "887967921250791"){ //use for test
 		    		liveEvents.push(event);
 		    	}
 		    });

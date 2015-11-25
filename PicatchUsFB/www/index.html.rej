@@ -1,0 +1,26 @@
+diff a/PicatchUsFB/www/index.html b/PicatchUsFB/www/index.html	(rejected hunks)
+@@ -10,6 +10,7 @@
+     <link href="css/login.css" rel="stylesheet">
+     <link href="css/ngProgress.css" rel="stylesheet">
+     <link href="css/eventFeeds.css" rel="stylesheet">
++    <link href="css/firstUse.css" rel="stylesheet">
+ 
+     <script src="lib/ionic/js/ionic.bundle.js"></script>
+     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+@@ -51,6 +52,16 @@
+ 
+     <!-- Mixpanel library -->
+     <script src="lib/mixpanel/mixpanel.js"></script>
++    <script>
++      (function(d, s, id) {
++        console.log('load fb sdk');
++        var js, fjs = d.getElementsByTagName(s)[0];
++        if (d.getElementById(id)) return;
++        js = d.createElement(s); js.id = id;
++        js.src = "//connect.facebook.net/en_US/sdk.js";
++        fjs.parentNode.insertBefore(js, fjs);
++      }(document, 'script', 'facebook-jssdk'));
++    </script>
+ </head>
+ <body ng-app="starter">
+         
