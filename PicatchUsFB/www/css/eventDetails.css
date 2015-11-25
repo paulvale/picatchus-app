@@ -31,3 +31,17 @@
 	position:absolute;
 	bottom:5px;
 }
+
+.noPicture {
+	font-size: 20px;
+    text-align: center;
+}
+
+.noPicture img {
+	width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    display: block;
+    margin-bottom: 5%;
+}

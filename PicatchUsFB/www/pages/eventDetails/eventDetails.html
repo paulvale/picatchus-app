@@ -19,35 +19,35 @@
 
 	<ion-content style="overflow:hidden !important;">
 		<ion-refresher pulling-text="Tirer pour rafraîchir" on-refresh="refresh()"></ion-refresher>
-		<div ng-if="photos[0] != undefined" >
-			<div class="listPhotos">
-			    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
-		            <div ng-click="openModalPhoto(photo.pos)" style="position:relative;
-		            			background-image:url({{photo.src}});
-		                        background-repeat:no-repeat; 
-		                        background-position: center center;
-	    						background-size: cover;
-		                        width:100%;
-		                        padding-top:100%;
-		                        margin-bottom:2px;"
-		            class="card"> 
-		                <div class="eventDetailsPhoto-bandeau">			    	
-					    </div>
-		        		<div class="eventDetailsPhoto-like">
-		            		{{photo.total_likes}} Likes
-		            	</div>
-						<div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
-			        		<i class="ion-ios-heart-outline" ></i>
-			        	</div>
-			        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
-			        		<i class="ion-ios-heart"></i>
-			        	</div>
-			      	</div>
-		        </div>
-			</div>
+		<div class="listPhotos" ng-if="photos[0] != undefined">
+		    <div collection-repeat="photo in photos | filter:search.from" class="col col-33"> 
+	            <div ng-click="openModalPhoto(photo.pos)" style="position:relative;
+	            			background-image:url({{photo.src}});
+	                        background-repeat:no-repeat; 
+	                        background-position: center center;
+    						background-size: cover;
+	                        width:100%;
+	                        padding-top:100%;
+	                        margin-bottom:2px;"
+	            class="card"> 
+	                <div class="eventDetailsPhoto-bandeau">			    	
+				    </div>
+	        		<div class="eventDetailsPhoto-like">
+	            		{{photo.total_likes}} Likes
+	            	</div>
+					<div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+		        		<i class="ion-ios-heart-outline" ></i>
+		        	</div>
+		        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+		        		<i class="ion-ios-heart"></i>
+		        	</div>
+		      	</div>
+	        </div>
 		</div>
-		<div ng-if="photos[0] == undefined">
-			Je suis vide malheureusement			
+		<div ng-if="photos[0] == undefined" class="noPicture">
+			<img src="img/noPicture.jpg" alt="">
+			<p>Aucune photo prise lors de </p>
+			<p>l'événement ...</p> 			
 		</div>
 	</ion-content>
 </ion-view>
