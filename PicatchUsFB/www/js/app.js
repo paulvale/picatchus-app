@@ -24,6 +24,7 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
 
       moment.locale('fr');
       ImgCache.$init();
+      TestFairy.begin("15dfc3f0000629cd259c6dcae1ea52d82a9955e0");
     });
   })
 
