@@ -1,4 +1,5 @@
-app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory) {
+app.controller('LoginController', function ($scope, $rootScope,ngFB, $state, 
+    $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory) {
     // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
@@ -6,6 +7,8 @@ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast,
     
     $ionicPlatform.ready(function(){
         $scope.init = function(){
+            $ionicHistory.clearHistory();
+            $ionicHistory.clearCache();
             $cordovaFacebook.getLoginStatus()
             .then(function (success){
                 if(success.status == 'connected'){
@@ -17,7 +20,12 @@ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast,
                         });
                     })
                     window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken)
+                    $rootScope.isConnected = true;
+                    console.log($rootScope.isConnected);
                     $state.go("home.eventsFeed");
+                }else{
+                    console.log(success);
+                    $rootScope.isConnected = false;
                 }
             }, function (error){
 
@@ -25,17 +33,19 @@ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast,
         }
 
         $scope.login = function() {
+            console.log($rootScope.isConnected);
             $cordovaFacebook.login(["user_events", "user_photos"])
             .then(function(success){
                 $cordovaFacebook.login(["publish_actions"])
                 .then(function(success){
+                    console.log(success);
                     window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken)
                     UserFactory.getUser().then(function(user){
-                        mixpanel.alias(user.name);
-                        mixpanel.identify(user.id);
+                        mixpanel.alias(user.id);
+                        //mixpanel.identify(user.id);
                         mixpanel.people.set({
-                            "$created": new Date().toLocaleString(),
-                            "$last_login": new Date().toLocaleString(),
+                            "$created": new Date(),
+                            "$last_login": new Date(),
                             "$name": user.name,
                             "Gender": user.gender,
                             "Age range": user.age_range.min + "-" + user.age_range.max,
@@ -51,6 +61,7 @@ app.controller('LoginController', function ($scope, ngFB, $state, $cordovaToast,
                     });
                     $state.go('home.eventsFeed');
                 }, function(error){
+                    console.log("Je suis dans l'erreur du login");
                     console.log(error);
                 })
 

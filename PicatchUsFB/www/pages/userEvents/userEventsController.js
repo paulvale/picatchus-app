@@ -1,16 +1,13 @@
 app.controller('UserEventsController', 
     function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer,
              $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate,
-              $ionicModal,UserFactory, EventsFactory) {
+              $ionicModal,$cordovaFacebook,UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
-            $scope.liveEvents = liveEvents;
-            
-            if($scope.filteredEvents == undefined){ //Allows the app to display the live events directly, but to not do that for the refresh
-                $scope.filteredEvents = liveEvents;
-                $scope.filterStatus = 1;
-            }
+            $scope.liveEvents = liveEvents;            
+
+            // BUG AVANT
 
             $scope.events = EventsFactory.getEvents().then(function(events){
                 $scope.events = events;
@@ -19,6 +16,11 @@ app.controller('UserEventsController',
             });
 
             $scope.passedEvents = EventsFactory.getPassedEvents().then(function(passedEvents){
+                if($scope.filteredEvents == undefined){ //Allows the app to display the old events directly, but to not do that for the refresh
+                    $scope.filteredEvents = passedEvents;
+                    $scope.filterStatus = 0;
+                }
+
                 $scope.passedEvents = passedEvents;
                 $scope.loading = false;
                 $scope.$broadcast('scroll.refreshComplete');
@@ -43,7 +45,7 @@ app.controller('UserEventsController',
     $scope.init = function(){
         //Block action on physical return button for android by clearing the navigation history
         $scope.loading = true;
-        //$ionicHistory.clearCache();
+        $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
         getEvents();
         getUserInfo();
@@ -58,25 +60,47 @@ app.controller('UserEventsController',
         $scope.filterStatus = index;   
         //Enables to change the filter on events
         switch(index){
-            case 0: $scope.filteredEvents = $scope.passedEvents; mixpanel.track('event.passed'); $ionicScrollDelegate;
+            case 0: 
+                $scope.filteredEvents = $scope.passedEvents; 
+                mixpanel.track('event.passed'); 
+                $ionicScrollDelegate;
             break;
-            case 1: $scope.filteredEvents = $scope.liveEvents; mixpanel.track('event.live'); $ionicScrollDelegate;
+            case 1: 
+                $scope.filteredEvents = $scope.liveEvents; 
+                mixpanel.track('event.live'); 
+                $ionicScrollDelegate;
             break;
         }
     }
 
     $scope.logout = function() {
-        mixpanel.track('logout');
+        //mixpanel.track('logout');
+
         ngFB.logout().then(
             function() {
                 window.localStorage.removeItem("fbAccessToken");
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("events");
+                $rootScope.isConnected= false;
+                console.log($rootScope.isConnected);
                 $state.go('login');
                 $scope.popover.hide();
             },
             errorHandler);
+/*         $cordovaFacebook.logout()
+        .then(function(success) {
+          // success
+          window.localStorage.removeItem("fbAccessToken");
+          window.localStorage.removeItem("user");
+          window.localStorage.removeItem("events");
+          $rootScope.isConnected= false;
+          $state.go('login');
+          $scope.popover.hide();
+        }, function (error) {
+          // error
+        });*/
     }
+
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));

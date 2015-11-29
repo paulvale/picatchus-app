@@ -20,7 +20,6 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     }
 
     $scope.init = function(){
-        mixpanel.track('event.details');
     	getEvent();
         getEventPhotos();
         $scope.search = {from: ''};

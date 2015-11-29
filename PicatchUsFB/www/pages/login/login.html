@@ -1,10 +1,12 @@
 <ion-view id="login" hide-nav-bar="true" class="homeLogin">
-	<ion-content>
+	<ion-content scroll="false">
 		<h1 class="picatchus">PicatchUs</h1>
 		<p class="slogan">Changez le cours des événements Facebook</p>
-		<button class="fbBtn" ng-click="login()">
-			<strong>Se connecter</strong> avec <strong>facebook</strong>
-		</button>
+		<div class="fbDiv" ng-if="$root.isConnected == false">
+			<button class="fbBtn" ng-click="login()">
+				<strong>Se connecter</strong> avec <strong>facebook</strong>
+			</button>
+		</div>
 	</ion-content>
 </ion-view>
 

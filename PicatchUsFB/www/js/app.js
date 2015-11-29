@@ -22,6 +22,14 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
         StatusBar.styleLightContent();
       }
 
+      document.addEventListener("pause", function() {
+        console.log("Je quitte l'app");
+      });
+
+      document.addEventListener("resume", function() {
+        console.log("J'arrive dans l'app");
+      });
+
       moment.locale('fr');
       ImgCache.$init();
       TestFairy.begin("15dfc3f0000629cd259c6dcae1ea52d82a9955e0");
@@ -72,6 +80,14 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
           templateUrl:'pages/eventsFeed/eventsFeed.html',
           controller: 'EventsFeedController'
         }
+      },
+      onEnter: function(){
+        console.log("Je suis dans le feed");
+        mixpanel.time_event("feed");
+      },
+      onExit: function(){
+        console.log("Je quitte le feed");
+        mixpanel.track("feed");
       }
     })
 
@@ -91,7 +107,16 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
         'userEvents-tab': {
           templateUrl:'pages/eventDetails/eventDetails.html',
           controller:'EventDetailsController'
-        }
+      },
+      onEnter: function(){
+        console.log("Je suis dans un eventDetails");
+        mixpanel.time_event("eventDetails");
+      },
+      onExit: function(){
+        console.log("Je quitte un eventDetails");
+        mixpanel.track("eventDetails");
+      }
+
       }
     })
         
