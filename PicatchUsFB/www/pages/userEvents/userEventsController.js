@@ -21,6 +21,11 @@ app.controller('UserEventsController',
                     $scope.filterStatus = 0;
                 }
 
+                if(refresh == true && $scope.filterStatus == 1)
+                    $scope.filteredEvents = liveEvents;
+                else if(refresh == true && $scope.filterStatus == 0)
+                    $scope.filteredEvents = passedEvents;
+
                 $scope.passedEvents = passedEvents;
                 $scope.loading = false;
                 $scope.$broadcast('scroll.refreshComplete');
