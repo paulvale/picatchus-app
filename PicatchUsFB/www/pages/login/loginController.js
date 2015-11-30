@@ -1,4 +1,4 @@
-app.controller('LoginController', function ($scope, $rootScope,ngFB, $state, 
+app.controller('LoginController', function ($scope,ngFB, $state, 
     $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory) {
     // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
@@ -7,28 +7,31 @@ app.controller('LoginController', function ($scope, $rootScope,ngFB, $state,
     
     $ionicPlatform.ready(function(){
         $scope.init = function(){
-            if($rootScope.isConnected == undefined){
-                $rootScope.isConnected = false;
-            }
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
-            $cordovaFacebook.getLoginStatus()
-            .then(function (success){
-                if(success.status == 'connected' && $rootScope.isConnected != false){
-                    UserFactory.getUser().then(function(user){
-                        mixpanel.identify(user.id);
-                        mixpanel.people.set({
-                            "$last_login": new Date().toLocaleString('fr-FR'),
-                            "Age range": user.age_range.min + "-" + user.age_range.max,
-                        });
-                    })
-                    window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken)
-                    $rootScope.isConnected = true;
-                    console.log($rootScope.isConnected);
-                    $state.go("home.eventsFeed");
-                }else{
-                    console.log(success);
-                    $rootScope.isConnected = false;
+            console.log("le localStorage:"+window.localStorage.getItem("isConnected"));
+            $scope.isConnected = window.localStorage.getItem("isConnected");
+            console.log("le scope :"+$scope.isConnected);
+            $cordovaFacebook.getLoginStatus().then(function (success){
+                console.log("1ere partie:"+(success.status =='connected'));
+                console.log("2ieme partie:"+$scope.isConnected);
+                console.log("expression:"+(success.status == 'connected' && $scope.isConnected));
+                if(!$scope.isConnected) {
+                    console.log("Passe le 1er if:"+$scope.isConnected);
+                    if(success.status == 'connected'){
+                        console.log("Je suis apres l'expression: "+(success.status == 'connected'));
+                        UserFactory.getUser().then(function(user){
+                            mixpanel.identify(user.id);
+                            mixpanel.people.set({
+                                "$last_login": new Date().toLocaleString('fr-FR'),
+                                "Age range": user.age_range.min + "-" + user.age_range.max,
+                            });
+                        })
+                        window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                        $state.go("home.eventsFeed");
+                    }else{
+                        console.log("erreur:"+success);
+                    }
                 }
             }, function (error){
 
@@ -36,14 +39,14 @@ app.controller('LoginController', function ($scope, $rootScope,ngFB, $state,
         }
 
         $scope.login = function() {
-            console.log($rootScope.isConnected);
             mixpanel.track('sign up');
             $cordovaFacebook.login(["user_events", "user_photos"])
             .then(function(success){
                 $cordovaFacebook.login(["publish_actions"])
                 .then(function(success){
                     console.log(success);
-                    window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken)
+                    window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                    window.localStorage.setItem("isConnected", true);
                     UserFactory.getUser().then(function(user){
                         mixpanel.alias(user.id);
                         //mixpanel.identify(user.id);

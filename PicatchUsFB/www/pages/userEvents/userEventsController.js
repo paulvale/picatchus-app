@@ -82,32 +82,18 @@ app.controller('UserEventsController',
         mixpanel.track('logout');
         ngFB.revokePermissions().then(
             function(){
-            ngFB.logout().then(
-                function() {
-                window.localStorage.removeItem("fbAccessToken");
-                window.localStorage.removeItem("user");
-                window.localStorage.removeItem("events");
-                $rootScope.isConnected= false;
-                console.log($rootScope.isConnected);
-                $state.go('login');
-                $scope.popover.hide();
-            },
-        errorHandler);
-    },errorHandler);
-/*         $cordovaFacebook.logout()
-        .then(function(success) {
-          // success
-          window.localStorage.removeItem("fbAccessToken");
-          window.localStorage.removeItem("user");
-          window.localStorage.removeItem("events");
-          $rootScope.isConnected= false;
-          $state.go('login');
-          $scope.popover.hide();
-        }, function (error) {
-          // error
-        });*/
+                ngFB.logout().then(
+                    function() {
+                    window.localStorage.removeItem("fbAccessToken");
+                    window.localStorage.removeItem("user");
+                    window.localStorage.removeItem("events");
+                    window.localStorage.setItem("isConnected",false);
+                    $state.go('login');
+                    $scope.popover.hide();
+                },
+            errorHandler);
+        },errorHandler);
     }
-
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));

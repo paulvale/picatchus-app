@@ -2,7 +2,7 @@
 	<ion-content scroll="false">
 		<h1 class="picatchus">PicatchUs</h1>
 		<p class="slogan">Changez le cours des événements Facebook</p>
-		<div class="fbDiv" ng-if="$root.isConnected == false">
+		<div class="fbDiv" ng-hide="!isConnected">
 			<button class="fbBtn" ng-click="login()">
 				<strong>Se connecter</strong> avec <strong>facebook</strong>
 			</button>
