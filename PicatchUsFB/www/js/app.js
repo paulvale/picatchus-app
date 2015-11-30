@@ -102,11 +102,12 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
     })
 
     .state('home.eventDetails', {
-      url: "/eventDetails?eventId",
+      url: "/eventDetails/:eventId",
       views: {
         'userEvents-tab': {
           templateUrl:'pages/eventDetails/eventDetails.html',
           controller:'EventDetailsController'
+        }
       },
       onEnter: function(){
         console.log("Je suis dans un eventDetails");
@@ -115,8 +116,6 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
       onExit: function(){
         console.log("Je quitte un eventDetails");
         mixpanel.track("eventDetails");
-      }
-
       }
     })
         

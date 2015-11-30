@@ -7,11 +7,14 @@ app.controller('LoginController', function ($scope, $rootScope,ngFB, $state,
     
     $ionicPlatform.ready(function(){
         $scope.init = function(){
+            if($rootScope.isConnected == undefined){
+                $rootScope.isConnected = false;
+            }
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             $cordovaFacebook.getLoginStatus()
             .then(function (success){
-                if(success.status == 'connected'){
+                if(success.status == 'connected' && $rootScope.isConnected != false){
                     UserFactory.getUser().then(function(user){
                         mixpanel.identify(user.id);
                         mixpanel.people.set({
@@ -34,6 +37,7 @@ app.controller('LoginController', function ($scope, $rootScope,ngFB, $state,
 
         $scope.login = function() {
             console.log($rootScope.isConnected);
+            mixpanel.track('sign up');
             $cordovaFacebook.login(["user_events", "user_photos"])
             .then(function(success){
                 $cordovaFacebook.login(["publish_actions"])

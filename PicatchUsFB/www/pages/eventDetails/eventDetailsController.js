@@ -10,6 +10,7 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
 
     function getEventPhotos(refresh){
         $scope.photos = EventsFactory.getEventPhotos($stateParams.eventId, refresh).then(function(photos){
+            console.log("Je viens de recevoir les photos");
             $scope.photos = photos;
             $scope.$broadcast('scroll.refreshComplete');
             

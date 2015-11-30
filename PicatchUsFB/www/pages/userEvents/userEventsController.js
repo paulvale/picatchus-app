@@ -79,10 +79,11 @@ app.controller('UserEventsController',
     }
 
     $scope.logout = function() {
-        //mixpanel.track('logout');
-
-        ngFB.logout().then(
-            function() {
+        mixpanel.track('logout');
+        ngFB.revokePermissions().then(
+            function(){
+            ngFB.logout().then(
+                function() {
                 window.localStorage.removeItem("fbAccessToken");
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("events");
@@ -91,7 +92,8 @@ app.controller('UserEventsController',
                 $state.go('login');
                 $scope.popover.hide();
             },
-            errorHandler);
+        errorHandler);
+    },errorHandler);
 /*         $cordovaFacebook.logout()
         .then(function(success) {
           // success
