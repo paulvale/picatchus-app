@@ -29,10 +29,10 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
                 );
             }, 2000);
         }
+        mixpanel.people.increment("Photos taken");
     }
 
     $scope.sendPhoto = function() {
-        mixpanel.people.increment("Photos taken");
         $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
@@ -45,17 +45,17 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         var nb_event = 0;
         for(var i = 0; i < $scope.data.liveEvents.length; i++){
           if($scope.data.liveEvents[i].isDestination == true){
-            upload($scope.data.liveEvents[i].id);
-            nb_event++;
             mixpanel.people.increment("Photos sent");
             mixpanel.people.increment("Photos on event");
+            upload($scope.data.liveEvents[i].id);
+            nb_event++;
           }
         }
 
         if($scope.data.onMyWall == true){
-            upload('me');
             mixpanel.people.increment("Photos sent");
             mixpanel.people.increment("Photos on wall");
+            upload('me');
         }
 
         mixpanel.track('photo.send', {

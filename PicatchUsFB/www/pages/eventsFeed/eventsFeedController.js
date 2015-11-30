@@ -1,6 +1,6 @@
 app.controller('EventsFeedController',
     function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory,
-            $ionicHistory){
+            $ionicHistory,$ionicScrollDelegate){
 
     $rootScope.uploadPhoto = 0;
 
@@ -53,7 +53,8 @@ app.controller('EventsFeedController',
 
     $scope.refresh = function (){
         $rootScope.uploadPhoto = 0;
-        $rootScope.$broadcast("refresh")
+        $rootScope.$broadcast("refresh");
+        $ionicScrollDelegate.scrollTop();
         //getPhotosLiveEvents(true);
     }
 

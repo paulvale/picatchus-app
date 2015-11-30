@@ -11,32 +11,42 @@
 }
 
 .slogan {
-    margin-top: 15%;
-    margin-bottom: 5%;
+    position:absolute;
+    top:30%;
+    right:0px;
+    left:0px;
     text-align: center;
     color:white;
     line-height: 30px;
     font-size: 30px;
-    font-style: Helvetica;
 }
 
 .picatchus {
-    margin-top: 20% !important;
     text-align: center;
     color:white;
     line-height: 30px;
     font-size: 42px;
-    font-style: Helvetica;
+    position: absolute;
+    top: 20%;
+    display: block;
+    left: 0px;
+    right: 0px;
 }
 
 
 /* Facebook Button */
+.fbDiv {
+    position:absolute;
+    right:0px;
+    left:0px;
+    top:80%;
+    text-align: center;
+}
 .fbBtn {
     display:block;
     height:34px;
     line-height: 34px;
     margin:auto;
-    margin-top:80%;
     padding-left: 8px;
     padding-right: 15px;
     text-indent: 10px;

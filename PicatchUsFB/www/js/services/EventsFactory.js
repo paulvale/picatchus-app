@@ -101,8 +101,14 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
 						photo.pos = i;
 						photo.time_ago = moment(photo.created_time).fromNow();
 						photo.src = photo.images[photo.images.length - 1].source; //We keep the smaller photo for the grid
-						photo.src_modal = photo.images[2].source; //We keep the bigger photo for the modal display
-						photo.orientation = photo.images[2].height > photo.images[2].width ? "portrait" : "landscape";
+
+						if(photo.images[2] == undefined){
+							photo.src_modal = photo.images[0].source; //We keep the bigger photo for the modal display
+							photo.orientation = photo.images[0].height > photo.images[0].width ? "portrait" : "landscape";
+						}else {
+							photo.src_modal = photo.images[2].source; //We keep the bigger photo for the modal display
+							photo.orientation = photo.images[2].height > photo.images[2].width ? "portrait" : "landscape";
+						}
 						photo.comments !== undefined ? photo.total_comments = photo.comments.data.length : photo.total_comments = 0;
 						i++;
 					});
