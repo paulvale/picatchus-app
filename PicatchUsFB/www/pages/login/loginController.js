@@ -10,22 +10,27 @@ app.controller('LoginController', function ($scope,ngFB, $state,
 
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
-            console.log("le localStorage:"+window.localStorage.getItem("isConnected"));
-
-            if(window.localStorage.getItem("isConnected") == null){
-                console.log("Je suis a null");
-                window.localStorage.setItem("isConnected",false);
+            console.log("localStorage:"+window.localStorage.getItem("isConnected"));
+            $scope.loginChelou = window.localStorage.getItem("isConnected");
+            console.log("loginchelou:"+$scope.loginChelou);
+            console.log($scope.loginChelou == "undefined");
+            console.log("non loginChelou:"+!($scope.loginChelou));
+            console.log("loginChelou:"+($scope.loginChelou));
+            if(($scope.loginChelou == "undefined") || ($scope.loginChelou == "false")){
+                console.log("Condition du localStorage 1");
+                $scope.isConnected = false;
+                console.log($scope.isConnected);
+            }else{
+                console.log("Condition du localStorage 2");
+                $scope.isConnected = true;
+                console.log($scope.isConnected);
             }
-            $scope.isConnected = window.localStorage.getItem("isConnected");
-            console.log("le scope :"+$scope.isConnected);
             $cordovaFacebook.getLoginStatus().then(function (success){
-                console.log("1ere partie:"+(success.status =='connected'));
-                console.log("2ieme partie:"+$scope.isConnected);
-                console.log("expression:"+(success.status == 'connected' && $scope.isConnected));
-                if(!$scope.isConnected) {
-                    console.log("Passe le 1er if:"+$scope.isConnected);
-                    if(success.status == 'connected'){
-                        console.log("Je suis apres l'expression: "+(success.status == 'connected'));
+                console.log("$scope.isConnected : "+$scope.isConnected);
+                console.log("success.status : "+(success.status == 'connected'));
+                    if(success.status == 'connected' && $scope.isConnected){
+                        console.log("Je suis apres l'expression: ");
+                        window.localStorage.setItem("isConnected",true);
                         UserFactory.getUser().then(function(user){
                             mixpanel.identify(user.id);
                             mixpanel.people.set({
@@ -37,8 +42,8 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                         $state.go("home.eventsFeed");
                     }else{
                         console.log("erreur:"+success);
+                        $scope.isConnected = false;
                     }
-                }
             }, function (error){
 
             })
