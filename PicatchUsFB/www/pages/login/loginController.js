@@ -10,6 +10,10 @@ app.controller('LoginController', function ($scope,ngFB, $state,
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             console.log("le localStorage:"+window.localStorage.getItem("isConnected"));
+            if(window.localStorage.getItem("isConnected") == null){
+                console.log("Je suis a null");
+                window.localStorage.setItem("isConnected",false);
+            }
             $scope.isConnected = window.localStorage.getItem("isConnected");
             console.log("le scope :"+$scope.isConnected);
             $cordovaFacebook.getLoginStatus().then(function (success){
