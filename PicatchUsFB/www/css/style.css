@@ -14,8 +14,8 @@ body{
 }
 
 .checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before{
-    background:#A03C39 !important ;
-    border-color:#A03C39 !important;
+    background:#a459fa !important ;
+    border-color:#a459fa !important;
 }
 
 
@@ -23,7 +23,7 @@ body{
  * HEADER & BOTTOM BAR
  */
 .myHeader {
-    background-color: #A03C39 !important;
+    background-color: #a459fa !important;
 }
 
 .title {
@@ -37,18 +37,18 @@ body{
 
 /* Permet de changer la couleur de la bottom bar*/
 .tabs-striped.tabs-stable .tab-item.tab-item-active {
-    color: #A03C39;
-    border-color:#A03C39;
+    color: #a459fa;
+    border-color:#a459fa;
 }
 .tabs-striped.tabs-stable .tab-item {
-    color:rgba(160, 60, 57,0.4);
+    color:rgba(164, 89, 250,0.4);
 }
 
 /* Permet de changer la couleur des outlets pour les events*/
 .button-outline.button-outline.active {
     border-color:white;
     background-color: white;
-    color:#A03C39;
+    color:#a459fa;
 }
 .button-outline.button-outline {
     border-color: white;
@@ -62,7 +62,7 @@ body{
 }
 
 .button-custom , .custom-icon {
-	color: #A03C39;
+	color: #a459fa;
 }
 
 

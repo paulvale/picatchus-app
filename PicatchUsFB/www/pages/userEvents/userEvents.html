@@ -18,7 +18,19 @@
 	    <div class="spinner">
 	    	<ion-spinner ng-show="loading"></ion-spinner>
 	    </div>
-	    <ion-list class="list" canswipe="listCanSwipe">
+	    <div ng-if="filteredEvents[0] == undefined " class="noLiveEvent">
+			<img src="img/noLiveEvent.png" alt="">
+			<div ng-if="filterStatus == 1">
+				<p>Pas d'événements en live</p>
+				<p>actuellement ...</p>  
+			</div>
+			<div ng-if="filterStatus == 0">
+				<p>Pour retrouvez vos événements</p>
+				<p>Facebook, il faut cocher la case</p>
+				<p>participe !</p>
+			</div> 
+		</div>
+	    <ion-list class="list" canswipe="listCanSwipe" ng-if="filteredEvents[0] != undefined">
 	        <ion-item class="item itemListEvent" collection-repeat="event in filteredEvents" ui-sref="home.eventDetails({eventId: event.id})">
 		            <div class="row listInfoEvent">
 		            	<div class="col col-20">
