@@ -36,9 +36,9 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
-            params.caption = "#PicatchUs";
+            params.caption = "#Timeshot";
         else
-            params.caption = $scope.data.description + " - #PicatchUs";
+            params.caption = $scope.data.description + " - #Timeshot";
         $scope.data.options.params = params;
 
         $rootScope.uploadPhoto = 1;

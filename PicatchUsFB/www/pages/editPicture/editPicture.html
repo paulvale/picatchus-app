@@ -7,18 +7,15 @@
     </ion-nav-buttons>
 
 	<ion-content ng-init="init()">
-		<div class="row item item-divider" ng-click="modal.show()">
-			<div class="col col-80">
-				<span>
+		<div class="row item item-divider" >
+			<div class="col">
 					Sur :
-			    	<ul id="selectedEvents">
-			    		<li ng-show="data.onMyWall">Mon mur -</li>
-			    		<li ng-repeat="event in data.liveEvents" ng-show="event.isDestination">{{event.name}} -</li>
-			    	</ul>
-		    	</span>
-			</div>
-			<div class="col col-20">
-				<i class="ion-chevron-right"></i>				
+			    	<ion-checkbox ng-model="data.onMyWall"> mon mur</ion-checkbox>
+					<ion-checkbox ng-model="event.isDestination" 
+									ng-true-value="{{event.isDestination}}" 
+									ng-repeat="event in data.liveEvents">
+						{{event.name}}
+					</ion-checkbox>
 			</div>
 	    </div>
 	    <div class="row item">
