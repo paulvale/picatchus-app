@@ -7,29 +7,33 @@ app.controller('LoginController', function ($scope,ngFB, $state,
     
     $ionicPlatform.ready(function(){
         $scope.init = function(){
-
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             console.log("localStorage:"+window.localStorage.getItem("isConnected"));
-            $scope.loginChelou = window.localStorage.getItem("isConnected");
-            console.log("loginchelou:"+$scope.loginChelou);
-            console.log($scope.loginChelou == "undefined");
-            console.log("non loginChelou:"+!($scope.loginChelou));
-            console.log("loginChelou:"+($scope.loginChelou));
-            if(($scope.loginChelou == "undefined") || ($scope.loginChelou == "false")){
-                console.log("Condition du localStorage 1");
-                $scope.isConnected = false;
-                console.log($scope.isConnected);
-            }else{
-                console.log("Condition du localStorage 2");
-                $scope.isConnected = true;
-                console.log($scope.isConnected);
-            }
-            $cordovaFacebook.getLoginStatus().then(function (success){
-                console.log("$scope.isConnected : "+$scope.isConnected);
-                console.log("success.status : "+(success.status == 'connected'));
-                    if(success.status == 'connected' && $scope.isConnected){
-                        console.log("Je suis apres l'expression: ");
+            $scope.isConnected = window.localStorage.getItem("isConnected");
+            console.log("isConnected:"+$scope.isConnected);
+            console.log($scope.isConnected == "undefined");
+            console.log("non isConnected:"+!($scope.isConnected));
+            console.log("isConnected:"+($scope.isConnected));
+
+            // 3 cas pour la connexion :
+            // - localStorage = undefined
+            // Alors on regarde au niveau de Fcbk si on est connecte ou pas 
+            // Cela permet notamment de gerer le cas ou le user a vider son cache,
+            // ou tout simplement lors de la 1ere connexion 
+            // 
+            // - localStorage = true
+            // L'utilisateur est connecte du coup on le ramene directement au niveau du feed
+            // 
+            // - localStorage = false
+            // L'utilisateur est deconnecte, on le laisse donc sur la page de login 
+            // il va donc devoir appuyer sur la page de login pour se lancer sur le feed veritablement
+
+            if($scope.isConnected == "undefined") {
+                $cordovaFacebook.getLoginStatus().then(function (success){
+                    console.log("$scope.isConnected : "+$scope.isConnected);
+                    console.log("success.status : "+(success.status == 'connected'));
+                    if(success.status == 'connected'){
                         window.localStorage.setItem("isConnected",true);
                         UserFactory.getUser().then(function(user){
                             mixpanel.identify(user.id);
@@ -42,11 +46,32 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                         $state.go("home.eventsFeed");
                     }else{
                         console.log("erreur:"+success);
-                        $scope.isConnected = false;
+                        $scope.isConnectedBool = false;
+                        window.localStorage.setItem("isConnected",false);
                     }
-            }, function (error){
+                }, function (error){
 
-            })
+                })
+            } else if ($scope.isConnected == "false"){
+                console.log("Pas connecte encore");
+                $scope.isConnectedBool = false;
+                console.log($scope.isConnectedBool);
+
+            } else if ($scope.isConnected == "true") {
+                console.log("L'user est deja connecte");
+                $scope.isConnectedBool = true;
+                console.log($scope.isConnected);
+                console.log($scope.isConnectedBool);
+
+                UserFactory.getUser().then(function(user){
+                    mixpanel.identify(user.id);
+                    mixpanel.people.set({
+                        "$last_login": new Date().toLocaleString('fr-FR'),
+                        "Age range": user.age_range.min + "-" + user.age_range.max,
+                    });
+                })
+                $state.go("home.eventsFeed");
+            }
         }
 
         $scope.login = function() {
