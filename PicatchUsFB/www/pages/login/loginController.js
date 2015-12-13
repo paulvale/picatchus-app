@@ -10,14 +10,9 @@ app.controller('LoginController', function ($scope,ngFB, $state,
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             $scope.isConnectedBool = false;
-            console.log("localStorage:"+window.localStorage.getItem("isConnected"));
             $scope.isConnected = window.localStorage.getItem("isConnected");
-            console.log("isConnected:"+$scope.isConnected);
-            console.log($scope.isConnected == "undefined");
-            console.log($scope.isConnected == "null");
-            console.log($scope.isConnected == null);
-            console.log("non isConnected:"+!($scope.isConnected));
-            console.log("isConnected:"+($scope.isConnected));
+            $scope.hasFirstPermission = window.localStorage.getItem("firstPermission");
+
 
             // 3 cas pour la connexion :
             // - localStorage = undefined || null
@@ -38,6 +33,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                     console.log("success.status : "+(success.status == 'connected'));
                     if(success.status == 'connected'){
                         window.localStorage.setItem("isConnected",true);
+                        window.localStorage.setItem("firstPermission",true);
                         UserFactory.getUser().then(function(user){
                             mixpanel.identify(user.id);
                             mixpanel.people.set({
@@ -51,14 +47,23 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                         console.log("erreur:"+success);
                         $scope.isConnectedBool = false;
                         window.localStorage.setItem("isConnected",false);
+                        window.localStorage.setItem("firstPermission",false);
+
                     }
                 }, function (error){
 
                 })
-            } else if ($scope.isConnected == "false"){
-                console.log("Pas connecte encore");
-                $scope.isConnectedBool = false;
-                console.log($scope.isConnectedBool);
+            } else if ($scope.isConnected == "false" ){
+                if ($scope.hasFirstPermission =="true"){
+                    console.log("Pas connecte encore mais a deja demandé la 1ere permission");
+                    $scope.isConnectedBool = true;
+                    console.log($scope.isConnectedBool);
+                    $state.go("tutorial");
+                } else {
+                    console.log("Pas connecte encore et pas de permission");
+                    $scope.isConnectedBool = false;
+                    console.log($scope.isConnectedBool);
+                }
 
             } else if ($scope.isConnected == "true") {
                 console.log("L'user est deja connecte");
@@ -82,8 +87,10 @@ app.controller('LoginController', function ($scope,ngFB, $state,
             $cordovaFacebook.login(["user_events", "user_photos"])
             .then(function(success){
                 window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                window.localStorage.setItem("firstPermission",true);
                 $state.go("tutorial");
             }, function(error){
+                window.localStorage.setItem("isConnected",false);
                 console.log(error);
             })
         }

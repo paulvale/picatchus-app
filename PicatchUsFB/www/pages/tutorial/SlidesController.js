@@ -1,4 +1,4 @@
-app.controller('SlideController', function($scope, $state){
+app.controller('SlideController', function($scope, $state,$ionicHistory){
 
     $scope.slides = {
         "slide1": {
@@ -31,6 +31,8 @@ app.controller('SlideController', function($scope, $state){
     };
 
     $scope.init = function(){
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache();
         $scope.currentSlide = $scope.slides["slide1"];
     };
 

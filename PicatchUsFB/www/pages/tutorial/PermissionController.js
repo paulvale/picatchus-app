@@ -1,7 +1,8 @@
 app.controller('PermissionController',function($scope, ngFB, $state,$cordovaToast,
      $cordovaFacebook, UserFactory,$ionicHistory) {
     $scope.init = function(){
-        console.log("Je suis dans l'init");
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache();
     }
 
     $scope.askPermission = function(){

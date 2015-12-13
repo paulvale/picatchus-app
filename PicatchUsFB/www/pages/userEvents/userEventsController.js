@@ -88,6 +88,7 @@ app.controller('UserEventsController',
                     window.localStorage.removeItem("user");
                     window.localStorage.removeItem("events");
                     window.localStorage.setItem("isConnected",false);
+                    window.localStorage.setItem("firstPermission",false);
                     $state.go('login');
                     $scope.popover.hide();
                 },

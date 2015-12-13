@@ -24,7 +24,7 @@
 .timeshot {
     text-align: center;
     color:white;
-    top: 10%;
+    top: 10% !important;
     font-size: 3em;
     line-height: 30px;
     position: absolute;
