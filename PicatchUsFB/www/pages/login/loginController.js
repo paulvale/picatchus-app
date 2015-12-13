@@ -9,15 +9,18 @@ app.controller('LoginController', function ($scope,ngFB, $state,
         $scope.init = function(){
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
+            $scope.isConnectedBool = false;
             console.log("localStorage:"+window.localStorage.getItem("isConnected"));
             $scope.isConnected = window.localStorage.getItem("isConnected");
             console.log("isConnected:"+$scope.isConnected);
             console.log($scope.isConnected == "undefined");
+            console.log($scope.isConnected == "null");
+            console.log($scope.isConnected == null);
             console.log("non isConnected:"+!($scope.isConnected));
             console.log("isConnected:"+($scope.isConnected));
 
             // 3 cas pour la connexion :
-            // - localStorage = undefined
+            // - localStorage = undefined || null
             // Alors on regarde au niveau de Fcbk si on est connecte ou pas 
             // Cela permet notamment de gerer le cas ou le user a vider son cache,
             // ou tout simplement lors de la 1ere connexion 
@@ -29,7 +32,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
             // L'utilisateur est deconnecte, on le laisse donc sur la page de login 
             // il va donc devoir appuyer sur la page de login pour se lancer sur le feed veritablement
 
-            if($scope.isConnected == "undefined") {
+            if($scope.isConnected == "undefined" || $scope.isConnected == null) {
                 $cordovaFacebook.getLoginStatus().then(function (success){
                     console.log("$scope.isConnected : "+$scope.isConnected);
                     console.log("success.status : "+(success.status == 'connected'));
@@ -78,36 +81,8 @@ app.controller('LoginController', function ($scope,ngFB, $state,
             mixpanel.track('sign up');
             $cordovaFacebook.login(["user_events", "user_photos"])
             .then(function(success){
-                $cordovaFacebook.login(["publish_actions"])
-                .then(function(success){
-                    console.log(success);
-                    window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                    window.localStorage.setItem("isConnected", true);
-                    UserFactory.getUser().then(function(user){
-                        mixpanel.alias(user.id);
-                        //mixpanel.identify(user.id);
-                        mixpanel.people.set({
-                            "$created": new Date(),
-                            "$last_login": new Date(),
-                            "$name": user.name,
-                            "Gender": user.gender,
-                            "Age range": user.age_range.min + "-" + user.age_range.max,
-                            "Photos sent" : 0,
-                            "Photos taken": 0,
-                            "Photos canceled": 0,
-                            "Photos on wall": 0,
-                            "Photos on event": 0,
-                            "Likes total": 0,
-                            "Likes on feed": 0,
-                            "Likes on event page": 0,
-                        });
-                    });
-                    $state.go('home.eventsFeed');
-                }, function(error){
-                    console.log("Je suis dans l'erreur du login");
-                    console.log(error);
-                })
-
+                window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                $state.go("tutorial");
             }, function(error){
                 console.log(error);
             })

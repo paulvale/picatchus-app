@@ -48,13 +48,19 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
     .state('login', {
       url: '/login',
       templateUrl: 'pages/login/login.html',
-      controller: 'LoginController'
+      controller:'LoginController'
     })
 
-    .state('first-use', {
-      url: '/first-use',
-      templateUrl: 'pages/first_use/first_use.html',
-      controller: 'FirstUseController'
+    .state('tutorial', {
+      url: '/tutorial',
+      templateUrl: 'pages/tutorial/slides.html',
+      controller:'SlideController'
+    })
+
+    .state('permission' ,{
+      url:'/permission',
+      templateUrl:'pages/tutorial/permission.html',
+      controller:'PermissionController'
     })
 
     .state('editPicture', {

@@ -1,0 +1,63 @@
+.photoTutorial {
+	background:#7b39ff;
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5%;
+	height: 50%;
+	border-radius: 2%;
+}
+
+.photoTutorial img {
+	height: 100%;
+  	padding-top: 8%;
+  	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+
+.titleTuto {
+	text-align: center;
+    left: 90px;
+    right: 90px;
+}
+
+.buttonTuto {
+	width: 90px;
+  	background-color: transparent !important;
+  	color: white !important;
+  	border: 0px;
+}
+
+.titleTutorial {
+	height:15%;
+	width:100%;
+	text-align: center;
+	font-size: 1.5em;
+	line-height: 25px;
+	padding-top: 5%;
+}
+
+.textTutorial {
+	height:20%;
+	width:100%;
+	text-align: center;
+  	color: grey;
+  	line-height: 25px;
+}
+
+.buttonNext {
+	height: 8%;
+	width: 90%;
+	text-align: center;
+	background: #7b39ff !important;
+	color: white;
+	vertical-align: middle;
+	font-size: 2em;
+	padding-top: 3%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}

@@ -12,20 +12,21 @@
 
 .slogan {
     position:absolute;
-    top:30%;
     right:0px;
     left:0px;
     text-align: center;
     color:white;
     line-height: 30px;
-    font-size: 30px;
+    top: 20%;
+    font-size: 2em;
 }
 
-.picatchus {
+.timeshot {
     text-align: center;
     color:white;
+    top: 10%;
+    font-size: 3em;
     line-height: 30px;
-    font-size: 42px;
     position: absolute;
     top: 20%;
     display: block;
@@ -39,7 +40,7 @@
     position:absolute;
     right:0px;
     left:0px;
-    top:80%;
+    top:90%;
     text-align: center;
 }
 .fbBtn {
@@ -51,7 +52,7 @@
     padding-right: 15px;
     text-indent: 10px;
     border:none;
-    font-size: 20px;
+    font-size: 1.5em;
     background:#3c5a98;
     color: #fff;
     font-family:Tahoma, Geneva, sans-serif;

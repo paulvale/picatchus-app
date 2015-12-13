@@ -1,0 +1,27 @@
+<ion-view id="tutorial " hide-nav-bar="false" 
+		align-title="center" 
+		hide-back-button="true">
+    <ion-nav-buttons side="left" >
+    	<button class="button buttonTuto" ng-click="previous()">{{currentSlide.precedent}}</button>
+    </ion-nav-buttons>
+    <ion-nav-title class="titleTuto">
+      Bienvenue !
+    </ion-nav-title>
+	<ion-nav-buttons side="right">
+     	<button class="button buttonTuto" ng-click="skip()">{{currentSlide.skip}}</button>
+    </ion-nav-buttons>
+
+	<ion-content scroll="false">
+		<div class="photoTutorial">
+			<img ng-src="{{currentSlide.image}}">
+		</div>
+		<div class="titleTutorial">
+			{{currentSlide.title}}
+		</div>
+		<div class="textTutorial">
+			{{currentSlide.text}}
+		</div>
+		<div class="buttonNext" ng-click="next()">{{currentSlide.next}}</div>
+	</ion-content>
+</ion-view>
+
