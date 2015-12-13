@@ -21,15 +21,16 @@ service.factory('EventsFactory', function (ngFB, $q, PhotoFactory){
              	angular.forEach(factory.events, function(event){
              		var start_time = moment(event.start_time);
              		var start_time2 = moment(event.start_time);
-                    event.start_time = start_time.subtract(12, 'h');
+                    event.start_time = start_time.subtract(4, 'h');
 
                     //If the event's end date is not null, we keep it
                     if(event.end_time){
-                        var end_time = moment(event.end_time);
-                        event.end_time = end_time.add(12, 'h');
+                        //var end_time = moment(event.end_time);
+                        //event.end_time = end_time.add(12, 'h');
+                        console.log("On ne fait rien");
                     } //Otherwise, we set the end date equals to start date + 48h
                     else{
-                        var end_time = start_time2.add(48, 'h');
+                        var end_time = start_time2.add(12, 'h');
                         event.end_time = end_time;
                     }
 
