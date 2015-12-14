@@ -5,8 +5,8 @@ body{
 }
 
 @font-face {
-    font-family: "Timeshot"
-    src: url('fonts/MJF Zhafira Demo.ttf');
+    font-family: "Timeshot";
+    src: url("MJF Zhafira Demo.ttf");
 }
 
 /* Pour l'editPicture au niveau de la top bar */ 

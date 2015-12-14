@@ -25,13 +25,14 @@
     text-align: center;
     color:white;
     top: 10% !important;
-    font-size: 3em;
+    font-size: 4em;
     line-height: 30px;
     position: absolute;
     top: 20%;
     display: block;
     left: 0px;
     right: 0px;
+    font-family: "Timeshot";
 }
 
 
