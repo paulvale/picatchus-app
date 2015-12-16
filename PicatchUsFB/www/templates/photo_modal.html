@@ -7,19 +7,20 @@
     	<div ng-if="modal.photo.orientation == 'landscape'" class="landscape">
 			<span class="helper"></span><img img-cache ng-src="{{modal.photo.src_modal}}">    		
     	</div>
+
+        <div class="footerModal">
+            <div class="descriptionPhoto">
+                <textarea disabled>{{modal.photo.name}}</textarea>
+            </div>
+            <div class="modalPhoto-like">
+                {{modal.photo.total_likes}} Likes
+            </div>
+            <div class="modalPhoto-userLike" ng-if="!modal.photo.has_liked" ng-click="like(modal.photo.pos, $event)">
+                <i class="ion-ios-heart-outline" ></i>
+            </div>
+            <div class="modalPhoto-userLike" ng-if="modal.photo.has_liked" ng-click="dislike(modal.photo.pos, $event)">
+                <i class="ion-ios-heart"></i>
+            </div>      
+        </div>
     </ion-pane>
-    <div class="footerModal">
-    	<div class="descriptionPhoto">
-            <textarea disabled>{{modal.photo.name}}</textarea>
-    	</div>
-    	<div class="modalPhoto-like">
-    		{{modal.photo.total_likes}} Likes
-    	</div>
-		<div class="modalPhoto-userLike" ng-if="!modal.photo.has_liked" ng-click="like(modal.photo.pos, $event)">
-    		<i class="ion-ios-heart-outline" ></i>
-    	</div>
-    	<div class="modalPhoto-userLike" ng-if="modal.photo.has_liked" ng-click="dislike(modal.photo.pos, $event)">
-    		<i class="ion-ios-heart"></i>
-    	</div>   	
-    </div>
 </ion-modal-view>
