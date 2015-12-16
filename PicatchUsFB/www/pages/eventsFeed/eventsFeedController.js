@@ -62,21 +62,25 @@ app.controller('EventsFeedController',
      * POP OVER REPORT PHOTO
      */
 
-    $ionicPopover.fromTemplateUrl('templates/reportPhotoPopOverMenu.html', {
-            scope: $scope,
-        }).then(function(popover) {
-            $scope.popover = popover;
-    });
+    var initPopover = function() {
+        return $ionicPopover.fromTemplateUrl('templates/reportPhotoPopOverMenu.html', {
+            scope: $scope
+            }).then(function(popover) {
+                $scope.popover = popover;
+        });
+    }
 
     $scope.openPopover = function($event) {
-        console.log('open pop over');
-        $scope.popover.show($event);
+        initPopover().then(function(){
+            console.log('open pop over');
+            $scope.popover.show($event);
+        });
     };
 
     $scope.report = function(){
         console.log('report a photo');
         $cordovaToast.showLongBottom('La photo a été signalée.');
-        $scope.popover.hide();
+        $scope.popover.remove();
     }
 
 
