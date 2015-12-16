@@ -4,14 +4,21 @@
 
 .descriptionPhoto {
 	position: absolute;
-  	z-index: 2;
+  z-index: 1;
 	right: 65px;
-	bottom: 20px;
-	height: 60px;
-  	left: 5px;
-  	font-size: 18px;
-  	color: white;
+	bottom: 3%;
+	height: 11%;
+	left: 5px;
+	font-size: 18px;
+	color: white;
+}
 
+.descriptionPhoto textarea {
+  color: white;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
 }
 
 .portrait{
@@ -19,10 +26,11 @@
 }
 
 .portrait img {
-	height: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+  height: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4em;
+  display: block;
 }
 
 .landscape {
@@ -42,7 +50,7 @@
 
 .modalPhoto-like {
 	position: absolute;
-  	z-index: 2;
+  	z-index: 1;
   	bottom: 0px;
   	left: 5px;
   	font-size: 18px;
@@ -50,7 +58,7 @@
 }
 
 .modalPhoto-userLike{
-	z-index: 2;
+	z-index: 1;
   	text-align: center;
   	background-color: white;
   	height: 55px;
