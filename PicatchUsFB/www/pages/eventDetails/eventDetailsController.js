@@ -1,4 +1,4 @@
-app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
+app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, $ionicPopover, UserFactory, EventsFactory, PhotoFactory){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
@@ -90,8 +90,34 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         $scope.modal.remove()
 	    .then(function() {
 	      $scope.modal = null;
+          if($scope.popover)
+            $scope.popover.remove();
 	    });
     };
+
+    /*
+     * POP OVER MENU TO REPORT PHOTO
+     */
+    var initPopover = function() {
+        return $ionicPopover.fromTemplateUrl('templates/reportPhotoPopOverMenu.html', {
+            scope: $scope
+            }).then(function(popover) {
+                $scope.popover = popover;
+        });
+    }
+
+    $scope.openPopover = function($event) {
+        initPopover().then(function(){
+            console.log('open pop over');
+            $scope.popover.show($event);
+        });
+    };
+
+    $scope.report = function(){
+        console.log('report a photo');
+        $cordovaToast.showLongBottom('La photo a été signalée.');
+        $scope.popover.remove();
+    }
 
     $scope.$on("refresh",function(){
         getEventPhotos(true);
