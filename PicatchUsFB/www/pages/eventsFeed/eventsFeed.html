@@ -13,11 +13,14 @@
 					<div class="col col-20 infoCardPhoto">
 				  		<img img-cache ng-src="{{photo.from.picture.data.url}}" style="border-radius:150px;">
 					</div>
-					<div class="col col-80 infoCard">
+					<div class="col col-70 infoCard">
 				    	<h2>{{photo.from.name}} <span>- {{photo.time_ago}}<span></h2>
 				    	<p>{{photo.event_name}}</p>
 				  	</div>
-	 	     	</div>
+				  	<div class="col col-10 reportPhoto" ng-click="openPopover($event)">
+				    	<i class="ion-chevron-down"></i>
+				  	</div>
+                </div>
 
 				<div class="item item-body myItem">
 					<p ng-if="photo.name != undefined" class="commentCard">{{photo.name}}</p>

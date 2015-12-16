@@ -106,7 +106,7 @@ app.controller('UserEventsController',
     }
 
     $ionicPopover.fromTemplateUrl('templates/popOverMenu.html', {
-            scope: $scope,
+            scope: $scope
         }).then(function(popover) {
             $scope.popover = popover;
     });
