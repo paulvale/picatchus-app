@@ -3,12 +3,12 @@
 }
 
 .descriptionPhoto {
-	position: absolute;
+	/*position: absolute;
   z-index: 1;
 	right: 65px;
 	bottom: 3%;
-	height: 11%;
-	left: 5px;
+	height: 10%;
+	left: 5px;*/
 	font-size: 18px;
 	color: white;
 }
@@ -19,6 +19,24 @@
   width: 100%;
   height: 100%;
   opacity: 1;
+  padding-right: 18%;
+}
+
+.modal-header {
+  background-color: transparent;
+  color: white;
+  font-size: 2em;
+  background-image: none;
+}
+
+div.footerModal {
+  position: absolute;
+  z-index: 1;
+  right: 0px;
+  bottom: 0px;
+  height: 12%;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .portrait{
@@ -26,10 +44,10 @@
 }
 
 .portrait img {
-  height: 75%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 4em;
+  margin-top: 17%;
   display: block;
 }
 
