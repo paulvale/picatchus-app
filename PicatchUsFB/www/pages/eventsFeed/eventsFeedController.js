@@ -1,6 +1,6 @@
 app.controller('EventsFeedController',
     function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory,
-            $ionicHistory,$ionicScrollDelegate, $ionicPopover){
+            $ionicHistory,$ionicScrollDelegate, $ionicPopover, $ionicPopup){
 
     $rootScope.uploadPhoto = 0;
 
@@ -77,11 +77,18 @@ app.controller('EventsFeedController',
         });
     };
 
-    $scope.report = function(){
-        console.log('report a photo');
-        $cordovaToast.showLongBottom('La photo a été signalée.');
+    $scope.showConfirm = function() {
         $scope.popover.remove();
-    }
+        var confirmPopup = $ionicPopup.confirm({
+        title: 'Pourquoi signalez-vous cette photo ?',
+        templateUrl: 'templates/reportPhotoConfirmBox.html'
+    });
+    confirmPopup.then(function(res) {
+         if(res) {
+            $cordovaToast.showLongBottom('La photo a été signalée.');
+         }
+       });
+     };
 
 
     /* ========================================*/

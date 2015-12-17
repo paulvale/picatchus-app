@@ -405,3 +405,13 @@ div.spinner {
   height: 40px !important;
 }
 
+/*
+ * Customize Report Photo Confirm Box
+*/
+.report-photo-select {
+    width: 100%;
+}
+
+.popup {
+    border-radius: 5px;
+}

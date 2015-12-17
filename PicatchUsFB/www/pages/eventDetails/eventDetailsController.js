@@ -113,11 +113,18 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         });
     };
 
-    $scope.report = function(){
-        console.log('report a photo');
-        $cordovaToast.showLongBottom('La photo a été signalée.');
+    $scope.showConfirm = function() {
         $scope.popover.remove();
-    }
+        var confirmPopup = $ionicPopup.confirm({
+        title: 'Pourquoi signalez-vous cette photo ?',
+        templateUrl: 'templates/reportPhotoConfirmBox.html'
+    });
+    confirmPopup.then(function(res) {
+         if(res) {
+            $cordovaToast.showLongBottom('La photo a été signalée.');
+         }
+       });
+     };
 
     $scope.$on("refresh",function(){
         getEventPhotos(true);
