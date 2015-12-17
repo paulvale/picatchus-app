@@ -54,7 +54,7 @@ body{
     border-color:#7b39ff;
 }
 .tabs-striped.tabs-stable .tab-item {
-    color:rgba(123, 57, 255,0.4);
+    color:rgba(123, 57, 255,0.6);
 }
 
 /* Permet de changer la couleur des outlets pour les events*/
