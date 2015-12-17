@@ -31,10 +31,10 @@
 	        		<div class="eventPhoto-like">
 	            		{{photo.total_likes}} Likes
 	            	</div>
-					<div class="eventPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+					<div class="eventPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos)">
 		        		<i class="ion-ios-heart-outline" ></i>
 		        	</div>
-		        	<div class="eventPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+		        	<div class="eventPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos)">
 		        		<i class="ion-ios-heart"></i>
 		        	</div>
 

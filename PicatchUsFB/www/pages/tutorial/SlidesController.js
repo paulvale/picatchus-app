@@ -16,7 +16,7 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "skip":"Passer",
             "next":"Suivant",
             "image": "img/OnBoarding2.png",
-            "title": "Patage en 1 clic les plus beaux moments de tes événements",
+            "title": "Partage en 1 clic les plus beaux moments de tes événements",
             "text": "Une fois la photo envoyée, elle est instantanément visible par tous les autres participants.Toutes les photos apparaissent sur le mur Facebook de l'événement"
         },
         "slide3": {
