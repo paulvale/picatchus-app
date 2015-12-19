@@ -2562,7 +2562,7 @@ body, .ionic-body {
   color: #000;
   word-wrap: break-word;
   font-size: 14px;
-  font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
   line-height: 20px;
   text-rendering: optimizeLegibility;
   -webkit-backface-visibility: hidden;
@@ -7529,9 +7529,9 @@ a.button {
   .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
     margin-top: 20px; }
 .platform-ios.platform-cordova:not(.fullscreen) .tabs-top > .tabs, .platform-ios.platform-cordova:not(.fullscreen) .tabs.tabs-top {
-  top: 64px; }
+  /*top: 64px; */}
 .platform-ios.platform-cordova:not(.fullscreen) .has-header, .platform-ios.platform-cordova:not(.fullscreen) .bar-subheader {
-  top: 64px; }
+  /*top: 64px; */}
 .platform-ios.platform-cordova:not(.fullscreen) .has-subheader {
   top: 108px; }
 .platform-ios.platform-cordova:not(.fullscreen) .has-header.has-tabs-top {
