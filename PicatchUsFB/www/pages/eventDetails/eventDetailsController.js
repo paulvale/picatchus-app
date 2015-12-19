@@ -117,8 +117,17 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         $scope.popover.remove();
         var confirmPopup = $ionicPopup.confirm({
         title: 'Pourquoi signalez-vous cette photo ?',
-        templateUrl: 'templates/reportPhotoConfirmBox.html'
+        templateUrl: 'templates/reportPhotoConfirmBox.html',
+        buttons: [{
+            'text': 'Valider',
+            onTap: function(){
+                $cordovaToast.showLongBottom('La photo a été signalée.');
+            }
+        }, {
+            'text': 'Annuler'
+        }]
     });
+
     confirmPopup.then(function(res) {
          if(res) {
             $cordovaToast.showLongBottom('La photo a été signalée.');

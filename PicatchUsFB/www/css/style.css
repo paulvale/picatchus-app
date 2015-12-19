@@ -71,7 +71,7 @@ body{
 
 .bar-subheader {
     position: absolute;
-    top: 44px;
+    top: 64px;
     height: 44px;
 }
 
@@ -196,7 +196,7 @@ img.userPicture {
     margin-right: 5%;
     margin-left: 5%;
     width: 90%;
-    border-radius: 100px;
+    border-radius: 10px;
 }
 
 #searchPhotosFrom {
@@ -413,6 +413,48 @@ div.spinner {
     width: 100%;
 }
 
-.popup {
-    border-radius: 5px;
+.platform-ios .popup {
+  width:84%;
+  z-index: 10px;
+  background:rgba(255,255,255,0.85);
+  border-radius: 8px;
+  margin:0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.platform-ios .popup-head {
+    margin: 20px 0 0 0;
+    padding: 0;
+    border-bottom: 0px;
+}
+
+.platform-ios .popup-body {
+    margin: 15px;
+    padding: 0;
+}
+
+.platform-ios .popup-buttons {
+    padding: 0px;
+    min-height: 0px;
+}
+
+.platform-ios .popup-buttons button{
+    color: #007AFF;
+    text-decoration: none;
+    line-height: 45px;
+    font-weight: bold;
+    display: block;
+    border-top: 1px solid #BABABA;
+    background-color: transparent;
+    border-radius: 0px;
+    margin-right: 0px;
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+}
+
+.platform-ios .popup-buttons button:first-child {
+    border-right: 1px solid #b2b2b2;
 }

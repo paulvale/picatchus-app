@@ -17,8 +17,8 @@
 				    	<h2>{{photo.from.name}} <span>- {{photo.time_ago}}<span></h2>
 				    	<p>{{photo.event_name}}</p>
 				  	</div>
-				  	<div class="col col-10 reportPhoto" ng-click="openPopover($event)">
-				    	<i class="ion-chevron-down"></i>
+				  	<div class="col col-10 reportPhoto">
+				    	<i class="ion-chevron-down"  ng-click="openPopover($event)"></i>
 				  	</div>
                 </div>
 
@@ -29,7 +29,7 @@
 				    <div class="eventPhoto-bandeau">			    	
 				    </div>
 	        		<div class="eventPhoto-like">
-	            		{{photo.total_likes}} Likes
+	            		{{photo.total_likes}} <span ng-if="photo.total_likes <= 1">Like</span> <span ng-if="photo.total_likes > 1">Likes</span>
 	            	</div>
 					<div class="eventPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos)">
 		        		<i class="ion-ios-heart-outline" ></i>
@@ -43,8 +43,7 @@
 		</div>
 		<div ng-if="livePhotos[0] == undefined" class="noLiveEvent">
 			<img src="img/noLiveEvent.png" alt="">
-			<p>Pas d'événements en live</p>
-			<p>actuellement ...</p>  
+			<p>Tu ne participes à aucun événement en cours. <br/><br/> Rejoins un événement Facebook ou retrouve les photos de tes anciens événements :)</p> 
 		</div>
 	</ion-content>
 </ion-view>
