@@ -1,8 +1,11 @@
 <ion-modal-view id="modal-photo" on-swipe-down="closeModalPhoto()">
     <ion-pane class="modalPane">
         <div class="modal-header bar bar-header">
-            <div class="col col-offset-90 col-10">
-                <i class="ion-android-more-vertical"  ng-click="openPopover($event)"></i>
+            <div class="col col-10" ng-click="closeModalPhoto()">
+                <i class="ion-close-round"></i>
+            </div>
+            <div class="col col-offset-80 col-10" ng-click="openPopover($event)">
+                <i class="ion-more"></i>
             </div>
         </div>
 

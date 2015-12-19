@@ -3,6 +3,7 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         $scope.data = {}
         $scope.data.liveEvents = EventsFactory.getLiveEvents().then(function(liveEvents){
                 $scope.data.liveEvents = liveEvents;
+                $scope.changeSendButton();
             }, function(msg){
                 $cordovaToast.showLongBottom(msg);
             })
@@ -32,13 +33,32 @@ app.controller('EditPictureController', function ($scope, ngFB, $stateParams, $l
         mixpanel.people.increment("Photos taken");
     }
 
+    $scope.changeSendButton = function(){
+        console.log('changeSendButton');
+        $scope.enableButton = false;
+        if($scope.data.onMyWall == true){
+            $scope.enableButton = true;
+            console.log('enable button because wall');
+        }
+        else 
+        {
+            for(var i = 0; i < $scope.data.liveEvents.length; i++){
+              if($scope.data.liveEvents[i].isDestination == true){
+                console.log('enable button because event');
+                $scope.enableButton = true;
+              }
+            }
+        }
+
+    }
+
     $scope.sendPhoto = function() {
         $scope.data.options = new FileUploadOptions();
         var params = {};
         if($scope.data.description == undefined)
             params.caption = "#Timeshot";
         else
-            params.caption = $scope.data.description + " - #Timeshot";
+            params.caption = $scope.data.description + " #Timeshot";
         $scope.data.options.params = params;
 
         $rootScope.uploadPhoto = 1;

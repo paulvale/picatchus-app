@@ -1,4 +1,4 @@
-app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, $ionicPopover, UserFactory, EventsFactory, PhotoFactory){
+app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $ionicActionSheet, $state, $localstorage, $ionicModal, $ionicPopover, UserFactory, EventsFactory, PhotoFactory){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
@@ -98,23 +98,25 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     /*
      * POP OVER MENU TO REPORT PHOTO
      */
-    var initPopover = function() {
-        return $ionicPopover.fromTemplateUrl('templates/reportPhotoPopOverMenu.html', {
-            scope: $scope
-            }).then(function(popover) {
-                $scope.popover = popover;
-        });
-    }
-
     $scope.openPopover = function($event) {
-        initPopover().then(function(){
-            console.log('open pop over');
-            $scope.popover.show($event);
-        });
+       // Show the action sheet
+       var hideSheet = $ionicActionSheet.show({
+         buttons: [
+           { text: '<b>Signaler</b>' }
+         ],
+         titleText: 'Signaler une photo',
+         cancelText: 'Annuler',
+         buttonClicked: function(index) {
+            hideSheet();
+            console.log('index Action Sheet : ' + index);
+           if(index == 0){
+            $scope.showConfirm();
+           }
+         }
+       });
     };
 
     $scope.showConfirm = function() {
-        $scope.popover.remove();
         var confirmPopup = $ionicPopup.confirm({
         title: 'Pourquoi signalez-vous cette photo ?',
         templateUrl: 'templates/reportPhotoConfirmBox.html',
@@ -124,7 +126,10 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
                 $cordovaToast.showLongBottom('La photo a été signalée.');
             }
         }, {
-            'text': 'Annuler'
+            'text': 'Annuler',
+            onTap: function(){
+                $scope.popover.remove();
+            }
         }]
     });
 

@@ -25,7 +25,7 @@
     text-align: center;
     color:white;
     top: 10% !important;
-    font-size: 4em;
+    font-size: 6em;
     line-height: 30px;
     position: absolute;
     top: 20%;
@@ -36,7 +36,7 @@
 }
 
 .terms-privacy {
-    font-size: 0.8em;
+    font-size: 1em;
 }
 
 .terms-privacy span {
@@ -48,12 +48,13 @@
     position:absolute;
     right:0px;
     left:0px;
-    top:80%;
+    bottom:15%;
     text-align: center;
 }
 .fbBtn {
     display:block;
     height:34px;
+    width: 75%;
     line-height: 34px;
     margin:auto;
     padding-left: 8px;
@@ -128,7 +129,7 @@
 }
 .rowPol {
     position: absolute;
-    bottom: 7%;
+    bottom: 4%;
     padding: 0px;
 }
 

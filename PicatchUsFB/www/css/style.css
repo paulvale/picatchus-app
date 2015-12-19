@@ -27,8 +27,7 @@ body{
   padding-left: 60px;
   border-width: 0px;
   background-color: transparent;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding-top: 0px;
   border-bottom: 1px;
 }
 
@@ -319,6 +318,7 @@ div.userEvent img {
     padding-top: 2px;
     padding-bottom: 2px;
     min-height: 22px;
+    margin-top: 6%;
 }
 
 .myItem {
@@ -356,6 +356,10 @@ div.userEvent img {
     width: 100%;
     height: 95px;
     max-height: 95px;
+}
+
+#modal-photo .ion-close-round {
+    font-size: 80%;
 }
 
 /* 

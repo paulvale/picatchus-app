@@ -3,17 +3,17 @@
     	<button class="button button-icon icon ion-android-close" ng-click="quit()"></button>
     </ion-nav-buttons>
 	<ion-nav-buttons side="right">
-     	<button class="button button-clear button-custom" ng-click="sendPhoto()">Envoyer</button>
+     	<button class="button button-clear button-custom" ng-click="sendPhoto()" ng-disabled="!enableButton">Envoyer</button>
     </ion-nav-buttons>
 
 	<ion-content ng-init="init()">
 		<div class="row item item-divider" >
 			<div class="col">
-					Sur :
-			    	<ion-checkbox ng-model="data.onMyWall"> mon mur</ion-checkbox>
+			    	<ion-checkbox ng-model="data.onMyWall" ng-change="changeSendButton()">Mon mur</ion-checkbox>
 					<ion-checkbox ng-model="event.isDestination" 
 									ng-true-value="{{event.isDestination}}" 
-									ng-repeat="event in data.liveEvents">
+									ng-repeat="event in data.liveEvents"
+									ng-change="changeSendButton()">
 						{{event.name}}
 					</ion-checkbox>
 			</div>

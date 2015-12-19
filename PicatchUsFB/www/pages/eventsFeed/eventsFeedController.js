@@ -1,6 +1,6 @@
 app.controller('EventsFeedController',
     function ($scope,$rootScope,$ionicModal, $cordovaToast, EventsFactory, PhotoFactory,
-            $ionicHistory,$ionicScrollDelegate, $ionicPopover, $ionicPopup){
+            $ionicHistory,$ionicScrollDelegate, $ionicPopover, $ionicPopup, $ionicActionSheet){
 
     $rootScope.uploadPhoto = 0;
 
@@ -32,22 +32,27 @@ app.controller('EventsFeedController',
         $scope.livePhotos[posPhoto].total_likes++;
         $scope.livePhotos[posPhoto].has_liked = true;
         PhotoFactory.like($scope.livePhotos[posPhoto].id).then(function(result){
+            console.log('like on feed');
             mixpanel.people.increment("Likes total");
             mixpanel.people.increment("Likes on feed");
             mixpanel.track('photo.like.onFeed');
         }, function(msg){
             $scope.livePhotos[posPhoto].total_likes--;
             $scope.livePhotos[posPhoto].has_liked = false;
+            console.log('error on liking a photo on feed');
         })  
     }
 
     $scope.dislike = function(posPhoto){
         $scope.livePhotos[posPhoto].total_likes--;
         $scope.livePhotos[posPhoto].has_liked = false;
-        PhotoFactory.like($scope.livePhotos[posPhoto].id).then(function(result){
+        PhotoFactory.dislike($scope.livePhotos[posPhoto].id).then(function(result){
+            console.log('dislike a photo on feed');
         }, function(msg){
             $scope.livePhotos[posPhoto].total_likes++;
             $scope.livePhotos[posPhoto].has_liked = true;
+            console.log('error on disliking a photo on feed');
+            console.log(msg);
         })
     }
 
@@ -62,23 +67,26 @@ app.controller('EventsFeedController',
      * POP OVER REPORT PHOTO
      */
 
-    var initPopover = function() {
-        return $ionicPopover.fromTemplateUrl('templates/reportPhotoPopOverMenu.html', {
-            scope: $scope
-            }).then(function(popover) {
-                $scope.popover = popover;
-        });
-    }
-
     $scope.openPopover = function($event) {
-        initPopover().then(function(){
-            console.log('open pop over');
-            $scope.popover.show($event);
-        });
+       // Show the action sheet
+       var hideSheet = $ionicActionSheet.show({
+         buttons: [
+           { text: '<b>Signaler</b>' }
+         ],
+         titleText: 'Signaler une photo',
+         cancelText: 'Annuler',
+         buttonClicked: function(index) {
+            hideSheet();
+            console.log('index Action Sheet : ' + index);
+           if(index == 0){
+            $scope.showConfirm();
+           }
+         }
+       });
     };
 
     $scope.showConfirm = function() {
-        $scope.popover.remove();
+
         var confirmPopup = $ionicPopup.confirm({
         title: 'Pourquoi signalez-vous cette photo ?',
         templateUrl: 'templates/reportPhotoConfirmBox.html',
@@ -92,7 +100,6 @@ app.controller('EventsFeedController',
         }]
     });
 
-        
     confirmPopup.then(function(res) {
          if(res) {
             $cordovaToast.showLongBottom('La photo a été signalée.');
