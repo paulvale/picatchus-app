@@ -35,6 +35,13 @@
     font-family: "Timeshot";
 }
 
+.terms-privacy {
+    font-size: 0.8em;
+}
+
+.terms-privacy span {
+    text-decoration: underline;
+}
 
 /* Facebook Button */
 .fbDiv {
