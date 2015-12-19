@@ -1,7 +1,7 @@
 app.controller('UserEventsController', 
     function ($scope,$rootScope, ngFB, $state, $location, $ionicHistory, $cordovaFileTransfer,
              $filter, $cordovaToast, $localstorage, $ionicPopover, $rootScope, $ionicScrollDelegate,
-              $ionicModal,$cordovaFacebook,UserFactory, EventsFactory) {
+              $ionicModal,$cordovaFacebook, $ionicLoading, UserFactory, EventsFactory) {
     function getEvents(refresh){
         refresh == undefined ? refresh = false : refresh;
         $scope.liveEvents = EventsFactory.getLiveEvents(refresh).then(function(liveEvents){
@@ -79,16 +79,20 @@ app.controller('UserEventsController',
     }
 
     $scope.logout = function() {
-        mixpanel.track('logout');
+        $ionicLoading.show({
+            'template': 'Déconnexion ...'
+        });
         ngFB.revokePermissions().then(
             function(){
                 ngFB.logout().then(
                     function() {
+                    mixpanel.track('logout');
                     window.localStorage.removeItem("fbAccessToken");
                     window.localStorage.removeItem("user");
                     window.localStorage.removeItem("events");
                     window.localStorage.setItem("isConnected",false);
                     window.localStorage.setItem("firstPermission",false);
+                    $ionicLoading.hide();
                     $state.go('login');
                     $scope.popover.hide();
                 },
@@ -106,7 +110,7 @@ app.controller('UserEventsController',
     }
 
     $ionicPopover.fromTemplateUrl('templates/popOverMenu.html', {
-            scope: $scope,
+            scope: $scope
         }).then(function(popover) {
             $scope.popover = popover;
     });

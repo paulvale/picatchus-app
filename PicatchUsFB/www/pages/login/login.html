@@ -4,8 +4,13 @@
 		<p class="slogan">Changez le cours des événements Facebook</p>
 		<div class="fbDiv" ng-show="!isConnectedBool">
 			<button class="fbBtn" ng-click="login()">
-				<strong>Se connecter</strong> avec <strong>facebook</strong>
+				Se connecter
 			</button>
+		</div>
+		<div class="row rowPol">
+			<div class="col terms-privacy">
+				<p>En utilisant cette application vous acceptez <span ng-click="openCGU()">les CGU</span> et <span ng-click="openConfidentialite()">la politique de confidentialité</span></p>
+			</div>
 		</div>
 	</ion-content>
 </ion-view>

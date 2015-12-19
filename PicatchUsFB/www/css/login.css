@@ -25,7 +25,7 @@
     text-align: center;
     color:white;
     top: 10% !important;
-    font-size: 4em;
+    font-size: 6em;
     line-height: 30px;
     position: absolute;
     top: 20%;
@@ -35,18 +35,26 @@
     font-family: "Timeshot";
 }
 
+.terms-privacy {
+    font-size: 1em;
+}
+
+.terms-privacy span {
+    text-decoration: underline;
+}
 
 /* Facebook Button */
 .fbDiv {
     position:absolute;
     right:0px;
     left:0px;
-    top:90%;
+    bottom:15%;
     text-align: center;
 }
 .fbBtn {
     display:block;
     height:34px;
+    width: 75%;
     line-height: 34px;
     margin:auto;
     padding-left: 8px;
@@ -107,7 +115,7 @@
     background: -ms-linear-gradient(top,  rgba(50,75,126,1) 0%,rgba(60,90,152,1) 100%);
     background: linear-gradient(to bottom,  rgba(50,75,126,1) 0%,rgba(60,90,152,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#324b7e', endColorstr='#3c5a98',GradientType=0 );
-    }
+}
     
 .fbBtn:active{
     background: rgb(35,53,88);
@@ -118,4 +126,28 @@
     background: -ms-linear-gradient(top,  rgba(35,53,88,1) 0%,rgba(50,75,126,1) 100%);
     background: linear-gradient(to bottom,  rgba(35,53,88,1) 0%,rgba(50,75,126,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#233558', endColorstr='#324b7e',GradientType=0 );
-    }
+}
+.rowPol {
+    position: absolute;
+    bottom: 4%;
+    padding: 0px;
+}
+
+.rowPol .col {
+    color:white;
+    text-align: center;
+}
+
+.rowPolicy {
+    position:absolute;
+    bottom:0%;
+    padding-bottom: 0px;
+}
+
+
+
+.colPolicy {
+    color:white;
+    font-weight: bold;
+
+}

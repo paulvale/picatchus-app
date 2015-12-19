@@ -4,16 +4,16 @@
 
 .uploadPhoto {
 	position:absolute;
-	top:50px;
-	right:33%;
+	top:12%;
+  	width: 45%;
+  	right: 27%;
+  	padding: 5px;
     z-index: 3;
-    height: 25px;
     text-align: center;
-    width: 35%;
     margin-right: auto;
     margin-left: auto;
     border-radius: 10px;
-    background-color:rgba(164, 89, 250,0.4);
+    background-color:rgba(123, 57, 255,0.6);
     color: white;
 }
 
@@ -49,6 +49,10 @@
 .infoCard p{
 	font-size:11px;
 	height:16px;
+}
+
+.reportPhoto {
+	padding-top: 1.2em;
 }
 
 .infoCardPhoto {

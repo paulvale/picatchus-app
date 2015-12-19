@@ -1,4 +1,4 @@
-app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $state, $localstorage, $ionicModal, UserFactory, EventsFactory, PhotoFactory){
+app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $timeout,$stateParams, $ionicPopup, $cordovaToast, $ionicActionSheet, $state, $localstorage, $ionicModal, $ionicPopover, UserFactory, EventsFactory, PhotoFactory){
 	function getEvent(refresh){
         refresh == undefined ? refresh = false : refresh;
         EventsFactory.getEvent($stateParams.eventId, refresh).then(function(event){
@@ -90,8 +90,55 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         $scope.modal.remove()
 	    .then(function() {
 	      $scope.modal = null;
+          if($scope.popover)
+            $scope.popover.remove();
 	    });
     };
+
+    /*
+     * POP OVER MENU TO REPORT PHOTO
+     */
+    $scope.openPopover = function($event) {
+       // Show the action sheet
+       var hideSheet = $ionicActionSheet.show({
+         buttons: [
+           { text: '<b>Signaler</b>' }
+         ],
+         titleText: 'Signaler une photo',
+         cancelText: 'Annuler',
+         buttonClicked: function(index) {
+            hideSheet();
+            console.log('index Action Sheet : ' + index);
+           if(index == 0){
+            $scope.showConfirm();
+           }
+         }
+       });
+    };
+
+    $scope.showConfirm = function() {
+        var confirmPopup = $ionicPopup.confirm({
+        title: 'Pourquoi signalez-vous cette photo ?',
+        templateUrl: 'templates/reportPhotoConfirmBox.html',
+        buttons: [{
+            'text': 'Valider',
+            onTap: function(){
+                $cordovaToast.showLongBottom('La photo a été signalée.');
+            }
+        }, {
+            'text': 'Annuler',
+            onTap: function(){
+                $scope.popover.remove();
+            }
+        }]
+    });
+
+    confirmPopup.then(function(res) {
+         if(res) {
+            $cordovaToast.showLongBottom('La photo a été signalée.');
+         }
+       });
+     };
 
     $scope.$on("refresh",function(){
         getEventPhotos(true);

@@ -33,21 +33,20 @@
 	                <div class="eventDetailsPhoto-bandeau">			    	
 				    </div>
 	        		<div class="eventDetailsPhoto-like">
-	            		{{photo.total_likes}} Likes
+	            		{{photo.total_likes}} <span ng-if="photo.total_likes <= 1">Like</span> <span ng-if="photo.total_likes > 1">Likes</span>
 	            	</div>
-					<div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
-		        		<i class="ion-ios-heart-outline" ></i>
-		        	</div>
-		        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
-		        		<i class="ion-ios-heart"></i>
-		        	</div>
+					<!-- <div class="eventDetailsPhoto-userLike" ng-if="!photo.has_liked" ng-click="like(photo.pos, $event)">
+							        		<i class="ion-ios-heart-outline" ></i>
+							        	</div>
+							        	<div class="eventDetailsPhoto-userLike" ng-if="photo.has_liked" ng-click="dislike(photo.pos, $event)">
+							        		<i class="ion-ios-heart"></i>
+							        	</div> -->
 		      	</div>
 	        </div>
 		</div>
 		<div ng-if="photos[0] == undefined" class="noPicture">
 			<img src="img/noPhotoEvent.png" alt="">
-			<p>Aucune photo prise lors de </p>
-			<p>l'événement ...</p> 			
+			<p>Aucune photo n'a été prise lors de l'événement :(</p> 			
 		</div>
 	</ion-content>
 </ion-view>

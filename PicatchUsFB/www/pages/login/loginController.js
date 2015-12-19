@@ -1,5 +1,5 @@
 app.controller('LoginController', function ($scope,ngFB, $state, 
-    $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory) {
+    $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory, $ionicModal) {
     // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
@@ -100,6 +100,58 @@ app.controller('LoginController', function ($scope,ngFB, $state,
         }
 
         $scope.init();
-    })
+
+        /* ========================================*/
+        /* =========== CGU MODAL ================*/
+        /* ========================================*/
+
+        var initCGU = function(){
+        return $ionicModal.fromTemplateUrl('templates/CGU.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal;
+            });
+        }
+
+        $scope.openCGU = function(posPhoto) {
+            initCGU().then(function() {
+                $scope.modal.show();
+            });
+        };
+
+        $scope.closeCGU = function() {
+            $scope.modal.remove()
+            .then(function() {
+              $scope.modal = null;
+            });
+        };
+
+        /* ========================================*/
+        /* =========== CONF MODAL ================*/
+        /* ========================================*/
+
+        var initConfidentialite = function(){
+        return $ionicModal.fromTemplateUrl('templates/politiqueConfidentialite.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal;
+            });
+        }
+
+        $scope.openConfidentialite = function(posPhoto) {
+            initConfidentialite().then(function() {
+                $scope.modal.show();
+            });
+        };
+
+        $scope.closeConfidentialite = function() {
+            $scope.modal.remove()
+            .then(function() {
+              $scope.modal = null;
+            });
+        };
+        })
 
 });
