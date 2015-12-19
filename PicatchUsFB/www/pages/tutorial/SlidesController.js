@@ -7,8 +7,8 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "skip":"Passer",
             "next":"Suivant",
             "image": "img/OnBoarding1.png",
-            "title": "Suis l'actualité de tes événements en temps réel",
-            "text": "Le fil d'actualité permet de rester connecté à tout ce qui se passe pendant tes événements"
+            "title": "ion-clock",
+            "text": "Suis l'actualité de tes événements en temps réel"
         },
         "slide2": {
             "position": 2,
@@ -16,8 +16,8 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "skip":"Passer",
             "next":"Suivant",
             "image": "img/OnBoarding2.png",
-            "title": "Partage en 1 clic les plus beaux moments de tes événements",
-            "text": "Une fois la photo envoyée, elle est instantanément visible par tous les autres participants.Toutes les photos apparaissent sur le mur Facebook de l'événement"
+            "title": "ion-camera",
+            "text": "Partage en 1 clic tes photos avec les autres participants"
         },
         "slide3": {
             "position":3,
@@ -25,8 +25,8 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "skip":"Terminer",
             "next":"Terminer",
             "image": "img/OnBoarding3.png",
-            "title": "Retrouve toutes les photos de tes événements Facebook",
-            "text": "Consulte rapidement tous les clichés des événements Facebook auxquels tu as participé. Tous tes plus beaux souvenirs sont dans ta poche."
+            "title": "ion-images",
+            "text": "Retrouve toutes les photos de tes événements Facebook"
         }
     };
 

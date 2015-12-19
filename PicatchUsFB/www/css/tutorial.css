@@ -30,7 +30,7 @@
 }
 
 .titleTutorial {
-	height:15%;
+	height:20%;
 	width:100%;
 	text-align: center;
 	font-size: 1.5em;
@@ -38,11 +38,19 @@
 	padding-top: 5%;
 }
 
+.titleTutorial i {
+	font-size: 4em;
+	color:#7b39ff;
+}
+
 .textTutorial {
-	height:20%;
+	height: 15%;
+  	padding-left: 5%;
+  	padding-right: 5%;
 	width:100%;
 	text-align: center;
-  	color: grey;
+  	padding-top: 5px;
+  	font-size: 1.2em;
   	line-height: 25px;
 }
 
