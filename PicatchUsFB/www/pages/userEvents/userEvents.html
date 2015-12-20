@@ -21,7 +21,9 @@
 	    <div ng-if="filteredEvents[0] == undefined " class="noLiveEvent">
 			<img src="img/noLiveEvent.png" alt="">
 			<div ng-if="filterStatus == 1">
-				<p>Tu ne participes à aucun événement en cours. <br/><br/> Rejoins un événement Facebook ou retrouve les photos de tes anciens événements :)</p>  
+				<p class="noLiveEventTitle">Tu ne participes à aucun événement en cours.<p>
+				<hr>
+				<p class="noLiveEventText"> Rejoins un événement Facebook ou retrouve les photos de tes anciens événements :)</p>  
 			</div>
 			<div ng-if="filterStatus == 0">
 				<p>Pour retrouvez vos événements</p>

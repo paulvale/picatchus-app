@@ -121,13 +121,48 @@
 }
 
 .platform-android .noLiveEvent img{
-	width: 70%;
+	width: 50%;
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5%;
-    padding-top:5%;
+    padding-top:15%;
 }
 
+.noLiveEventTitle {
+	color: #7b39ff;
+  	font-size: 1.3em;
+  	line-height: 25px;
+  	padding-left: 5%;
+  	padding-right: 5%;
+}
+
+hr{
+	border-top: 1px solid #7b39ff;
+	text-align: center;
+	margin-top: 20px;
+  	margin-left: 20%;
+  	margin-right: 20%;
+}
+hr:after {
+	content: '§';
+	display: inline-block;
+	position: relative;
+	top: -14px;
+	padding: 0 10px;
+	background: white;
+	color: #7b39ff;
+	font-size: 18px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.noLiveEventText {
+	font-size: 0.8em;
+  	padding-left: 5%;
+  	padding-right: 5%;
+  	padding-top: 10px;
+}
 
 

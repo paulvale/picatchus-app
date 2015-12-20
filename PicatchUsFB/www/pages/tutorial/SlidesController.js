@@ -6,7 +6,7 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "precedent": "",
             "skip":"Passer",
             "next":"Suivant",
-            "image": "img/Onboarding1.png",
+            "image": "img/OnBoarding1.png",
             "title": "ion-clock",
             "text": "Suis l'actualité de tes événements en temps réel"
         },
@@ -15,7 +15,7 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "precedent": "Précédent",
             "skip":"Passer",
             "next":"Suivant",
-            "image": "img/Onboarding2.png",
+            "image": "img/OnBoarding2.png",
             "title": "ion-camera",
             "text": "Partage en 1 clic tes photos avec les autres participants"
         },
