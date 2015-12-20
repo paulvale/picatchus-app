@@ -90,7 +90,6 @@ app.controller('UserEventsController',
                     window.localStorage.removeItem("fbAccessToken");
                     window.localStorage.removeItem("user");
                     window.localStorage.removeItem("events");
-                    window.localStorage.setItem("isConnected",false);
                     window.localStorage.setItem("firstPermission",false);
                     $ionicLoading.hide();
                     $state.go('login');

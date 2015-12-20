@@ -90,7 +90,6 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                 window.localStorage.setItem("firstPermission",true);
                 $state.go("tutorial");
             }, function(error){
-                window.localStorage.setItem("isConnected",false);
                 console.log(error);
             })
         }
@@ -98,8 +97,6 @@ app.controller('LoginController', function ($scope,ngFB, $state,
         function errorHandler(error) {
             console.log(JSON.stringify(error.message));
         }
-
-        $scope.init();
 
         /* ========================================*/
         /* =========== CGU MODAL ================*/

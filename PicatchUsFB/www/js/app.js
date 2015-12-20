@@ -19,7 +19,7 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
 
       setTimeout(function () {
           navigator.splashscreen.hide();
-      }, 1700);
+      }, 2000);
 
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
