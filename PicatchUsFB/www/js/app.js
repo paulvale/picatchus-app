@@ -15,8 +15,12 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
         cordova.plugins.Keyboard.disableScroll(true);
-
       }
+
+      setTimeout(function () {
+          navigator.splashscreen.hide();
+      }, 1700);
+
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
@@ -42,9 +46,15 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
   //Permet de supprimer le texte du back button pour iOS.
   $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-  $urlRouterProvider.otherwise("/login");
+  $urlRouterProvider.otherwise("/splashScreen");
 
   $stateProvider
+    .state('splashScreen', {
+      url: '/splashScreen',
+      templateUrl: 'pages/splashScreen/splashScreen.html',
+      controller:'splashScreenController'
+    })
+
     .state('login', {
       url: '/login',
       templateUrl: 'pages/login/login.html',

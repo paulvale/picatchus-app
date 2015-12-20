@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.timeshot.app" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Timeshot</name>
-  <description>
-
-        Timeshot app, the best way to share your facebook event's photos !
+  <description>&#xD;
+&#xD;
+        Timeshot app, the best way to share your facebook event's photos !&#xD;
     </description>
-  <author email="contact@picatchus.fr" href="http://timeshot.co/">
-
-	Timeshot team	
-
+  <author email="contact@picatchus.fr" href="http://timeshot.co/">&#xD;
+&#xD;
+	Timeshot team	&#xD;
+&#xD;
   </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -18,11 +18,13 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="SplashScreen" value="none"/>
-  <preference name="SplashScreenDelay" value="1000"/>
+  <preference name="SplashScreen" value="screen"/>
+  <preference name="AutoHideSplashScreen" value="false"/>
+  <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="xwalkVersion" value="14+"/>
   <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect"/>
   <preference name="xwalkMode" value="embedded"/>
+  <preference name="SplashScreenDelay" value="3000"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

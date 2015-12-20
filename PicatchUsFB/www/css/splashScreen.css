@@ -1,0 +1,16 @@
+.splashScreenView {
+	background-color: #7b39ff;
+}
+
+.splashScreenTitle {
+	text-align: center;
+    color:white;
+    top: 45%;
+    font-size: 8em;
+    line-height: 30px;
+    position: absolute;
+    display: block;
+    left: 0px;
+    right: 0px;
+    font-family: "Timeshot";
+}

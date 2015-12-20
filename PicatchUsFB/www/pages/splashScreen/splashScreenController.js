@@ -1,12 +1,13 @@
-app.controller('LoginController', function ($scope,ngFB, $state, 
+app.controller('splashScreenController', function ($scope,ngFB, $state, 
     $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory, $ionicModal) {
-    // Defaults to sessionStorage for storing the Facebook token
+
+     // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     
     $ionicPlatform.ready(function(){
-/*        $scope.init = function(){
+        $scope.init = function(){
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             $scope.isConnectedBool = false;
@@ -48,6 +49,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                         $scope.isConnectedBool = false;
                         window.localStorage.setItem("isConnected",false);
                         window.localStorage.setItem("firstPermission",false);
+                        $state.go("login");
 
                     }
                 }, function (error){
@@ -63,6 +65,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                     console.log("Pas connecte encore et pas de permission");
                     $scope.isConnectedBool = false;
                     console.log($scope.isConnectedBool);
+                    $state.go("login");
                 }
 
             } else if ($scope.isConnected == "true") {
@@ -80,20 +83,8 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                 })
                 $state.go("home.eventsFeed");
             }
-        }*/
-
-        $scope.login = function() {
-            mixpanel.track('sign up');
-            $cordovaFacebook.login(["user_events", "user_photos"])
-            .then(function(success){
-                window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                window.localStorage.setItem("firstPermission",true);
-                $state.go("tutorial");
-            }, function(error){
-                window.localStorage.setItem("isConnected",false);
-                console.log(error);
-            })
         }
+
         
         function errorHandler(error) {
             console.log(JSON.stringify(error.message));
@@ -101,57 +92,5 @@ app.controller('LoginController', function ($scope,ngFB, $state,
 
         $scope.init();
 
-        /* ========================================*/
-        /* =========== CGU MODAL ================*/
-        /* ========================================*/
-
-        var initCGU = function(){
-        return $ionicModal.fromTemplateUrl('templates/CGU.html', {
-                scope: $scope,
-                animation: 'slide-in-up'
-            }).then(function(modal) {
-                $scope.modal = modal;
-            });
-        }
-
-        $scope.openCGU = function(posPhoto) {
-            initCGU().then(function() {
-                $scope.modal.show();
-            });
-        };
-
-        $scope.closeCGU = function() {
-            $scope.modal.remove()
-            .then(function() {
-              $scope.modal = null;
-            });
-        };
-
-        /* ========================================*/
-        /* =========== CONF MODAL ================*/
-        /* ========================================*/
-
-        var initConfidentialite = function(){
-        return $ionicModal.fromTemplateUrl('templates/politiqueConfidentialite.html', {
-                scope: $scope,
-                animation: 'slide-in-up'
-            }).then(function(modal) {
-                $scope.modal = modal;
-            });
-        }
-
-        $scope.openConfidentialite = function(posPhoto) {
-            initConfidentialite().then(function() {
-                $scope.modal.show();
-            });
-        };
-
-        $scope.closeConfidentialite = function() {
-            $scope.modal.remove()
-            .then(function() {
-              $scope.modal = null;
-            });
-        };
-        })
-
+    });
 });
