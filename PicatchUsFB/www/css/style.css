@@ -23,11 +23,20 @@ body{
     border-color:#7b39ff !important;
 }
 /* Pour l'editPhoto les checkboxs */
-.item-checkbox {
+.platform-ios .item-checkbox {
   padding-left: 60px;
   border-width: 0px;
   background-color: transparent;
   padding-top: 0px;
+  border-bottom: 1px;
+}
+
+.platform-android .item-checkbox {
+  padding-left: 60px;
+  border-width: 0px;
+  background-color: transparent;
+  padding-top: 5px;
+  padding-bottom: 5px;
   border-bottom: 1px;
 }
 
@@ -68,9 +77,15 @@ body{
     color:white;
 }
 
-.bar-subheader {
+.platform-ios .bar-subheader {
     position: absolute;
     top: 64px;
+    height: 44px;
+}
+
+.platform-android .bar-subheader {
+    position: absolute;
+    top: 44px;
     height: 44px;
 }
 
@@ -314,11 +329,17 @@ div.userEvent img {
     font-size:23px;
 }
 
-.item-divider {
+.platform-ios .item-divider {
     padding-top: 2px;
     padding-bottom: 2px;
     min-height: 22px;
     margin-top: 6%;
+}
+
+.platform-android .item-divider {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    min-height: 22px;
 }
 
 .myItem {

@@ -68,12 +68,12 @@ app.controller('UserEventsController',
             case 0: 
                 $scope.filteredEvents = $scope.passedEvents; 
                 mixpanel.track('event.passed'); 
-                $ionicScrollDelegate;
+                $ionicScrollDelegate.scrollTop();
             break;
             case 1: 
                 $scope.filteredEvents = $scope.liveEvents; 
                 mixpanel.track('event.live'); 
-                $ionicScrollDelegate;
+                $ionicScrollDelegate.scrollTop();
             break;
         }
     }

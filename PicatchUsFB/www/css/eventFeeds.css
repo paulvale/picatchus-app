@@ -111,7 +111,7 @@
     font-size: 20px;
 }
 
-.noLiveEvent img {
+.platform-ios .noLiveEvent img {
 	width: 70%;
     display: block;
     margin-left: auto;
@@ -119,5 +119,15 @@
     margin-top: 15%;
     margin-bottom: 5%;
 }
+
+.platform-android .noLiveEvent img{
+	width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5%;
+    padding-top:5%;
+}
+
 
 
