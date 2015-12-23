@@ -1,5 +1,4 @@
-app.controller('splashScreenController', function ($scope,ngFB, $state, 
-    $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory, $ionicModal) {
+app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory, $ionicModal) {
 
      // Defaults to sessionStorage for storing the Facebook token
     ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
@@ -10,56 +9,75 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,
         $scope.init = function(){
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
-            $scope.hasFirstPermission = window.localStorage.getItem("firstPermission");
 
-            if($scope.hasFirstPermission == null){
+            if(window.localStorage.getItem("isConnected") == null){
+                window.localStorage.setItem("isConnected",false);
+            }
+
+            if(window.localStorage.getItem("firstPermission") == null){
                 window.localStorage.setItem("firstPermission",false);
             }
 
 
-            // 3 cas pour la connexion :
-            // - localStorage = undefined || null
-            // Alors on regarde au niveau de Fcbk si on est connecte ou pas 
-            // Cela permet notamment de gerer le cas ou le user a vider son cache,
-            // ou tout simplement lors de la 1ere connexion 
-            // 
+
+            // 2 cas pour la connexion :
             // - localStorage = true
             // L'utilisateur est connecte du coup on le ramene directement au niveau du feed
             // 
             // - localStorage = false
-            // L'utilisateur est deconnecte, on le laisse donc sur la page de login 
-            // il va donc devoir appuyer sur la page de login pour se lancer sur le feed veritablement
-            $cordovaFacebook.getLoginStatus().then(function (success){
-                console.log("success.status : "+(success.status == 'connected'));
-                if(success.status == 'connected'){
-                    window.localStorage.setItem("firstPermission",true);
-                    UserFactory.getUser().then(function(user){
-                        mixpanel.identify(user.id);
-                        mixpanel.people.set({
-                            "$last_login": new Date().toLocaleString('fr-FR'),
-                            "Age range": user.age_range.min + "-" + user.age_range.max,
-                        });
-                    })
-                    window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                    $state.go("home.eventsFeed");
-                }else{
+            // L'utilisateur va donc sur la page de Login
+            
 
-                    if ($scope.hasFirstPermission =="true"){
-                        console.log("Pas connecte encore mais a deja demandé la 1ere permission");
-                        console.log($scope.isConnectedBool);
-                        $state.go("tutorial");
-                    } else {
-                        console.log("Pas connecte encore et pas de permission");
-                        $scope.isConnectedBool = false;
-                        console.log($scope.isConnectedBool);
-                        $state.go("login");
+            if(window.localStorage.getItem("isConnected") == "true") {
+                console.log("Cas 1 : User local deja connecte");
+                window.localStorage.setItem("firstPermission",true);
+                UserFactory.getUser().then(function(user){
+                    mixpanel.identify(user.id);
+                    mixpanel.people.set({
+                        "$last_login": new Date().toLocaleString('fr-FR'),
+                        "Age range": user.age_range.min + "-" + user.age_range.max,
+                    });
+                })
+                $state.go("home.eventsFeed");
+
+            }else if(window.localStorage.getItem("isConnected") == "false"){
+                console.log("Cas 2 : User local non connecte");
+                $state.go("login");
+
+                /*$cordovaFacebook.getLoginStatus().then(function (success){
+                    console.log("SplashScreen success.status : "+(success.status == 'connected'));
+
+                    // L'utilisateur avait en fait deja été connecté donc c'est bon 
+                    if(success.status == 'connected'){
+                        window.localStorage.setItem("firstPermission",true);
+                        UserFactory.getUser().then(function(user){
+                            mixpanel.identify(user.id);
+                            mixpanel.people.set({
+                                "$last_login": new Date().toLocaleString('fr-FR'),
+                                "Age range": user.age_range.min + "-" + user.age_range.max,
+                            });
+                        })
+                        window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                        $state.go("home.eventsFeed");
+                    }else{
+                        // On sait que le user n'est pas encore connecte a l'appli
+                        if (window.localStorage.getItem("firstPermission") =="true"){
+                            console.log("SplashScreen Pas connecte encore mais a deja demandé la 1ere permission");
+                            $state.go("tutorial");
+                        } else {
+                            console.log("SplashScreen Pas connecte encore et pas de permission");
+                            $state.go("login");
+                        }
+
                     }
+                }, function (error){
+                    console.log(error);
 
-                }
-            }, function (error){
-                console.log(error);
-
-            })
+                })*/
+            }else {
+                console.log(window.localStorage.getItem("isConnected"));
+                console.log("Cas pas encore prevu..");
+            }
         }
 
         

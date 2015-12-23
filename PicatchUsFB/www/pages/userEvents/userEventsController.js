@@ -82,21 +82,22 @@ app.controller('UserEventsController',
         $ionicLoading.show({
             'template': 'Déconnexion ...'
         });
-        ngFB.revokePermissions().then(
-            function(){
+/*        ngFB.revokePermissions().then(
+            function(){*/
                 ngFB.logout().then(
                     function() {
                     mixpanel.track('logout');
                     window.localStorage.removeItem("fbAccessToken");
                     window.localStorage.removeItem("user");
                     window.localStorage.removeItem("events");
-                    window.localStorage.setItem("firstPermission",false);
+                    window.localStorage.removeItem("firstPermission");
+                    window.localStorage.removeItem("isConnected");
                     $ionicLoading.hide();
                     $state.go('login');
                     $scope.popover.hide();
                 },
             errorHandler);
-        },errorHandler);
+/*        },errorHandler);*/
     }
     
     function errorHandler(error) {

@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'ngOpenFB', 'ngTouch', 'ngRoute', 'ngCordova', 'ngProgress', 'ti-segmented-control', 'starter.controllers', 'starter.filters', 'starter.services'])
 
-  .run(function($ionicPlatform, ImgCache) {
+  .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
 
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,26 +17,15 @@ angular.module('starter', ['ionic', 'ImgCache', 'ngLocalStorage','ui.router', 'n
         cordova.plugins.Keyboard.disableScroll(true);
       }
 
-      setTimeout(function () {
-          navigator.splashscreen.hide();
-      }, 2000);
-
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
       }
 
-      document.addEventListener("pause", function() {
-        console.log("Je quitte l'app");
-      });
-
-      document.addEventListener("resume", function() {
-        console.log("J'arrive dans l'app");
-      });
-
       moment.locale('fr');
       ImgCache.$init();
       TestFairy.begin("15dfc3f0000629cd259c6dcae1ea52d82a9955e0");
+
     });
   })
 
