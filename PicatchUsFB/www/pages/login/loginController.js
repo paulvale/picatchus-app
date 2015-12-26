@@ -11,7 +11,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
         // - L'user a en fait deja été connecté a notre app et donc il accede directement au feed
         // - L'user n'a jamais été connecté a l'application, il doit donc accepté les permissions
         $scope.login = function() {
-            $ionicLoading.show({
+            $scope.loading = $ionicLoading.show({
             'template': 'Connexion ...'
             });
             $cordovaFacebook.getLoginStatus().then(function (success){
@@ -19,6 +19,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
 
                     // L'utilisateur avait en fait deja été connecté donc c'est bon 
                     if(success.status == 'connected'){
+                        $ionicLoading.hide();
                         window.localStorage.setItem("isConnected",true);
                         window.localStorage.setItem("firstPermission",true);
                         UserFactory.getUser().then(function(user){
@@ -29,7 +30,6 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                             });
                         })
                         window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                        $ionicLoading.hide();
                         $state.go("home.eventsFeed");
                     }else{
                         // On sait que le user n'est pas encore connecte a l'appli
@@ -48,6 +48,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                                 $ionicLoading.hide();
                                 $state.go("tutorial");
                             }, function(error){
+                                $ionicLoading.hide();
                                 console.log(error);
                             })
                             
@@ -56,12 +57,12 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                     }
                 }, function (error){
                     console.log(error);
-
                 })
 
         }
         
         function errorHandler(error) {
+            console.log("errorHandler dans le loginController");
             console.log(JSON.stringify(error.message));
         }
 

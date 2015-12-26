@@ -80,23 +80,24 @@ app.controller('UserEventsController',
 
     $scope.logout = function() {
         $ionicLoading.show({
-            'template': 'Déconnexion ...'
+            'template': 'Déconnexion ...',
+            showDelay: 2000
         });
 /*        ngFB.revokePermissions().then(
             function(){*/
-                ngFB.logout().then(
-                    function() {
-                    mixpanel.track('logout');
-                    window.localStorage.removeItem("fbAccessToken");
-                    window.localStorage.removeItem("user");
-                    window.localStorage.removeItem("events");
-                    window.localStorage.removeItem("firstPermission");
-                    window.localStorage.removeItem("isConnected");
-                    $ionicLoading.hide();
-                    $state.go('login');
-                    $scope.popover.hide();
-                },
-            errorHandler);
+        ngFB.logout().then(
+            function() {
+                mixpanel.track('logout');
+                window.localStorage.removeItem("fbAccessToken");
+                window.localStorage.removeItem("user");
+                window.localStorage.removeItem("events");
+                window.localStorage.removeItem("firstPermission");
+                window.localStorage.removeItem("isConnected");
+                $ionicLoading.hide();
+                $scope.popover.hide();
+                $state.go('login');
+            },
+        errorHandler);
 /*        },errorHandler);*/
     }
     

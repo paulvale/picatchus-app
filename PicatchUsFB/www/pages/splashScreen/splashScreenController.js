@@ -43,37 +43,6 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
             }else if(window.localStorage.getItem("isConnected") == "false"){
                 console.log("Cas 2 : User local non connecte");
                 $state.go("login");
-
-                /*$cordovaFacebook.getLoginStatus().then(function (success){
-                    console.log("SplashScreen success.status : "+(success.status == 'connected'));
-
-                    // L'utilisateur avait en fait deja été connecté donc c'est bon 
-                    if(success.status == 'connected'){
-                        window.localStorage.setItem("firstPermission",true);
-                        UserFactory.getUser().then(function(user){
-                            mixpanel.identify(user.id);
-                            mixpanel.people.set({
-                                "$last_login": new Date().toLocaleString('fr-FR'),
-                                "Age range": user.age_range.min + "-" + user.age_range.max,
-                            });
-                        })
-                        window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                        $state.go("home.eventsFeed");
-                    }else{
-                        // On sait que le user n'est pas encore connecte a l'appli
-                        if (window.localStorage.getItem("firstPermission") =="true"){
-                            console.log("SplashScreen Pas connecte encore mais a deja demandé la 1ere permission");
-                            $state.go("tutorial");
-                        } else {
-                            console.log("SplashScreen Pas connecte encore et pas de permission");
-                            $state.go("login");
-                        }
-
-                    }
-                }, function (error){
-                    console.log(error);
-
-                })*/
             }else {
                 console.log(window.localStorage.getItem("isConnected"));
                 console.log("Cas pas encore prevu..");
@@ -82,6 +51,7 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
 
         
         function errorHandler(error) {
+            console.log("Je suis dans le errorHandler du splashScreenController");
             console.log(JSON.stringify(error.message));
         }
 
