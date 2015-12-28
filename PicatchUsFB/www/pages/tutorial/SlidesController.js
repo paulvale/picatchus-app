@@ -1,6 +1,6 @@
 app.controller('SlideController', function($scope, $state,$ionicHistory){
 
-    $scope.slides = {
+/*    $scope.slides = {
         "slide1": {
             "position": 1,
             "precedent": "",
@@ -28,15 +28,33 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
             "title": "ion-images",
             "text": "Retrouve toutes les photos de tes événements Facebook"
         }
-    };
+    };*/
 
     $scope.init = function(){
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache();
-        $scope.currentSlide = $scope.slides["slide1"];
+        //$scope.currentSlide = $scope.slides["slide1"];
     };
 
-    $scope.previous = function(){
+    $scope.start = function() {
+        window.localStorage.setItem("firstConnection",false);
+        console.log("Dans le SlidesController");
+
+        console.log("Valeur du isConnected");
+        console.log(window.localStorage.getItem("isConnected"));
+
+        console.log("Valeur du firstPermission");
+        console.log(window.localStorage.getItem("firstPermission"));
+
+        console.log("valeur du firstConnection");
+        console.log(window.localStorage.getItem("firstConnection"));
+        $state.go("login");
+    }
+    
+
+
+
+    /*$scope.previous = function(){
         switch($scope.currentSlide.position){
             case 1:
                 console.log("Je suis sur le slide 1");
@@ -50,10 +68,10 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
                 console.log("erreur dans le previous");
                 break;
         }
-    }
+    }*/
 
     //On next click, we change onboarding image and logo on top right
-    $scope.next = function(){
+    /*$scope.next = function(){
         switch($scope.currentSlide.position){
             case 1 :
                 $scope.currentSlide = $scope.slides["slide2"];
@@ -72,7 +90,7 @@ app.controller('SlideController', function($scope, $state,$ionicHistory){
 
     $scope.skip = function(){
         $state.go('permission');
-    };
+    };*/
 
 
 

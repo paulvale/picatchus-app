@@ -10,22 +10,35 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
 
-            if(window.localStorage.getItem("isConnected") == null){
+            /*if(window.localStorage.getItem("isConnected") == null){
                 window.localStorage.setItem("isConnected",false);
-            }
+            }*/
+            console.log("SplashScreenController");
+            console.log("Valeur du isConnected");
+            console.log(window.localStorage.getItem("isConnected"));
 
             if(window.localStorage.getItem("firstPermission") == null){
                 window.localStorage.setItem("firstPermission",false);
             }
 
+            console.log("Valeur du firstPermission");
+            console.log(window.localStorage.getItem("firstPermission"));
+
+            console.log("Valeur du firstConnection");
+            console.log(window.localStorage.getItem("firstConnection"));
 
 
-            // 2 cas pour la connexion :
+
+            // 3 cas pour la connexion :
             // - localStorage = true
             // L'utilisateur est connecte du coup on le ramene directement au niveau du feed
             // 
-            // - localStorage = false
-            // L'utilisateur va donc sur la page de Login
+            // - localStorage = false & firstConnection = true
+            // L'utilisateur va donc sur la page de 1ere connexion (tutorial)
+            // 
+            // - localStorage = false & firstConnection= false
+            // L'utilisateur s'est deconnecte mais est deja venu, on le dirige juste vers le login
+            // 
             
 
             if(window.localStorage.getItem("isConnected") == "true") {
@@ -40,14 +53,17 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
                 })
                 $state.go("home.eventsFeed");
 
-            }else if(window.localStorage.getItem("isConnected") == "false"){
-                console.log("Cas 2 : User local non connecte");
-                $state.go("login");
-            }else {
-                console.log(window.localStorage.getItem("isConnected"));
-                console.log("Cas pas encore prevu..");
+            }else if(window.localStorage.getItem("isConnected") == "false" || window.localStorage.getItem("isConnected") == null){
+                if(window.localStorage.getItem("firstConnection") != "false"){
+                    console.log("Cas 2 : User local non connecte et 1ere connection");
+                    $state.go("tutorial");
+                }else if(window.localStorage.getItem("firstConnection") == "false"){
+                    console.log(window.localStorage.getItem("isConnected"));
+                    console.log("Cas 3 : User local non connecte mais deja une 1ere connection.");
+                    $state.go("login");
+                }
             }
-        }
+        };
 
         
         function errorHandler(error) {

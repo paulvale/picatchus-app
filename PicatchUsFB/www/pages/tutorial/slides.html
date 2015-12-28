@@ -1,18 +1,65 @@
-<ion-view id="tutorial " hide-nav-bar="false" 
+ <ion-view id="tutorial " hide-nav-bar="true" 
 		align-title="center" 
 		hide-back-button="true">
-    <ion-nav-buttons side="left" >
+    <!-- <ion-nav-buttons side="left" >
     	<button class="button buttonTuto" ng-click="previous()">{{currentSlide.precedent}}</button>
     </ion-nav-buttons>
     <ion-nav-title class="titleTuto">
       Bienvenue !
     </ion-nav-title>
-	<ion-nav-buttons side="right">
+    	<ion-nav-buttons side="right">
      	<button class="button buttonTuto" ng-click="skip()">{{currentSlide.skip}}</button>
-    </ion-nav-buttons>
+    </ion-nav-buttons> -->
 
 	<ion-content scroll="false">
-		<div class="photoTutorial">
+		<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true" class="slider">
+		  <ion-slide>
+		    <div class="box">
+		    	<div class="photoTutorial">
+					<img ng-src="img/OnBoarding1.png">
+				</div>
+				<div class="titleTutorial">
+					<i class="ion-clock"></i>
+				</div>
+				<div class="textTutorial">
+					Suis l'actualité de tes événements en temps réel
+				</div>
+		    </div>
+		  </ion-slide>
+		  <ion-slide>
+		    <div class="box">
+		    	<div class="photoTutorial">
+					<img ng-src="img/OnBoarding2.png">
+				</div>
+				<div class="titleTutorial">
+					<i class="ion-camera"></i>
+				</div>
+				<div class="textTutorial">
+					Partage en 1 clic tes photos avec les autres participants
+				</div>
+		    </div>
+		  </ion-slide>
+		  <ion-slide>
+		    <div class="box">
+		    	<div class="photoTutorial">
+					<img ng-src="img/OnBoarding3.png">
+				</div>
+				<div class="titleTutorial">
+					<i class="ion-images"></i>
+				</div>
+				<div class="textTutorial">
+					Retrouve toutes les photos de tes événements Facebook
+				</div>
+		    </div>
+		  </ion-slide>
+		</ion-slide-box>
+
+		<div class="getStarted" ng-click="start()">
+			Commencer
+		<div>
+
+
+		<!-- <div class="photoTutorial">
 			<img ng-src="{{currentSlide.image}}">
 		</div>
 		<div class="titleTutorial">
@@ -21,7 +68,7 @@
 		<div class="textTutorial">
 			{{currentSlide.text}}
 		</div>
-		<div class="buttonNext" ng-click="next()">{{currentSlide.next}}</div>
+		<div class="buttonNext" ng-click="next()">{{currentSlide.next}}</div> -->
 	</ion-content>
 </ion-view>
 

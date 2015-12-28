@@ -1,64 +1,100 @@
 app.controller('LoginController', function ($scope,ngFB, $state, 
     $cordovaToast, $cordovaFacebook, $ionicPlatform, UserFactory,$ionicHistory, $ionicModal,$ionicLoading) {
     // Defaults to sessionStorage for storing the Facebook token
-    ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
+    //ngFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
     //openFB.init({appId: '1028038917241302', tokenStore: window.localStorage});
     
-    $ionicPlatform.ready(function(){
+    //$ionicPlatform.ready(function(){
 
         // 3 cas specifique :
         // - L'user a en fait deja été connecté a notre app et donc il accede directement au feed
         // - L'user n'a jamais été connecté a l'application, il doit donc accepté les permissions
         $scope.login = function() {
-            $scope.loading = $ionicLoading.show({
+            /*$scope.loading = $ionicLoading.show({
             'template': 'Connexion ...'
-            });
+            });*/
             $cordovaFacebook.getLoginStatus().then(function (success){
                     console.log("LoginScreen success.status : "+(success.status == 'connected'));
+                    console.log("Valeur du isConnected");
+                    console.log(window.localStorage.getItem("isConnected"));
+
+                    console.log("Valeur du firstPermission");
+                    console.log(window.localStorage.getItem("firstPermission"));
+
+                    console.log("valeur du firstConnection");
+                    console.log(window.localStorage.getItem("firstConnection"));
 
                     // L'utilisateur avait en fait deja été connecté donc c'est bon 
                     if(success.status == 'connected'){
-                        $ionicLoading.hide();
-                        window.localStorage.setItem("isConnected",true);
-                        window.localStorage.setItem("firstPermission",true);
-                        UserFactory.getUser().then(function(user){
-                            mixpanel.identify(user.id);
-                            mixpanel.people.set({
-                                "$last_login": new Date().toLocaleString('fr-FR'),
-                                "Age range": user.age_range.min + "-" + user.age_range.max,
-                            });
-                        })
-                        window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                        $state.go("home.eventsFeed");
+                        //$ionicLoading.hide();
+                        //La 2ieme permission n'a pas encore été donnée
+                        if (window.localStorage.getItem("isConnected") == "false"){
+                            console.log("Connecte mais pas encore la 2nde permission");
+                            window.localStorage.setItem("firstPermission",true);
+                            //$ionicLoading.hide();
+                            $state.go("permission");
+                        }else {
+                            window.localStorage.setItem("isConnected",true);
+                            window.localStorage.setItem("firstPermission",true);
+                            UserFactory.getUser().then(function(user){
+                                mixpanel.identify(user.id);
+                                mixpanel.people.set({
+                                    "$last_login": new Date().toLocaleString('fr-FR'),
+                                    "Age range": user.age_range.min + "-" + user.age_range.max,
+                                });
+                            })
+                            console.log("User deja connecte au serveur")
+                            console.log("Valeur du isConnected");
+                            console.log(window.localStorage.getItem("isConnected"));
+
+                            console.log("Valeur du firstPermission");
+                            console.log(window.localStorage.getItem("firstPermission"));
+
+                            console.log("valeur du firstConnection");
+                            console.log(window.localStorage.getItem("firstConnection"));
+                            window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
+                            $state.go("home.eventsFeed");
+                            
+                        }
                     }else{
                         // On sait que le user n'est pas encore connecte a l'appli
+                        console.log("User pas encore connecte au serveur")
+                        console.log("Valeur du isConnected");
+                        console.log(window.localStorage.getItem("isConnected"));
+
+                        console.log("Valeur du firstPermission");
+                        console.log(window.localStorage.getItem("firstPermission"));
+
+                        console.log("valeur du firstConnection");
+                        console.log(window.localStorage.getItem("firstConnection"));
+
                         if (window.localStorage.getItem("firstPermission") =="true"){
                             console.log("SplashScreen Pas connecte encore mais a deja demandé la 1ere permission");
-                            $ionicLoading.hide();
-                            $state.go("tutorial");
+                            //$ionicLoading.hide();
+                            window.localStorage.setItem("isConnected",false);
+                            $state.go("permission");
                         } else {
                             console.log("SplashScreen Pas connecte encore et pas de permission");
                             mixpanel.track('sign up');
                             $cordovaFacebook.login(["user_events", "user_photos"])
                             .then(function(success){
                                 window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
-                                window.localStorage.setItem("isConnected",true);
                                 window.localStorage.setItem("firstPermission",true);
-                                $ionicLoading.hide();
-                                $state.go("tutorial");
+                                window.localStorage.setItem("isConnected",false);
+                                //$ionicLoading.hide();
+                                $state.go("permission");
                             }, function(error){
-                                $ionicLoading.hide();
+                                //$ionicLoading.hide();
+                                console.log("erreur dans la fonction Login")
                                 console.log(error);
                             })
-                            
                         }
-
                     }
                 }, function (error){
+                    console.log("erreur dans la promise iiii");
                     console.log(error);
-                })
-
+                });
         }
         
         function errorHandler(error) {
@@ -117,6 +153,5 @@ app.controller('LoginController', function ($scope,ngFB, $state,
               $scope.modal = null;
             });
         };
-        })
 
 });

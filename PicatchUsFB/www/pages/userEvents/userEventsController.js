@@ -81,7 +81,6 @@ app.controller('UserEventsController',
     $scope.logout = function() {
         $ionicLoading.show({
             'template': 'Déconnexion ...',
-            showDelay: 2000
         });
 /*        ngFB.revokePermissions().then(
             function(){*/
@@ -91,15 +90,16 @@ app.controller('UserEventsController',
                 window.localStorage.removeItem("fbAccessToken");
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("events");
-                window.localStorage.removeItem("firstPermission");
                 window.localStorage.removeItem("isConnected");
+                window.localStorage.removeItem("firstPermission");
+                window.localStorage.removeItem("secondPermission");
                 $ionicLoading.hide();
                 $scope.popover.hide();
                 $state.go('login');
             },
         errorHandler);
 /*        },errorHandler);*/
-    }
+    };
     
     function errorHandler(error) {
         console.log(JSON.stringify(error.message));

@@ -6,11 +6,23 @@ app.controller('PermissionController',function($scope, ngFB, $state,$cordovaToas
     }
 
     $scope.askPermission = function(){
+        console.log("Dans le permission Controller")
+        console.log("Valeur du isConnected");
+        console.log(window.localStorage.getItem("isConnected"));
+
+        console.log("Valeur du firstPermission");
+        console.log(window.localStorage.getItem("firstPermission"));
+
+        console.log("valeur du firstConnection");
+        console.log(window.localStorage.getItem("firstConnection"));
+
+
         $cordovaFacebook.login(["publish_actions"])
             .then(function(success){
                 console.log(success);
                 window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
                 window.localStorage.setItem("isConnected", true);
+                window.localStorage.setItem("secondPermission", true);
                 UserFactory.getUser().then(function(user){
                     mixpanel.alias(user.id);
                     //mixpanel.identify(user.id);
@@ -30,12 +42,25 @@ app.controller('PermissionController',function($scope, ngFB, $state,$cordovaToas
                         "Likes on event page": 0,
                     });
                 });
+                        console.log("Apres la demande de permission")
+                        console.log("Valeur du isConnected");
+                        console.log(window.localStorage.getItem("isConnected"));
+
+                        console.log("Valeur du firstPermission");
+                        console.log(window.localStorage.getItem("firstPermission"));
+
+                        console.log("valeur du firstConnection");
+                        console.log(window.localStorage.getItem("firstConnection"));
+
+
+
+
                 $state.go('home.eventsFeed');
             }, function(error){
                 console.log("Je suis dans l'erreur du askPermission");
                 console.log(error);
-            })
-    }
+            });
+    };
     
     $scope.init();
 });
