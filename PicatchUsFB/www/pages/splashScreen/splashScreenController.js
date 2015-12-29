@@ -10,24 +10,9 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
             $ionicHistory.clearHistory();
             $ionicHistory.clearCache();
 
-            /*if(window.localStorage.getItem("isConnected") == null){
-                window.localStorage.setItem("isConnected",false);
-            }*/
-            console.log("SplashScreenController");
-            console.log("Valeur du isConnected");
-            console.log(window.localStorage.getItem("isConnected"));
-
             if(window.localStorage.getItem("firstPermission") == null){
                 window.localStorage.setItem("firstPermission",false);
             }
-
-            console.log("Valeur du firstPermission");
-            console.log(window.localStorage.getItem("firstPermission"));
-
-            console.log("Valeur du firstConnection");
-            console.log(window.localStorage.getItem("firstConnection"));
-
-
 
             // 3 cas pour la connexion :
             // - localStorage = true
@@ -37,9 +22,7 @@ app.controller('splashScreenController', function ($scope,ngFB, $state,$cordovaT
             // L'utilisateur va donc sur la page de 1ere connexion (tutorial)
             // 
             // - localStorage = false & firstConnection= false
-            // L'utilisateur s'est deconnecte mais est deja venu, on le dirige juste vers le login
-            // 
-            
+            // L'utilisateur s'est deconnecte mais est deja venu, on le dirige juste vers le login            
 
             if(window.localStorage.getItem("isConnected") == "true") {
                 console.log("Cas 1 : User local deja connecte");
