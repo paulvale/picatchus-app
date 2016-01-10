@@ -4,19 +4,18 @@ app.controller('LoginController', function ($scope,ngFB, $state,
         // - L'user a en fait deja été connecté a notre app et donc il accede directement au feed
         // - L'user n'a jamais été connecté a l'application, il doit donc accepté les permissions
         $scope.login = function() {
-            /*$scope.loading = $ionicLoading.show({
+            $scope.loading = $ionicLoading.show({
             'template': 'Connexion ...'
-            });*/
+            });
             $cordovaFacebook.getLoginStatus().then(function (success){
                     console.log("LoginScreen success.status : "+(success.status == 'connected'));
 
                     // L'utilisateur avait en fait deja été connecté donc c'est bon 
                     if(success.status == 'connected'){
-                        //$ionicLoading.hide();
                         //La 2ieme permission n'a pas encore été donnée
                         if (window.localStorage.getItem("isConnected") == "false"){
                             window.localStorage.setItem("firstPermission",true);
-                            //$ionicLoading.hide();
+                            $ionicLoading.hide();
                             $state.go("permission");
                         }else {
                             window.localStorage.setItem("isConnected",true);
@@ -28,14 +27,14 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                                     "Age range": user.age_range.min + "-" + user.age_range.max,
                                 });
                             })
+                            $ionicLoading.hide();
                             window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
                             $state.go("home.eventsFeed");
-                            
                         }
                     }else{
 
                         if (window.localStorage.getItem("firstPermission") =="true"){
-                            //$ionicLoading.hide();
+                            $ionicLoading.hide();
                             window.localStorage.setItem("isConnected",false);
                             $state.go("permission");
                         } else {
@@ -45,7 +44,7 @@ app.controller('LoginController', function ($scope,ngFB, $state,
                                 window.localStorage.setItem("fbAccessToken", success.authResponse.accessToken);
                                 window.localStorage.setItem("firstPermission",true);
                                 window.localStorage.setItem("isConnected",false);
-                                //$ionicLoading.hide();
+                                $ionicLoading.hide();
                                 $state.go("permission");
                             }, function(error){
                                 //$ionicLoading.hide();

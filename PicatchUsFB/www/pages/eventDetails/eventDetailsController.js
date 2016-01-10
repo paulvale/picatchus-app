@@ -128,7 +128,8 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
         }, {
             'text': 'Annuler',
             onTap: function(){
-                $scope.popover.remove();
+                if($scope.popover)
+                    $scope.popover.remove();
             }
         }]
     });
@@ -136,6 +137,7 @@ app.controller('EventDetailsController',function ($scope, ngFB,$rootScope, $time
     confirmPopup.then(function(res) {
          if(res) {
             $cordovaToast.showLongBottom('La photo a été signalée.');
+         }else {
          }
        });
      };
